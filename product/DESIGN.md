@@ -21,7 +21,8 @@ components: {}
 - **Portfolio/content:** shelf and writing may use clearly labeled per-item placeholders for visual demonstration. No fake destination links. All placeholders must be replaced before launch.
 - **Portrait/contact:** no approved portrait or contact details yet. Prototype should use a neutral abstract/non-identifying visual or omit portrait; use a nonfunctional contact placeholder without invented address.
 - **Workspace:** `/opt/data/workspace/isaac-personal-website` is the canonical site repo. The approved iterative implementation is isolated on `agent/production-build`; typography/content and interaction details remain reviewable live.
-- **Build status:** a working Astro review implementation exists in the active build worktree; this is no longer a design-only prototype. A shareable Vercel review preview has not yet been verified.
+- **Stack and interaction:** Astro static output; GSAP for authored editorial motion; Matter.js confined to the interactive bookshelf. Reduced motion must freeze simulation; a labelled stable fallback remains. Test keyboard, touch, and scroll interactions.
+- **Bookshelf discrepancy to review:** earlier PRD required exactly two rows on mobile. Current working build preserves one supported shelf at all viewport sizes to keep the simulated bodies in one physics world. This is not yet approved; inspect and correct live before treating the shelf as final.
 
 **Confirmed direction:** a personal, curious, thoughtful, warm, occasionally playful corner of the internet. It should feel like an editorial magazine meeting a carefully curated personal archive, with restrained scrapbook touches and real physical-world details. Strong typography, generous whitespace, purposeful composition, and a consistent visual grammar carry personality; novelty never outweighs clarity.
 

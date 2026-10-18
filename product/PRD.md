@@ -1,7 +1,7 @@
 # Isaac Ndahura — Personal Website Product Specification
 
 **Version:** 0.2.0 — Iterative build baseline; content and final visual tokens remain review items
-**Status:** the first review implementation is built; typography, composition, accessibility, content and interactions continue to be corrected live. Public production release remains gated.
+**Status:** iterative working build is authorized and active; implementation is in isolated branch `agent/production-build`. The user explicitly asked for the real build and live corrections, not disposable prototypes. Preview-only deployment remains authorized; production is gated.
 **Owner:** Isaac Ndahura
 **Normative companion:** [`DESIGN.md`](./DESIGN.md)
 **Supporting reference:** `/opt/data/cache/scratch/isaac-personal-site-wireframe-v3.html` (exploratory wireframe, not design authority)
@@ -76,7 +76,7 @@ A compact top-level anchor navigation may be used if it improves orientation, bu
 - **Rendering:** Astro `7.4.0`, static output. The published site is a static directory; no server runtime or CMS is required.
 - **Motion:** GSAP `3.15.0` for authored editorial entrances and restrained on-scroll reveals. Respect `prefers-reduced-motion`; semantic content remains visible if scripts fail.
 - **Shelf physics:** Matter.js `0.20.0`, confined to the bookshelf section. The shelf must also remain usable as a stable, labelled non-simulated composition, with pointer, keyboard, and touch-accessible affordances; the simulation is progressive enhancement, never the only way to understand or access content.
-- **Hosting:** Vercel preview project `isaac-personal-website` is for review. Production promotion, domains, DNS, and public launch remain separately approval-gated.
+- **Preview target:** Vercel review project `isaac-personal-website`. Preview-only deployment is allowed; production alias, domains, DNS, and public release require separate authorization.
 - **Dependencies:** pin versions; no Three.js, WebGL, CMS, database, or server-side application in this scope.
 
 ## 8. Content approval and release gates
@@ -215,7 +215,7 @@ Forge must demonstrate each criterion in browser/runtime evidence before calling
 
 These are intentionally not settled by the wireframe or this document:
 
-- Final typeface(s), weights, and type scale. Current prototype typography is explicitly provisional and has been criticized; do not carry it forward as approval.
+- Final typeface(s), weights, and type scale. The active review build currently uses Barlow Condensed + Source Serif 4 and loads the Oswald candidate for comparison. Compare both in rendered composition; neither is approved until Isaac selects.
 - Final color palette and exact token values. Direction: mostly neutral, with color chiefly from real images/objects; no specific swatches approved.
 - Exact hero supporting copy, portrait asset/crop, handwritten annotation, and final small metadata.
 - Exact Currently paragraph.
@@ -224,8 +224,9 @@ These are intentionally not settled by the wireframe or this document:
 - From My Head item inventory, cover/image assets, card dimensions, and article destinations.
 - Final contact invitation wording/channel.
 - Whether a small section navigation exists and how it behaves.
-- Whether any motion is useful. GSAP is only a candidate; Three.js is not selected. Prefer no library until interaction proves a need.
-- Domain and actual production release scope remain unresolved and approval-gated.
+- **Motion direction:** GSAP authored entrances and section reveals are implemented; their pacing and visibility are review items. Matter.js powers the shelf only, with no decorative animation when reduced motion is preferred.
+- **Implementation stack:** Astro 7.4.0 (static output), GSAP 3.15.0 (editorial motion), Matter.js 0.20.0 (bookshelf-only physics). See Section 7.
+- **Desktop/mobile shelf note:** the earlier two-row-on-mobile direction is superseded for this iterative interaction build: the Matter.js shelf uses one supported surface across viewport widths so all objects participate in one coherent physics simulation. If exact two-row shelving remains preferred, we can alter the physics/world composition live.
 
 ### 10.1 Implementation architecture decision
 

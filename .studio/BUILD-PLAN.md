@@ -1,37 +1,54 @@
-# Forge Planning Queue — Isaac Ndahura Personal Website
+# Forge Build Plan — Isaac Ndahura Personal Website
 
-**Planning status:** approved to proceed with the working implementation and iterate via review previews; production release remains gated.
+**Status:** Iterative working build is authorized and active; the first complete review slice is in isolated branch `agent/production-build`. This is not the production release. The user asked to build the real site and correct problems live, rather than make disposable prototypes.
 **Normative inputs:** `product/PRD.md`, `product/DESIGN.md`.
+**Canonical repo:** `/opt/data/workspace/isaac-personal-website`.
 
-## Phase 0 — Inspect and accept the product package
+## Decisions already made
 
-- [x] Create an isolated product workspace.
-- [x] Add PRD with scope, functional requirements, open decisions, and acceptance criteria.
-- [x] Add canonical DESIGN.md with the accepted direction and explicitly unresolved tokens.
-- [x] Preserve the exploratory HTML wireframe as supporting reference only.
-- [x] User reviews the package and authorizes continuing the Forge build process.
+- One page with Hero → Currently → Bits & Pieces → The Bookshelf → From My Head → Leave a Note.
+- Astro static output; GSAP for authored motion; Matter.js for bookshelf-only 2D physics. No site-wide simulation, WebGL, Three.js, CMS, or database.
+- Use isolated worktrees and branches for code; keep `main` read-only until an approved integration/review step.
+- Review content must be clearly labelled; no invented bio, portfolio, articles, links, portrait, or contact destination.
+- Vercel project `isaac-personal-website` is authorized for review previews. Production aliases, domain/DNS changes, and launch require separate explicit approval.
 
-## Phase 1 — Resolve visual and content gates
+## Phase 1 — Product baseline
 
-- [ ] Implement in Astro; compare Oswald + Source Serif 4 and Barlow Condensed + Source Serif 4 in the real page while keeping type tokens easy to change during live review.
-- [x] Palette direction: warm paper/ink neutrals; real photos and objects provide most color. Exact values remain unresolved until rendered, contrast-checked, and approved.
-- [x] Demo placeholders: bookshelf/writing items may be used, clearly marked individually; no fake destination links; replace before launch.
-- [x] Currently may use a visibly annotated, review-only paragraph placeholder; Isaac-approved copy is still required before launch.
-- [x] Portrait/contact specifics are pending. Use an abstract/neutral non-identifying visual or omit the portrait; contact action is a nonfunctional placeholder with no fabricated URL.
-- [x] Vercel approved for preview deployments for review. Production deployment, domain/DNS and publication remain separately gated.
-- [x] Stack: Astro static output with GSAP-authored motion and Matter.js physics restricted to the library section; Vercel review previews. Verify current versions, license, output weight, and runtime requirements before installation.
-- [x] Isaac authorized the working implementation to proceed now and to correct issues through live review. Production release, domain/DNS, and public launch remain separately gated.
-- [ ] Confirm whether compact section navigation is wanted.
-- [ ] Render/inspect desktop supported one-row shelf and mobile two-row shelf; revise to convincingly physical support.
-- [ ] Update `product/DESIGN.md` with approved decisions and re-run its linter/contrast review.
+- [x] PRD scope, six sections, functional requirements, unresolved decisions, acceptance criteria.
+- [x] DESIGN.md direction and provisional visual tokens.
+- [x] User-approved iterative implementation; no more throwaway prototype loop.
+- [x] Stack and accessible reduced-motion/static fallback documented.
 
-## Phase 2 — Build slices (approved to proceed)
+## Phase 2 — Working implementation
 
-- Use Astro static output with semantic HTML/CSS, GSAP-authored motion, and Matter.js only for constrained bookshelf physics. Preserve reduced-motion, keyboard, and touch fallbacks.
-- Convert PRD acceptance criteria into ordered, independently testable implementation slices.
-- Define test commands, accessible interaction checks, responsive screenshot checks, content/link validation, and preview evidence requirements.
-- Keep personal content and exact visual tokens editable for corrections during review; stop only for a material scope, privacy, or security decision.
+- [x] Astro static project at repository root in `.worktrees/production-build`.
+- [x] Six-section editorial page with carefully labelled review placeholders.
+- [x] Responsive composition; desktop single-line full name; mobile two-line name.
+- [x] Matter.js shelf with seven visibly-placeholder spines, a stable resting arrangement, keyboard/pointer/touch interaction, shake/reset, and reduced-motion fallback.
+- [x] GSAP entrance and section reveals; content is rendered without animation dependency.
+- [x] Automated contract, responsive CSS, and simulated physics tests.
+- [x] Browser screenshots and desktop/mobile smoke checks; no viewport overflow, console/page errors, working controls.
+- [x] `npm run check`, `npm run build`, `npm test`, production dependency audit; `DESIGN.md` linter.
+- [ ] Complete visual and interaction review with Isaac’s live corrections.
+- [ ] Verify safe Vercel configuration and create a shareable review-only preview; capture the exact URL and verify page content.
 
-## Phase 3 — Implementation (authorized; release separately gated)
+## Phase 3 — Content and final design decisions
 
-Proceed on the isolated implementation branch with TDD, real browser/runtime verification, desktop/tablet/mobile visual QA, and accessibility/reduced-motion checks. Vercel review deployment is permitted only after confirming the target project and that no production alias will be changed; public release remains separately gated.
+- [ ] Select final display font pair and exact paper/ink/earth palette tokens from rendered comparisons.
+- [ ] Replace review about/currently copy with Isaac-approved words; provide approved portrait and fragment imagery or omit.
+- [ ] Select real works and writing items; verify each title, image, and destination.
+- [ ] Choose an actual contact destination and final closing copy.
+- [ ] Remove all placeholder labels and `noindex` only after explicit content/release readiness review.
+
+## Phase 4 — Production release (separate approval gate)
+
+
+- [ ] Re-run all quality and accessibility gates against the final content.
+- [ ] Obtain Isaac’s explicit production authorization before promoting, setting aliases/domains, touching DNS, or announcing/publicizing.
+
+## Current implementation evidence
+
+- Implementation commit: `e465495`; spec/progress commit: `18b5c0e`.
+- Browser smoke: desktop 1440px and mobile 390px; six sections, seven books, accessible title, no viewport overflow, working shake/reset interaction, no page errors. Reduced-motion mode retains a stable shelf.
+- Last quality run: Astro check 0 errors/warnings/hints; 9/9 tests pass; static build succeeds; 0 production dependency vulnerabilities; DESIGN.md linter 0 findings; `git diff --check` clean.
+- Evidence screenshots live under `.artifacts/evidence/website-build/` in the active worktree; inspect them as needed.
