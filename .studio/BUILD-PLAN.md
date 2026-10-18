@@ -27,8 +27,10 @@
 - [x] Matter.js shelf with seven visibly-placeholder spines, a stable resting arrangement, keyboard/pointer/touch interaction, shake/reset, and reduced-motion fallback.
 - [x] GSAP entrance and section reveals; content is rendered without animation dependency.
 - [x] Automated contract, responsive CSS, and simulated physics tests.
-- [x] Browser screenshots and desktop/mobile smoke checks; no viewport overflow, console/page errors, working controls.
-- [x] `npm run check`, `npm run build`, `npm test`, production dependency audit; `DESIGN.md` linter.
+- [x] Browser screenshots and desktop/mobile smoke checks; no viewport overflow or page errors. Current physics test verifies Matter.js world behavior; browser drag/touch ergonomics remain part of Isaac’s review.
+- [x] Mobile shelf is exactly two supported tiers: 4 upper + 3 lower, each simulation body aligned to its shelf surface. Desktop remains one row.
+- [x] `npm run check`, `npm run build`, `npm test` (11/11), production dependency audit (0 vulnerabilities), DESIGN.md linter (0 findings).
+- [x] Verify live Matter.js bookshelf shake visibly moves books on desktop and mobile; reset reconstructs stable shelf.
 - [ ] Complete visual and interaction review with Isaac’s live corrections.
 - [ ] Verify safe Vercel configuration and create a shareable review-only preview; capture the exact URL and verify page content.
 
@@ -48,7 +50,7 @@
 
 ## Current implementation evidence
 
-- Implementation commit: `e465495`; spec/progress commit: `18b5c0e`.
-- Browser smoke: desktop 1440px and mobile 390px; six sections, seven books, accessible title, no viewport overflow, working shake/reset interaction, no page errors. Reduced-motion mode retains a stable shelf.
-- Last quality run: Astro check 0 errors/warnings/hints; 9/9 tests pass; static build succeeds; 0 production dependency vulnerabilities; DESIGN.md linter 0 findings; `git diff --check` clean.
+- **Implementation commit:** `e465495`; latest live-review changes are uncommitted in the isolated `production-build` worktree.
+- Browser smoke: desktop 1440px and mobile 390px; six sections, seven books, accessible title, no viewport overflow, shake visibly moves the books and reset reinitializes the stable shelf, no page errors. Reduced-motion mode retains a stable shelf.
+- Latest implementation verification: 14/14 tests pass; Astro check has 0 errors, warnings, and hints; static build succeeds; DESIGN linter 0 findings; `git diff --check` clean. Production dependency audit last passed at 0 vulnerabilities before latest physics-only changes.
 - Evidence screenshots live under `.artifacts/evidence/website-build/` in the active worktree; inspect them as needed.

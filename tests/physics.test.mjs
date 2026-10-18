@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import Matter from 'matter-js';
 
 test('bookshelf physics settles seven supported placeholder bodies without escaping shelf walls', () => {
@@ -21,4 +22,13 @@ test('bookshelf physics settles seven supported placeholder bodies without escap
   assert.ok(books.every((book) => book.position.x > -5 && book.position.x < width + 5));
   assert.ok(books.every((book) => Number.isFinite(book.position.y) && book.position.y < floorY + 200));
   assert.ok(books.every((book) => Number.isFinite(book.angle)));
+});
+
+test('mobile simulation has two shelf tiers with four upper and three lower labelled bodies', () => {
+  const html = readFileSync(new URL('../src/pages/index.astro', import.meta.url), 'utf8');
+  const data = readFileSync(new URL('../src/data/site.ts', import.meta.url), 'utf8');
+  assert.match(html, /data-shelf-row="1"/);
+  assert.match(html, /data-shelf-row="2"/);
+  assert.match(html, /data-row=\{book\.id <= '04' \? 'upper' : 'lower'\}/);
+  assert.equal((data.match(/title: 'Placeholder/g) ?? []).length, 7);
 });

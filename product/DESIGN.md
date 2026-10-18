@@ -22,7 +22,7 @@ components: {}
 - **Portrait/contact:** no approved portrait or contact details yet. Prototype should use a neutral abstract/non-identifying visual or omit portrait; use a nonfunctional contact placeholder without invented address.
 - **Workspace:** `/opt/data/workspace/isaac-personal-website` is the canonical site repo. The approved iterative implementation is isolated on `agent/production-build`; typography/content and interaction details remain reviewable live.
 - **Stack and interaction:** Astro static output; GSAP for authored editorial motion; Matter.js confined to the interactive bookshelf. Reduced motion must freeze simulation; a labelled stable fallback remains. Test keyboard, touch, and scroll interactions.
-- **Bookshelf discrepancy to review:** earlier PRD required exactly two rows on mobile. Current working build preserves one supported shelf at all viewport sizes to keep the simulated bodies in one physics world. This is not yet approved; inspect and correct live before treating the shelf as final.
+- **Bookshelf (live review update):** mobile shelf now has two supported tiers, four upper and three lower placeholder spines, with separate row physics; desktop remains one shelf. Verified in a rendered mobile capture. This supersedes the previous single-row mobile implementation; review live.
 
 **Confirmed direction:** a personal, curious, thoughtful, warm, occasionally playful corner of the internet. It should feel like an editorial magazine meeting a carefully curated personal archive, with restrained scrapbook touches and real physical-world details. Strong typography, generous whitespace, purposeful composition, and a consistent visual grammar carry personality; novelty never outweighs clarity.
 
