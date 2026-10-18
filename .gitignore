@@ -1,3 +1,8 @@
 .worktrees/
+node_modules/
+dist/
+.astro/
+.artifacts/
 .env*
 .vercel
+.DS_Store
