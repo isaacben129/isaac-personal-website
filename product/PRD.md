@@ -1,7 +1,7 @@
 # Isaac Ndahura — Personal Website Product Specification
 
 **Version:** 0.1.0 — Design-approved direction; visual tokens provisional
-**Status:** Specification for Forge planning; no implementation authorized by this document alone
+**Status:** Specification for Forge planning; design decisions are being resolved; production implementation and release are separately gated
 **Owner:** Isaac Ndahura
 **Normative companion:** [`DESIGN.md`](./DESIGN.md)
 **Supporting reference:** `/opt/data/cache/scratch/isaac-personal-site-wireframe-v3.html` (exploratory wireframe, not design authority)
@@ -90,7 +90,7 @@ Content is authored as structured data or well-separated page content, not scatt
 - Center the paragraph as a primary editorial moment. Typography should be at roughly section-heading scale or slightly smaller, with a readable measure and deliberate line breaks at responsive widths.
 - The composition is inspired by the supplied Robin reference’s centered, confident text scale, not copied verbatim.
 - Do not reduce this section to a cluster of small tags, labels, or a tiny “currently/lately” metadata panel.
-- The paragraph content, final font, exact size, and line lengths are content/design decisions still open; placeholder wireframe copy is not approved.
+- The paragraph content remains pending Isaac. A clearly annotated, review-only placeholder paragraph is permitted to evaluate scale and wrapping; it is not approved public copy.
 
 ### FR-03 — Bits & Pieces
 
@@ -137,10 +137,10 @@ Content is authored as structured data or well-separated page content, not scatt
 
 ### FR-09 — Content and media integrity
 
-- Isaac supplies/approves all first-person copy, personal facts, project inventory, writing links, portrait, and contact destination.
-- Every external link is checked for correct destination and appropriate accessible name; external-opening behavior is consistent and disclosed where relevant.
-- Use responsive image sizing, declared dimensions/aspect ratio, and optimized formats where available. Provide meaningful alt text for informative images and empty alt for decoration.
-- No sensitive/private material, private coaching details, or unpublished personal notes may be inferred or published.
+- Use clearly labelled demo placeholders for bookshelf and writing items only when demonstrating layout; they must not imply real works or use fake destination links. Remove/replace all placeholders before any public launch.
+- Portrait asset/crop and contact destination are pending Isaac. Use a neutral abstract/non-identifying portrait placeholder or omit the portrait. The closing contact action is visibly nonfunctional and contains no fabricated URL/address.
+- The paragraph copy is pending Isaac; an annotated review-only placeholder paragraph is permitted in prototype/preview and is not approved public copy.
+- No private or unpublished personal/coaching details may be inferred or published.
 
 ## 7. Non-functional requirements
 
@@ -201,7 +201,7 @@ These are intentionally not settled by the wireframe or this document:
 - Whether any motion is useful. GSAP is only a candidate; Three.js is not selected. Prefer no library until interaction proves a need.
 - Framework, hosting/deployment target, domain, repository remote, and actual launch scope; none are authorized by this specification.
 
-**Decision rule:** Forge may propose options for unresolved visual choices but must not silently promote wireframe styling, placeholder copy, or invented facts to final. Ask Isaac before any material change to section architecture, personal content, publishing/contact destinations, public release, or external services.
+**Decision rule:** Forge may propose options for unresolved visual choices but must not silently promote wireframe styling, placeholder copy, or invented facts to final. User-approved prototype placeholders are review-only and must be removed/replaced before public launch. Ask Isaac before any material change to section architecture, personal content, publishing/contact destinations, public release, or external services.
 
 ## 11. Forge implementation handoff
 

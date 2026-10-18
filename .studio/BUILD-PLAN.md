@@ -13,15 +13,17 @@
 
 ## Phase 1 — Resolve visual and content gates
 
-1. Create a small rendered font comparison and get Isaac's explicit type choice. No wireframe font carries forward by default.
-2. Propose a restrained palette through rendered options; validate text, link, and focus contrast before approval.
-3. Confirm the portrait asset/crop, supporting copy, and whether the annotation is wanted.
-4. Approve the first-person Currently paragraph.
-5. Inventory real Bits & Pieces items, works/projects for the shelf, and writing for From My Head; verify labels/assets/destinations.
-6. Approve Leave a Note copy and contact destination.
-7. Decide whether compact section navigation is needed.
-8. Render and inspect the desktop supported one-row bookshelf and mobile two-row shelf; revise until arrangement reads as a physical, coherent shelf.
-9. Update `product/DESIGN.md` with only approved decisions and re-run its linter/contrast review.
+- [ ] Create a rendered comparison of two condensed display + restrained serif body pairings: Oswald + Source Serif 4, and Barlow Condensed + Source Serif 4. Candidates only, not selected fonts.
+- [x] Palette direction: warm paper/ink neutrals; real photos and objects provide most color. Exact values remain unresolved until rendered, contrast-checked, and approved.
+- [x] Demo placeholders: bookshelf/writing items may be used, clearly marked individually; no fake destination links; replace before launch.
+- [x] Currently may use a visibly annotated, review-only paragraph placeholder; Isaac-approved copy is still required before launch.
+- [x] Portrait/contact specifics are pending. Use an abstract/neutral non-identifying visual or omit the portrait; contact action is a nonfunctional placeholder with no fabricated URL.
+- [x] Vercel approved for preview deployments for review. Production deployment, domain/DNS and publication remain separately gated.
+- [x] Canonical workspace is this specs repo; implementation architecture must be planned before framework selection. Prefer a minimal static approach unless evidence requires more.
+- [x] Design-only rendered prototype is authorized in the canonical workspace. Production code is not authorized until design resolution and approval.
+- [ ] Confirm whether compact section navigation is wanted.
+- [ ] Render/inspect desktop supported one-row shelf and mobile two-row shelf; revise to convincingly physical support.
+- [ ] Update `product/DESIGN.md` with approved decisions and re-run its linter/contrast review.
 
 ## Phase 2 — Build plan (requires separate approval)
 
