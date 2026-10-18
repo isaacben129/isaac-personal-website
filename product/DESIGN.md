@@ -132,6 +132,8 @@ Detailed styles, hover behavior, active/visited states, focus appearance, and tr
 - Verify hero, Currently, shelf, card row, and closing at mobile, tablet, and desktop widths. Shelf behavior must be checked on either side of the mobile breakpoint, not assumed from CSS source alone.
 - Avoid unintended horizontal page overflow; the From My Head row may scroll horizontally by design and must remain keyboard-operable.
 
-## Motion
+## Stack and Motion
 
-No animation stack is selected. Prefer static clarity and subtle CSS transitions if they improve feedback. Motion must not delay access to content, hijack scroll, or be necessary to understand an object. Respect reduced-motion settings. GSAP is only a candidate if a concrete approved interaction needs coordinated animation. Three.js is not selected; require a demonstrated interaction need and explicit approval before introducing it.
+Use Astro static output with semantic HTML/CSS, GSAP for authored editorial motion, and Matter.js only for the interactive bookshelf. Isaac requested animation, interaction, and bookshelf physics, and authorized proceeding directly with the working build and correcting issues through live review.
+
+Keep physics constrained to the shelf; never make content access depend on it. Provide a stable static/reduced-motion state, keyboard controls, and touch-safe behavior. Respect `prefers-reduced-motion`; avoid scroll hijacking, forced motion, and physics outside the library section. Do not introduce WebGL/Three.js, a CMS, database, or server runtime without a concrete approved need. Verify current versions, licenses, runtime requirements, and bundle impact before installation. Vercel is for review previews; public production release remains a separate approval gate.

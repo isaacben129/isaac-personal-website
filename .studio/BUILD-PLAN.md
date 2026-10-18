@@ -1,6 +1,6 @@
 # Forge Planning Queue — Isaac Ndahura Personal Website
 
-**Planning status:** active; implementation not yet authorized.
+**Planning status:** approved to proceed with the working implementation and iterate via review previews; production release remains gated.
 **Normative inputs:** `product/PRD.md`, `product/DESIGN.md`.
 
 ## Phase 0 — Inspect and accept the product package
@@ -9,29 +9,29 @@
 - [x] Add PRD with scope, functional requirements, open decisions, and acceptance criteria.
 - [x] Add canonical DESIGN.md with the accepted direction and explicitly unresolved tokens.
 - [x] Preserve the exploratory HTML wireframe as supporting reference only.
-- [ ] User reviews the package and authorizes the build-planning/design-resolution phase.
+- [x] User reviews the package and authorizes continuing the Forge build process.
 
 ## Phase 1 — Resolve visual and content gates
 
-- [ ] Create a rendered comparison of two condensed display + restrained serif body pairings: Oswald + Source Serif 4, and Barlow Condensed + Source Serif 4. Candidates only, not selected fonts.
+- [ ] Implement in Astro; compare Oswald + Source Serif 4 and Barlow Condensed + Source Serif 4 in the real page while keeping type tokens easy to change during live review.
 - [x] Palette direction: warm paper/ink neutrals; real photos and objects provide most color. Exact values remain unresolved until rendered, contrast-checked, and approved.
 - [x] Demo placeholders: bookshelf/writing items may be used, clearly marked individually; no fake destination links; replace before launch.
 - [x] Currently may use a visibly annotated, review-only paragraph placeholder; Isaac-approved copy is still required before launch.
 - [x] Portrait/contact specifics are pending. Use an abstract/neutral non-identifying visual or omit the portrait; contact action is a nonfunctional placeholder with no fabricated URL.
 - [x] Vercel approved for preview deployments for review. Production deployment, domain/DNS and publication remain separately gated.
-- [x] Canonical workspace is this specs repo; implementation architecture must be planned before framework selection. Prefer a minimal static approach unless evidence requires more.
-- [x] Design-only rendered prototype is authorized in the canonical workspace. Production code is not authorized until design resolution and approval.
+- [x] Stack: Astro static output with GSAP-authored motion and Matter.js physics restricted to the library section; Vercel review previews. Verify current versions, license, output weight, and runtime requirements before installation.
+- [x] Isaac authorized the working implementation to proceed now and to correct issues through live review. Production release, domain/DNS, and public launch remain separately gated.
 - [ ] Confirm whether compact section navigation is wanted.
 - [ ] Render/inspect desktop supported one-row shelf and mobile two-row shelf; revise to convincingly physical support.
 - [ ] Update `product/DESIGN.md` with approved decisions and re-run its linter/contrast review.
 
-## Phase 2 — Build plan (requires separate approval)
+## Phase 2 — Build slices (approved to proceed)
 
-- Inspect available framework/deployment context and create an implementation architecture appropriate to the site; do not assume a stack or deployment target from the prototype.
+- Use Astro static output with semantic HTML/CSS, GSAP-authored motion, and Matter.js only for constrained bookshelf physics. Preserve reduced-motion, keyboard, and touch fallbacks.
 - Convert PRD acceptance criteria into ordered, independently testable implementation slices.
 - Define test commands, accessible interaction checks, responsive screenshot checks, content/link validation, and preview evidence requirements.
-- Present the plan, remaining risks, and preview strategy to Isaac before production implementation.
+- Keep personal content and exact visual tokens editable for corrections during review; stop only for a material scope, privacy, or security decision.
 
-## Phase 3 — Implementation (not authorized yet)
+## Phase 3 — Implementation (authorized; release separately gated)
 
-Begin only after the user approves the plan and required design/content gates. Use isolated worktrees, TDD, real browser/runtime verification, mobile/desktop visual QA, and accessibility/reduced-motion checks. Publishing or deployment remains a separate explicit approval gate.
+Proceed on the isolated implementation branch with TDD, real browser/runtime verification, desktop/tablet/mobile visual QA, and accessibility/reduced-motion checks. Vercel review deployment is permitted only after confirming the target project and that no production alias will be changed; public release remains separately gated.

@@ -1,7 +1,7 @@
 # Isaac Ndahura — Personal Website Product Specification
 
 **Version:** 0.1.0 — Design-approved direction; visual tokens provisional
-**Status:** Specification for Forge planning; design decisions are being resolved; production implementation and release are separately gated
+**Status:** Approved implementation baseline for an iterative working build; design refinements remain reviewable and production release is separately gated
 **Owner:** Isaac Ndahura
 **Normative companion:** [`DESIGN.md`](./DESIGN.md)
 **Supporting reference:** `/opt/data/cache/scratch/isaac-personal-site-wireframe-v3.html` (exploratory wireframe, not design authority)
@@ -199,7 +199,15 @@ These are intentionally not settled by the wireframe or this document:
 - Final contact invitation wording/channel.
 - Whether a small section navigation exists and how it behaves.
 - Whether any motion is useful. GSAP is only a candidate; Three.js is not selected. Prefer no library until interaction proves a need.
-- Framework, hosting/deployment target, domain, repository remote, and actual launch scope; none are authorized by this specification.
+- Domain and actual production release scope remain unresolved and approval-gated.
+
+### 10.1 Implementation architecture decision
+
+- **Stack:** Astro static output with semantic HTML/CSS, GSAP for authored editorial motion, and Matter.js for interactive bookshelf physics. Review deployments use Vercel project `isaac-personal-website` and repository `https://github.com/isaacben129/isaac-personal-website`.
+- **Rationale:** retain the low-operations static publishing model while enabling purposeful motion and constrained 2D rigid-body bookshelf interaction. No server-side runtime, CMS, database, or site-wide simulation is required.
+- **Library interaction constraints:** physics is an optional enhancement; the bookshelf remains legible and browseable without physics, supports a static/reduced-motion mode, keyboard activation, and touch-safe behavior, and does not trap scroll. Restrict body count and simulation scope to the visible shelf.
+- **Dependency gate:** pin current compatible versions and verify licenses, Astro/Node requirements, bundle cost, browser support, and accessibility/performance fallbacks before installation. If Matter.js cannot meet the interaction within those constraints, return alternatives rather than changing engines silently.
+- **Authorization:** Isaac authorized proceeding with the working implementation on this stack and correcting issues through live review. Production release, domain/DNS changes, and public launch remain separately gated.
 
 **Decision rule:** Forge may propose options for unresolved visual choices but must not silently promote wireframe styling, placeholder copy, or invented facts to final. User-approved prototype placeholders are review-only and must be removed/replaced before public launch. Ask Isaac before any material change to section architecture, personal content, publishing/contact destinations, public release, or external services.
 
