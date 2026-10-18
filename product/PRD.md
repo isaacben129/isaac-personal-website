@@ -24,6 +24,34 @@ This is a passion project, not a résumé, agency/founder portfolio, product lan
 
 **Owner job:** maintain a small, personal, coherent public home that can grow without becoming a sprawling portfolio or requiring complex administration.
 
+### Direction, constraints, and design acceptance
+
+The approved section order remains Hero → statement → Bits & Pieces → The Bookshelf → From My Head → Leave a Note. Isaac rejected the existing implementation as generic/AI-looking. The complete approved section-level requirements and evidence are in [`updates/editorial-visual-refresh/UPDATE-BRIEF.md`](./updates/editorial-visual-refresh/UPDATE-BRIEF.md); user reference images are in `references/`. `DESIGN.md` is the sole visual-system authority. Previous styling is superseded wherever it conflicts with that brief.
+
+- Hero: desktop supporting copy spans a substantially broad measure. Keep the name very large on mobile. Place supporting copy/portrait as two vertical rows on mobile (no side-by-side columns).
+- Statement: remove the “Currently” label and eyebrow; preserve the current statement typeface and rendered font size. Actual statement copy remains pending owner approval.
+- Bits & Pieces: replace flat grid with a tasteful, overlapping and variably angled composition. Hover and keyboard focus reveal more; touch gets an equivalent explicit interaction. Reveal must not invent personal facts.
+- Shelf: remove SHAKE/RESET buttons. Directly interact with the individual book objects. Books are different widths, heights and shapes, rest on visible real shelf surfaces and lean against neighbors. Interaction should not prevent scrolling on touch; reduced-motion and non-simulated fallback still work.
+- Closing: its headline shares the exact display family and size role used by section headings.
+- Art direction: preserve layout/material logic from supplied guides, not their exact color, text or branding. Repeated tiny all-caps eyebrows, mock-geometric cards, false object imagery, excessive decoration and fabricated biography are rejected.
+- Assets are urgent. Prioritize authentic Isaac-supplied photos/artifacts/project work. Until provided, leave intentional whitespace or visibly marked generic layout placeholders that are clearly not personal content.
+- CSS component values must derive from a single canonical token source, not redefined per section. All exact unapproved values stay proposed and visibly marked as such in DESIGN.md until a rendered system is reviewed.
+
+## Acceptance ledger — visual refresh
+
+| ID | Acceptance criterion | Verification |
+|---|---|---|
+| VR-01 | Canonical shared tokens cover type, color, measure, spacing, motion, shapes and components; addressed CSS uses them | DESIGN.md lint, source test, CSS search, rendered comparison |
+| VR-02 | Wide desktop supporting text and large, deliberately stacked mobile hero support beneath an oversized readable name | paired screenshots at 390/760/1440; bounding-box/layout test |
+| VR-03 | Statement only; no redundant Currently/eyebrow heading; same family/size as current live statement | DOM assertion + computed rendered CSS |
+| VR-04 | Angled, overlapping fragment layout with concise reveal under hover/focus and equivalent touch behavior | browser pointer/keyboard/touch trace + screenshots |
+| VR-05 | No shelf shake/reset controls; direct object interaction, varied physical book sizes, real support plane and believable neighbor leaning/contact | DOM/control assertion + live drag/settle/release interaction at desktop/mobile + screenshots |
+| VR-06 | Closing and section headings use one display typography token | CSS token assertion + computed style comparison |
+| VR-07 | User-supplied references preserved as documentation provenance and not displayed as fabricated content | file audit and content audit |
+| VR-08 | Six-section structure/content integrity, reduced motion, keyboard, touch-scroll, page overflow, test/check/build/design contrast all pass | end-to-end browser and quality run |
+
+---
+
 ## 3. Success criteria
 
 The first release is successful when:
@@ -101,38 +129,12 @@ Content is authored as structured data or well-separated page content, not scatt
 
 ## 6. Functional requirements
 
-### FR-01 — Hero
-
-- Display the full name **“Isaac Ndahura”** as the dominant element, centered and on one line at desktop widths.
-- Preserve a legible, intentional responsive treatment on narrow viewports; desktop’s one-line requirement does not justify clipping or tiny type on mobile.
-- Include minimal approved supporting copy, generous whitespace, and a cutout portrait tucked into a corner rather than stretched across the composition.
-- A small arrow and playful handwritten annotation (example: “this is me”) may point to the portrait if the final visual treatment remains clear and accessible. The annotation is not finalized copy.
-- Portrait is decorative unless it conveys unique information; use appropriate alt text (empty alt for purely decorative cutout).
-- Do not let portrait placement displace the centered name or turn it into a left-aligned headline.
-
-### FR-02 — Currently
-
-- Present a concise but substantial first-person paragraph about what is currently occupying Isaac’s attention.
-- Center the paragraph as a primary editorial moment. Typography should be at roughly section-heading scale or slightly smaller, with a readable measure and deliberate line breaks at responsive widths.
-- The composition is inspired by the supplied Robin reference’s centered, confident text scale, not copied verbatim.
-- Do not reduce this section to a cluster of small tags, labels, or a tiny “currently/lately” metadata panel.
-- The paragraph content remains pending Isaac. A clearly annotated, review-only placeholder paragraph is permitted to evaluate scale and wrapping; it is not approved public copy.
-
-### FR-03 — Bits & Pieces
-
-- Provide a curated, lightweight collection of personal fragments (for example: objects, observations, small interests, places, sounds, or images) that adds character without becoming a generic card grid.
-- Each item must have a deliberate relationship between its visual, optional caption, and destination if interactive.
-- Exact item count, content, and whether the treatment is collage, list, or another restrained composition remain open. Do not invent biographical specifics.
-
-### FR-04 — The Bookshelf
-
-- Treat the shelf as a collection of things Isaac has made or contributed to—not a list of books read.
-- Each object represents a real, approved work/project and links to a meaningful destination where one exists. The item name and link target must be accurate.
-- On desktop, arrange all visible objects as one coherent supported shelf: a continuous shelf plane/base with close grouping, believable varied spine widths/heights, subtle depth, and some objects leaning against or supporting neighboring objects. Avoid isolated upright icons, equal gaps, or floating covers.
-- On mobile only, reflow the collection into exactly two visual rows; desktop remains a single shelf row. The two-row mode must read as objects supported by coherent shelf surfaces/structure, not accidental CSS wrapping.
-- The desktop/mobile transition must be selected and tested at actual viewport sizes. The present HTML wireframe does not conclusively validate this behavior.
-- More than the original five objects is desired; the current prototype contains seven. Final count depends on real approved work inventory and should not be padded with invented projects.
-- A physical/3D impression should be achieved first with restrained CSS depth, perspective, shadows, and arrangement. Do not introduce a 3D rendering library absent an approved interaction that needs it.
+| FR-01 — Hero | Desktop title stays dominant and one line; support copy has a broad measure. Mobile name stays large and support content stacks into two rows. Portrait optional and owner-supplied. | Visual review + bounding boxes at 390, 760 and 1440 |
+| FR-02 — Statement | Render only the large statement, without “Currently” title/eyebrow; preserve current face and computed size. Wording remains unapproved. | DOM assertion + computed type + visual review |
+| FR-03 — Bits & Pieces | Curated overlapping, variably angled artefacts. Reveal real content on hover/focus plus equivalent touch action; don't invent facts. | Pointer, keyboard, touch and reduced-motion browser paths |
+| FR-04 — Bookshelf | Direct book interaction only, no shake/reset buttons. Distinct volumes rest on real supported shelves and lean on neighbors; keep two supported mobile rows. No fake works. | Desktop/mobile screenshots and direct manipulation/settle/scroll traces |
+| FR-06 — Leave a Note | Closing headline uses the exact shared display title face/role. Contact remains owner-provided. | DOM and computed CSS equality check |
+| FR-11 — Design system | Coherent shared role tokens precede section redesign; addressed CSS derives from single canonical `product/DESIGN.md`, and exact unapproved choices remain provisional. | DESIGN lint/contrast, CSS token search, rendered inspection |
 
 ### FR-05 — From My Head
 

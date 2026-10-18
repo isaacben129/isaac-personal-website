@@ -1,56 +1,55 @@
 # Forge Build Plan — Isaac Ndahura Personal Website
 
-**Status:** Iterative working build is authorized and active; the first complete review slice is in isolated branch `agent/production-build`. This is not the production release. The user asked to build the real site and correct problems live, rather than make disposable prototypes.
+**Status:** User-directed visual refresh approved; implementation is in isolated `agent/design-refresh`. The earlier working build was visually rejected, so its styles are superseded. This remains a review deployment; production release is not authorized.
 **Normative inputs:** `product/PRD.md`, `product/DESIGN.md`.
 **Canonical repo:** `/opt/data/workspace/isaac-personal-website`.
 
 ## Decisions already made
 
-- One page with Hero → Currently → Bits & Pieces → The Bookshelf → From My Head → Leave a Note.
-- Astro static output; GSAP for authored motion; Matter.js for bookshelf-only 2D physics. No site-wide simulation, WebGL, Three.js, CMS, or database.
-- Use isolated worktrees and branches for code; keep `main` read-only until an approved integration/review step.
-- Review content must be clearly labelled; no invented bio, portfolio, articles, links, portrait, or contact destination.
-- Vercel project `isaac-personal-website` is authorized for review previews. Production aliases, domain/DNS changes, and launch require separate explicit approval.
+- Preserve the six-section narrative, with the statement section containing only its large statement.
+- User specifically rejected the first implementation as generic/AI-looking. Build the refresh from `product/DESIGN.md`, `product/PRD.md`, and `product/updates/editorial-visual-refresh/UPDATE-BRIEF.md`—do not keep old section styling as authority.
+- Follow the user-supplied collage and Colophon bookshelf references for composition/material, not as exact art or colors. Preserved copies are in `product/references/`.
+- Hero mobile: retain large name; support/portrait in two stacked rows. Desktop support text much broader.
+- Remove “Currently” heading and eyebrow; statement keeps its present face and rendered size.
+- Bits: overlapping varied angles and legible hover/focus/touch reveal; avoid generic card grid and fabricated personal details.
+- Bookshelf: no shake/reset controls; direct interaction with varied shapes/heights/widths; objects rest on shelf and lean naturally. Keep accessible static/reduced-motion path.
+- All section headings including closing share one display family. Use canonical system tokens everywhere, no repeated decorative eyebrow treatment.
+- Real assets are urgent; request and add only authentic owner-supplied assets. No invented content or fake images.
+- Keep Astro static, GSAP for authored motion; challenge Matter.js if it prevents plausible physical behavior. No Three.js/WebGL, CMS, DB.
+- Isolated `agent/design-refresh`, base `663712fdb6abb8528bec331c8a6f30233f4c9f23`. Keep canonical `main` read-only.
+- Review previews allowed on Vercel `isaac-personal-website`; production alias/domain/DNS/public launch gated.
 
 ## Phase 1 — Product baseline
 
-- [x] PRD scope, six sections, functional requirements, unresolved decisions, acceptance criteria.
-- [x] DESIGN.md direction and provisional visual tokens.
-- [x] User-approved iterative implementation; no more throwaway prototype loop.
-- [x] Stack and accessible reduced-motion/static fallback documented.
+- [x] User visual feedback and reference images preserved.
+- [x] Current Vercel preview captured at 390/760/1440 as comparable baseline.
+- [x] Update brief, canonical requirements, and design direction added.
+- [ ] Create and review a cohesive shared token system from the references and explicit user requirements.
 
-## Phase 2 — Working implementation
+## Phase 2 — Section-by-section implementation
 
-- [x] Astro static project at repository root in `.worktrees/production-build`.
-- [x] Six-section editorial page with carefully labelled review placeholders.
-- [x] Responsive composition; desktop single-line full name; mobile two-line name.
-- [x] Matter.js shelf with seven visibly-placeholder spines, a stable resting arrangement, keyboard/pointer/touch interaction, shake/reset, and reduced-motion fallback.
-- [x] GSAP entrance and section reveals; content is rendered without animation dependency.
-- [x] Automated contract, responsive CSS, and simulated physics tests.
-- [x] Browser screenshots and desktop/mobile smoke checks; no viewport overflow or page errors. Current physics test verifies Matter.js world behavior; browser drag/touch ergonomics remain part of Isaac’s review.
-- [x] Mobile shelf is exactly two supported tiers: 4 upper + 3 lower, each simulation body aligned to its shelf surface. Desktop remains one row.
-- [x] `npm run check`, `npm run build`, `npm test` (11/11), production dependency audit (0 vulnerabilities), DESIGN.md linter (0 findings).
-- [x] Verify live Matter.js bookshelf shake visibly moves books on desktop and mobile; reset reconstructs stable shelf.
-- [ ] Complete visual and interaction review with Isaac’s live corrections.
-- [ ] Verify safe Vercel configuration and create a shareable review-only preview; capture the exact URL and verify page content.
+- [ ] Hero desktop broad measure; mobile oversized name plus stacked support.
+- [ ] Statement-only section with requested typography preserved.
+- [ ] Layered overlapping Bits collage and accessible reveal.
+- [ ] Directly interactive physical-looking shelf; eliminate buttons.
+- [ ] Closing headline typography unified with section display.
+- [ ] Ensure no generic repeated eyebrows/metadata and no fabricated assets/content.
+- [ ] Run acceptance tests, responsive browser review at 390/760/1440, accessibility/reduced motion, visual lint and build.
+- [ ] Deploy review-only Vercel revision, verify HTTP/styles/fonts/render, share exact usable link.
 
-## Phase 3 — Content and final design decisions
+## Phase 3 — Authentic content/assets (owner input required)
 
-- [ ] Select final display font pair and exact paper/ink/earth palette tokens from rendered comparisons.
-- [ ] Replace review about/currently copy with Isaac-approved words; provide approved portrait and fragment imagery or omit.
-- [ ] Select real works and writing items; verify each title, image, and destination.
-- [ ] Choose an actual contact destination and final closing copy.
-- [ ] Remove all placeholder labels and `noindex` only after explicit content/release readiness review.
+- [ ] Isaac portrait (optional); actual personal artifacts/photos; real project/spine inventory; writing cover art/items; currently statement; approved closing/contact.
+- [ ] Present provisional font/palette options for visual owner review; no unapproved copy/art/content in public release.
 
-## Phase 4 — Production release (separate approval gate)
+## Phase 4 — Release (separate explicit approval)
 
+- [ ] Remove/rewrite review placeholders, audit content and destinations, re-run quality/accessibility.
+- [ ] Obtain explicit production authorization before alias, domain, DNS, or public launch.
 
-- [ ] Re-run all quality and accessibility gates against the final content.
-- [ ] Obtain Isaac’s explicit production authorization before promoting, setting aliases/domains, touching DNS, or announcing/publicizing.
+## Current baseline evidence
 
-## Current implementation evidence
-
-- **Implementation commit:** `e465495`; latest live-review changes are uncommitted in the isolated `production-build` worktree.
-- Browser smoke: desktop 1440px and mobile 390px; six sections, seven books, accessible title, no viewport overflow, shake visibly moves the books and reset reinitializes the stable shelf, no page errors. Reduced-motion mode retains a stable shelf.
-- Latest implementation verification: 14/14 tests pass; Astro check has 0 errors, warnings, and hints; static build succeeds; DESIGN linter 0 findings; `git diff --check` clean. Production dependency audit last passed at 0 vulnerabilities before latest physics-only changes.
-- Evidence screenshots live under `.artifacts/evidence/website-build/` in the active worktree; inspect them as needed.
+- Existing visual baseline rejected; screenshots are in `.artifacts/evidence/editorial-visual-refresh/before/` (390,760,1440), with the defect ledger in `assertions.md`.
+- Vercel baseline URL: `https://isaac-personal-website-jhflnge5v-isaacs-projects-5e1cb4e6.vercel.app/` (old visual build, superseded).
+- Isolated branch `agent/design-refresh`, initial base `663712fdb6abb8528bec331c8a6f30233f4c9f23`.
+- Initial implementation-only red acceptance suite added in `tests/design-refresh.test.mjs`; expected failures recorded before changing production code.

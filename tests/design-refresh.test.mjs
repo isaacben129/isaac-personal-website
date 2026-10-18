@@ -1,0 +1,13 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+const page=readFileSync(new URL('../src/pages/index.astro',import.meta.url),'utf8');
+const css=readFileSync(new URL('../src/styles/global.css',import.meta.url),'utf8');
+const script=readFileSync(new URL('../src/scripts/main.js',import.meta.url),'utf8');
+const design=readFileSync(new URL('../product/DESIGN.md',import.meta.url),'utf8');
+test('design system defines named shared type/color/space tokens consumed by CSS',()=>{assert.match(design,/colors:/);assert.match(design,/typography:/);assert.match(design,/spacing:/);assert.match(css,/--color-neutral:/);assert.match(css,/var\(--color-neutral\)/);});
+test('hero support is broad on desktop and stacks into two mobile rows while name remains large',()=>{assert.match(css,/\.hero-intro[\s\S]*max-width:\s*var\(--measure-hero-support\)/);assert.match(css,/\.hero-support[\s\S]*display:\s:grid/);assert.match(css,/grid-template-areas:\s*"copy"\s*"portrait"/);assert.match(css,/\.hero-title[^}]*font-size:/);});
+test('statement section contains no Currently heading or decorative eyebrow',()=>{const now=page.match(/<section[^>]*id="now"[^>]*>([\s\S]*?)<\/section>/)?.[1]??'';assert.ok(now);assert.doesNotMatch(now,/Currently|section-kicker|section-heading|review-note/);assert.match(now,/class="now-copy"/);});
+test('fragments have overlap, varied rotation, and accessible disclosure behavior',()=>{assert.match(css,/\.fragment:nth-child\(2\)[\s\S]*rotate\(/);assert.match(css,/:hover/);assert.match(css,/:focus-visible/);assert.match(script,/data-fragment-toggle/);assert.match(page,/aria-expanded/);});
+test('bookshelf has direct interaction only, with varied geometry and no shake/reset UI',()=>{assert.doesNotMatch(page,/shelf-shake|shelf-reset|SHAKE|RESET SHELF/);assert.match(css,/--book-width:/);assert.match(css,/--book-height:/);assert.match(script,/pointerdown/);assert.match(script,/data-book/);});
+test('closing and section headings consume the shared sans display role',()=>{assert.match(css,/\.section-heading[^}]*var\(--font-display\)/);assert.match(css,/\.closing-title[^}]*var\(--font-display\)/);});
