@@ -13,21 +13,23 @@ test('bookshelf has two supported tiers and four upper, three lower placeholders
   assert.equal((data.match(/title: 'Placeholder/g) ?? []).length, 7);
 });
 
-test('shelf physics switches to two supported rows on mobile and groups intra-tier supports', () => {
+test('shelf physics uses supported authored positions on desktop and two supported rows on mobile', () => {
   assert.match(script, /const hasTwoRows = mobileLayout && books\.length > 1/);
-  assert.match(script, /\[\[0, 1\], \[1, 2\], \[2, 3\], \[4, 5\], \[5, 6\]\]/);
+  assert.match(script, /shelf-middle/);
+  assert.match(script, /Matter\.Bodies\.rectangle/);
   assert.match(css, /\.shelf-platform-lower \{ display: none; \}/);
-  assert.match(css, /@media \(max-width: 760px\)[\s\S]*?\.shelf-platform-lower \{ display: block;/);
+  assert.match(css, /@media \(max-width: 760px\)[\s\S]*?\.shelf-platform-lower \{ top:/);
 });
 
-test('bookshelf shake applies a deliberate physics nudge and reset reconstructs the stable state', () => {
-  assert.match(script, /function shakeShelf\(\)/);
-  assert.match(script, /Matter\.Body\.setVelocity\(body, \{ x: direction \*/);
-  assert.match(script, /function resetShelf\(\)[\s\S]*?configureStage\(\)/);
+test('direct shelf interaction has no group shake/reset behavior', () => {
+  assert.doesNotMatch(script, /function shakeShelf\(\)|function resetShelf\(\)|SHAKE|RESET/);
+  assert.match(script, /pointerdown/);
+  assert.match(script, /data-book/);
 });
 
-test('reduced motion is wired to clear GSAP entrance/reveal styles and disable physics', () => {
+test('reduced motion clears entrance/reveal styles and shelf initializes to a stable static state', () => {
   assert.match(script, /reduceMotion\.addEventListener\('change'/);
   assert.match(script, /gsap\.set\(animNodes, \{ clearProps: 'all' \}\)/);
-  assert.match(script, /removeSimulation\(\)[\s\S]*?physics-disabled/);
+  assert.match(script, /Matter\.Bodies\.rectangle/);
+  assert.match(script, /isStatic: true/);
 });

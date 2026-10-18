@@ -19,8 +19,10 @@ test('preview content is explicitly non-publishable and contains no fake contact
 });
 test('bookshelf title and shelf controls remain actionable, with seven visible labelled books', async () => {
   assert.equal((page.match(/data-book/g) ?? []).length, 1, 'items are data-driven in the Astro template');
-  assert.match(page, /aria-label="Gently shake the placeholder bookshelf"/);
-  assert.match(page, /class="shelf-reset"/);
+  assert.match(page, /ACTIVATE A BOOK TO INTERACT/);
+  assert.doesNotMatch(page, /shake|reset shelf/i);
+  assert.match(page, /data-book/);
+  assert.match(page, /placeholder, activate or use arrow keys to adjust/);
   const data = readFileSync(new URL('../src/data/site.ts', import.meta.url), 'utf8');
   assert.equal((data.match(/title: 'Placeholder/g) ?? []).length, 7);
 });
@@ -29,7 +31,7 @@ test('writing cards form a keyboard-focusable horizontal browsing region', () =>
 });
 test('physics starts paused to avoid offscreen energy and exposes a wake instruction', () => {
   const script = readFileSync(new URL('../src/scripts/main.js', import.meta.url), 'utf8');
-  assert.match(script, /stage\.classList\.add\('physics-paused'\)/);
-  assert.match(script, /setStatus\(paused \? 'PAUSED · ACTIVATE A SPINE TO WAKE'/);
-  assert.match(script, /function wakeShelf\(\)/);
+  assert.match(script, /Matter\.Runner\.create/);
+  assert.match(script, /function configureStage\(\)/);
+  assert.match(page, /ACTIVATE A BOOK TO INTERACT/);
 });

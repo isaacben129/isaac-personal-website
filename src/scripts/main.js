@@ -43,7 +43,7 @@ reduceMotion.addEventListener('change', (event) => applyMotionPreference(event.m
 if (!reduceMotion.matches) {
   const entrance = gsap.timeline({ defaults: { ease: 'power3.out' } });
   entrance.from('[data-animate="enter"]', { y: 18, opacity: 0, duration: 0.75, stagger: 0.1 });
-  entrance.from('[data-animate="hero-title"] span', { yPercent: 110, rotate: 2, duration: 1.05, stagger: 0.12 }, '-=0.55');
+  entrance.from('#hero-title', { y: 16, opacity: 0, duration: 0.8 }, '-=0.45');
 
   animNodes = [...document.querySelectorAll('.fragment, .writing-card, .closing-title, .closing-copy')];
   applyMotionPreference(false);
@@ -76,12 +76,7 @@ function updateBookViews() {
   for (const body of bodies) {
     const el = body.plugin.element;
     if (!el) continue;
-    el.style.transform = `translate3d(${body.position.x}px, ${body.position.y}px, 0) translate(-50%, -50%) rotate(${body.angle}rad)`;
-    if (window.matchMedia('(max-width: 760px)').matches) {
-      el.style.left = '0px';
-      el.style.top = '0px';
-      el.style.bottom = 'auto';
-    }
+    el.style.transform = `translate3d(${body.position.x}px, ${body.position.y}px, 0) rotate(${body.angle}rad)`;
     el.style.zIndex = String(Math.round(body.position.y));
   }
 }
@@ -93,7 +88,7 @@ function removeSimulation() {
     Matter.Composite.clear(engine.world, false, true);
     Matter.Engine.clear(engine);
   }
-  if (resizeObserver) resizeObserver.disconnect();
+  resizeObserver?.disconnect();
   runner = undefined;
   renderLoop = undefined;
   engine = undefined;
@@ -106,6 +101,7 @@ function removeSimulation() {
     el.style.left = '';
     el.style.top = '';
     el.style.bottom = '';
+    delete el.dataset.supportedRow;
   }
 }
 
@@ -123,31 +119,38 @@ function configureStage() {
   const wall = 40;
   const mobileLayout = window.matchMedia('(max-width: 760px)').matches;
   const hasTwoRows = mobileLayout && books.length > 1;
-  const floorY = hasTwoRows ? Math.round(height * 0.86) : height - 28;
-  const lowerShelfY = hasTwoRows ? Math.round(height * 0.49 - 7) : Math.round(height * 0.5);
-  const world = engine.world;
-  const floor = Matter.Bodies.rectangle(width / 2, floorY + 22, width + wall * 2, 44, { isStatic: true, friction: 0.95, restitution: 0.02, label: 'shelf-floor' });
-  const lowerShelf = Matter.Bodies.rectangle(width / 2, lowerShelfY + 12, width + wall * 2, 26, { isStatic: true, friction: 0.95, restitution: 0.02, label: 'shelf-lower' });
+  const upperCount = hasTwoRows ? Math.ceil(books.length / 2) : books.length;
+  const midShelf = hasTwoRows ? Math.round(height * 0.53) : height - 29;
+  const floorY = height - (mobileLayout ? 156 : 20);
+  const floor = Matter.Bodies.rectangle(width / 2, floorY + 17, width + wall * 2, 34, { isStatic: true, friction: 0.95, restitution: 0.02, label: 'shelf-floor' });
+  const middleSupport = Matter.Bodies.rectangle(width / 2, midShelf + 12, width + wall * 2, 24, { isStatic: true, friction: 0.95, restitution: 0.02, label: 'shelf-middle' });
   const leftWall = Matter.Bodies.rectangle(-wall / 2, height / 2, wall, height * 2, { isStatic: true, label: 'shelf-left' });
   const rightWall = Matter.Bodies.rectangle(width + wall / 2, height / 2, wall, height * 2, { isStatic: true, label: 'shelf-right' });
-  Matter.Composite.add(world, hasTwoRows ? [floor, lowerShelf, leftWall, rightWall] : [floor, leftWall, rightWall]);
-  const rowOne = Math.ceil(books.length / 2);
+  Matter.Composite.add(engine.world, hasTwoRows ? [floor, middleSupport, leftWall, rightWall] : [floor, leftWall, rightWall]);
+
+  const xPositions = new Array(books.length);
+  const arrangeLane = (from, count) => {
+    const laneBooks = books.slice(from, from + count);
+    const laneWidth = laneBooks.reduce((sum, book) => sum + book.offsetWidth, 0) + Math.max(0, count - 1) * 6;
+    let cursor = (width - Math.min(width * 0.84, laneWidth)) / 2;
+    laneBooks.forEach((book, lane) => {
+      xPositions[from + lane] = cursor + book.offsetWidth / 2;
+      cursor += book.offsetWidth + 6;
+    });
+  };
+  arrangeLane(0, upperCount);
+  if (hasTwoRows) arrangeLane(upperCount, books.length - upperCount);
+
   bodies = books.map((el, index) => {
+    const lower = hasTwoRows && index >= upperCount;
+    const supportY = lower ? floorY : midShelf;
     const bookWidth = el.offsetWidth;
     const bookHeight = el.offsetHeight;
-    const stageWidth = stage.clientWidth;
-    const inLowerRow = hasTwoRows && index >= rowOne;
-    const rowIndex = inLowerRow ? index - rowOne : index;
-    const rowCount = inLowerRow ? books.length - rowOne : rowOne;
-    const gap = mobileLayout ? 8 : 14;
-    const rowWidth = rowCount * bookWidth + (rowCount - 1) * gap;
-    const startX = (stageWidth - rowWidth) / 2 + bookWidth / 2;
-    const x = startX + rowIndex * (bookWidth + gap);
-    const supportY = inLowerRow ? floorY : lowerShelfY;
+    const x = xPositions[index];
     const y = supportY - bookHeight / 2;
-    el.style.touchAction = finePointer ? 'none' : 'pan-y';
-    const clampedX = Math.max(bookWidth / 2 + 4, Math.min(stageWidth - bookWidth / 2 - 4, x));
-    const body = Matter.Bodies.rectangle(clampedX, y, bookWidth, bookHeight, {
+    el.style.touchAction = 'none';
+    el.dataset.supportedRow = lower ? 'lower' : 'upper';
+    const body = Matter.Bodies.rectangle(x, y, bookWidth, bookHeight, {
       chamfer: { radius: [4, 5, 2, 2] },
       density: 0.001 + (index % 3) * 0.0003,
       friction: 0.72,
@@ -158,12 +161,13 @@ function configureStage() {
       label: `placeholder-book-${index + 1}`,
     });
     body.plugin.element = el;
-    el.style.transform = `translate3d(${clampedX}px, ${y}px, 0) translate(-50%, -50%)`;
-    if (hasTwoRows) { el.style.left = '0px'; el.style.top = '0px'; el.style.bottom = 'auto'; }
+    el.style.left = '0px';
+    el.style.top = '0px';
+    el.style.bottom = 'auto';
+    el.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${index % 2 ? 0.025 : -0.025}rad)`;
     return body;
   });
 
-  constraints = [];
   const jointPairs = hasTwoRows
     ? [[0, 1], [1, 2], [2, 3], [4, 5], [5, 6]]
     : books.slice(0, -1).map((_, index) => [index, index + 1]);
@@ -184,7 +188,7 @@ function configureStage() {
     constraints.push(joint);
     return joint;
   });
-  Matter.Composite.add(world, [...bodies, ...joints]);
+  Matter.Composite.add(engine.world, [...bodies, ...joints]);
   runner = Matter.Runner.create({ delta: 1000 / 60, maxFrameTime: 1000 / 30, isFixed: true });
   renderLoop = () => {
     updateBookViews();
@@ -199,8 +203,8 @@ function configureStage() {
   };
   Matter.Events.on(engine, 'afterUpdate', renderLoop);
   updateBookViews();
-  stage.classList.add('physics-paused');
-  bodies.forEach((body) => Matter.Body.setStatic(body, true));
+  setBooksPaused(true);
+  setStatus('PAUSED · DRAG OR NUDGE A SPINE');
   resizeObserver = new ResizeObserver(() => {
     if (finePointer) configureStage();
   });
@@ -218,7 +222,7 @@ function setBooksPaused(paused) {
     Matter.Runner.run(runner, engine);
   }
   stage.classList.toggle('physics-paused', paused);
-  setStatus(paused ? 'PAUSED · ACTIVATE A SPINE TO WAKE' : 'IN MOTION');
+  setStatus(paused ? 'PAUSED · USE A SPINE TO WAKE' : 'IN MOTION');
 }
 
 function nudgeBody(body, dx, dy, impulse = 0.035) {
@@ -232,16 +236,6 @@ function wakeShelf() {
   bodies.forEach((body) => Matter.Body.setStatic(body, false));
   Matter.Runner.run(runner, engine);
   stage.classList.remove('physics-paused');
-}
-
-function shakeShelf() {
-  // Disabled per design refresh: direct interaction only, no shake control
-  return;
-}
-
-function resetShelf() {
-  // Disabled per design refresh: direct interaction only, no reset control
-  return;
 }
 
 function eventPosition(event) {

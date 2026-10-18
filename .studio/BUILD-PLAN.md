@@ -24,23 +24,23 @@
 - [x] User visual feedback and reference images preserved.
 - [x] Current Vercel preview captured at 390/760/1440 as comparable baseline.
 - [x] Update brief, canonical requirements, and design direction added.
-- [ ] Create and review a cohesive shared token system from the references and explicit user requirements.
+- [x] Create and review a cohesive shared token system from the references and explicit user requirements (provisional values, see `product/DESIGN.md`).
 
 ## Phase 2 — Section-by-section implementation
 
-- [ ] Hero desktop broad measure; mobile oversized name plus stacked support.
-- [ ] Statement-only section with requested typography preserved.
-- [ ] Layered overlapping Bits collage and accessible reveal.
-- [ ] Directly interactive physical-looking shelf; eliminate buttons.
-- [ ] Closing headline typography unified with section display.
-- [ ] Ensure no generic repeated eyebrows/metadata and no fabricated assets/content.
-- [ ] Run acceptance tests, responsive browser review at 390/760/1440, accessibility/reduced motion, visual lint and build.
-- [ ] Deploy review-only Vercel revision, verify HTTP/styles/fonts/render, share exact usable link.
+- [x] Hero desktop broad measure; mobile oversized name plus stacked support.
+- [x] Statement-only section with requested typography preserved.
+- [x] Layered overlapping Bits collage and accessible reveal (review placeholders remain until authentic assets are supplied).
+- [x] Directly interactive shelf; eliminate shake/reset buttons.
+- [x] Closing headline typography unified with section display.
+- [ ] Ensure no generic repeated eyebrows/metadata and no fabricated assets/content; preserve explicit review-state/placeholder labels until authentic approved assets and copy arrive.
+- [x] Run acceptance tests, responsive screenshot review at 390/760/1440, design lint and build; 22 tests, Astro check, build and design lint pass. After fixing the mobile physics floor offset, rebuilt and inspected 390px and 760px screenshots: both show four upper and three lower books fully, with two boards and unobstructed instructions. Desktop full-page screenshot also shows an opaque cluster on the continuous shelf. Live pointer/keyboard/touch/reduced-motion verification remains outstanding. Do not deploy this correction until those interactions are exercised.
+- [x] Deploy earlier review-only Vercel revision and verify HTTP/styles/fonts/render. **Previously verified preview (not current corrective source):** `https://isaac-personal-website-5mle97cve-isaacs-projects-5e1cb4e6.vercel.app/` (HTTP 200, `noindex`; production untouched).
 
 ## Phase 3 — Authentic content/assets (owner input required)
 
 - [ ] Isaac portrait (optional); actual personal artifacts/photos; real project/spine inventory; writing cover art/items; currently statement; approved closing/contact.
-- [ ] Present provisional font/palette options for visual owner review; no unapproved copy/art/content in public release.
+- [ ] Present provisional font/palette options for visual owner review; no unapproved copy/art/content in public release. Preview remains noindex and review-only.
 
 ## Phase 4 — Release (separate explicit approval)
 

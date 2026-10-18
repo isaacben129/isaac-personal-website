@@ -1,74 +1,50 @@
 {
   "project": "isaac-personal-website",
-  "stage": "approved-live-visual-refresh",
-  "implementation_authorized": "working implementation authorized; correct through live review",
-  "release_authorized": "review preview authorized; production, domain/DNS, public launch not authorized",
+  "stage": "visual-corrections-in-progress-not-ready-for-preview",
+  "implementation_authorized": "working implementation authorized; fix visual review findings before handing off",
+  "release_authorized": "review preview previously authorized; production, domain/DNS, public launch not authorized",
   "canonical_documents": {
     "prd": "product/PRD.md",
     "design": "product/DESIGN.md",
     "build_plan": ".studio/BUILD-PLAN.md"
   },
   "decisions": {
-    "stack": "Astro 7.4.0 static output; GSAP 3.15.0 editorial motion; Matter.js 0.20.0 bookshelf-only physics",
-    "type_direction": "bold condensed/sans display + restrained serif body",
-    "type_candidates": [
-      "Oswald + Source Serif 4",
-      "Barlow Condensed + Source Serif 4"
-    ],
-    "palette_direction": "warm paper/ink neutrals; image objects add color",
-    "placeholder_content": "clearly labelled review placeholders; no fake destination links",
-    "portrait_contact": "pending; neutral placeholder; no contact URL",
-    "mobile_shelf": "two supported rows, four upper and three lower spines; Matter physics scoped to each row"
+    "stack": "Astro static output; GSAP for authored editorial motion; Matter.js only if shelf interactions need stable physical behavior",
+    "type_direction": "shared sans display titles plus readable serif statement/body",
+    "palette_direction": "provisional warm paper/ink; pending live owner review",
+    "placeholder_content": "label review-only scaffolding; no invented facts, fake destination links, stock/generated personal assets",
+    "authentic_assets": "portrait optional; real fragments, work inventory, writing imagery, copy and contact await owner",
+    "hero": "broad desktop support copy; mobile name large with two vertically stacked support rows",
+    "statement": "only large paragraph; no Currently label or eyebrow; preserve present Source Serif 4/clamp(29px, 5vw, 66px)",
+    "fragments": "meaningful overlap, varied angles; hover/focus plus touch disclosure",
+    "desktop_shelf": "Single supported row, individual collision surfaces; preserve the grounded desktop composition.",
+    "shelf": "direct book interaction only, no shake/reset; two visibly supported mobile tiers"
   },
-  "vercel": {
-    "preview_allowed": true,
+  "preview": {
+    "allowed": true,
     "project": "isaac-personal-website",
-    "source": "GitHub isaacben129/isaac-personal-website",
-    "retired_project_not_to_use": "isaac-personal-site",
-    "preview_status": "not deployed or verified",
-    "cli_authentication": "device authorization needed; previous attempt timed out"
+    "last_verified_url": "https://isaac-personal-website-5mle97cve-isaacs-projects-5e1cb4e6.vercel.app/",
+    "status": "earlier review preview verified HTTP 200/noindex; current visual corrections render in local build screenshots at 390/760/1440 and are not deployed. Current source may be handed to owner for review; live pointer/keyboard/touch/reduced-motion checks remain outstanding.",
+    "production_alias_or_dns_changed": false
   },
-  "canonical_repository": "https://github.com/isaacben129/isaac-personal-website",
   "implementation": {
-    "branch": "agent/production-build",
-    "implementation_commit": "e465495",
-    "spec_commit": "18b5c0e",
-    "documentation_commit": "53aae4e",
-    "sections": 6,
-    "shelf_placeholders": 7,
-    "automated_tests": "14 passed",
-    "astro_check": "0 errors, warnings, hints",
-    "production_audit": "0 vulnerabilities (last run before latest physics-only update)",
-    "browser_smoke": "1440px desktop, 760px tablet and 390px mobile; no page overflow or errors; shake visibly moves books; reset rebuilds stable shelf; reduced motion yields stable resting shelf"
+    "branch": "agent/design-refresh",
+    "base_sha": "663712fdb6abb8528bec331c8a6f30233f4c9f23",
+    "requirements_commit": "3f3d465a6babf42f11b11e9e142576536712e563",
+    "refresh_commit": "bf2094e729aafc88815dd64da9bf7e2b7990482e",
+    "source_changes": ["src/pages/index.astro", "src/styles/global.css", "src/scripts/main.js"]
   },
-  "review_preview": "not deployed or verified; no usable Vercel preview URL",
-  "local_review": "http://localhost:4173/ when local forwarding is enabled; otherwise use the checked-in mobile/desktop screenshots under .artifacts/evidence/website-build/",
-  "next": "Isaac\u2019s live visual corrections; user may need to complete Vercel auth in interactive terminal to publish a review-only preview",
-  "open_decisions": [
-    "Compare final display font families in a coherent rendered comparison",
-    "Palette values: propose, contrast-test, mark provisional pending Isaac review",
-    "Authentic portrait, fragments/artifacts/project inventory, article imagery, approved copy/contact remain Isaac-supplied"
-  ],
-  "branch": "agent/design-refresh",
-  "base_sha": "663712fdb6abb8528bec331c8a6f30233f4c9f23",
-  "update_brief": "product/updates/editorial-visual-refresh/UPDATE-BRIEF.md",
-  "reference_assets": [
-    "product/references/books-collage.jpg",
-    "product/references/colophon-bookshelf.jpg"
-  ],
-  "user_decisions": {
-    "hero_mobile_support": "two stacked rows; keep name large",
-    "hero_desktop_copy": "broad measure",
-    "statement_section": "remove Currently title and eyebrow; retain current statement typeface and size",
-    "bits": "tasteful overlapped and angled; reveal additional detail on hover and accessible equivalents",
-    "shelf": "remove buttons; direct book interaction, varied physical sizes/shapes, supported and leaning naturally",
-    "closing_title": "same sans display as other section titles",
-    "design_system": "shared tokens before section styling"
+  "parallel_slices": {
+    "bits_and_pieces": "agent/refresh-fragments @ 4ce91fa; standalone prototype returned, not merged because it does not integrate with Astro page",
+    "bookshelf": "agent/refresh-shelf @ b860092; component/tests returned, reviewed and not merged because integrated Matter.js architecture differs",
+    "review": "Screenshot QA completed at 390/760/1440. Fixed visible 760px notes-row clipping and removed repeated ornamental micro-labels while keeping a single preview indicator and explicit per-item placeholder labels. Final screenshots show mobile/tablet books fully on two shelves. Live drag/keyboard/touch/reduced-motion verification remains outstanding before preview. Browser screenshots captured with already-installed Playwright CLI; Playwright added neither to package.json nor lockfile."
   },
-  "baseline": {
-    "preview": "https://isaac-personal-website-jhflnge5v-isaacs-projects-5e1cb4e6.vercel.app/",
-    "commit": "663712fdb6abb8528bec331c8a6f30233f4c9f23",
-    "screenshots": ".artifacts/evidence/editorial-visual-refresh/before/ (390,760,1440)",
-    "runtime": "6 sections, seven labelled placeholders, stylesheet verified, no page overflow"
-  }
+  "next": "Complete actual browser keyboard/pointer/touch/reduced-motion checks, correct any interaction defects, and finalize real assets/copy before considering the product complete. Current corrected source is not deployed; the existing preview predates these changes. A new review-only deploy still requires explicit user approval. Never promote without explicit production authorization.",
+  "open_inputs": [
+    "Owner-approved statement wording",
+    "Authentic personal artifacts and portrait (portrait optional)",
+    "Actual work/book names and valid destinations",
+    "Writing art/text and contact destination",
+    "Owner approval of provisional palette and display font"
+  ]
 }
