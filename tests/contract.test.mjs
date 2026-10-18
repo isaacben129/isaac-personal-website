@@ -14,7 +14,7 @@ test('single page sections remain in the approved six-section narrative', () => 
 });
 test('preview content is explicitly non-publishable and contains no fake contact URL', () => {
   assert.match(page, /name="robots" content="noindex,nofollow"/);
-  assert.match(page, /CONTACT PLACEHOLDER · NONFUNCTIONAL/);
+  assert.doesNotMatch(page, /CONTACT PLACEHOLDER · NONFUNCTIONAL/);
   assert.doesNotMatch(page, /mailto:|href="#"/);
 });
 test('bookshelf title and shelf controls remain actionable, with seven visible labelled books', async () => {

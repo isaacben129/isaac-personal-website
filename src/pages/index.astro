@@ -3,6 +3,8 @@ import { site } from '../data/site';
 import '../styles/global.css';
 
 const shelfMarkup = site.works;
+// Owner will supply the transparent portrait; never substitute another person.
+const portraitSrc = '';
 ---
 
 <!doctype html>
@@ -13,7 +15,7 @@ const shelfMarkup = site.works;
     <meta name="theme-color" content="#f3eee4" />
     <meta name="description" content="Isaac Ndahura — a personal corner of the internet." />
     <meta name="robots" content="noindex,nofollow" />
-    <title>Isaac Ndahura — Personal archive (review build)</title>
+    <title>Isaac Ndahura — Personal archive</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Oswald:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -26,31 +28,34 @@ const shelfMarkup = site.works;
         <nav class="nav" aria-label="Main navigation">
           {site.navigation.map((item) => <a href={item.href}>{item.label}</a>)}
         </nav>
-        <span class="header-note">PERSONAL ARCHIVE · REVIEW BUILD</span>
+        <span class="header-note">PERSONAL ARCHIVE</span>
       </header>
       <main id="main">
+        <div class:list={['intro-sequence', { 'has-portrait': Boolean(portraitSrc) }]}>
         <section class="hero" id="top" aria-labelledby="hero-title">
           <h1 id="hero-title" class="hero-title" data-animate="hero-title" aria-label="Isaac Ndahura"><span>Isaac</span> <span>Ndahura</span></h1>
           <p class="hero-intro">Curious about people, ideas, and making things that feel useful. This is where a few of those threads meet.</p>
         </section>
-        <section class="currently section" id="now" aria-labelledby="now-title"><p class="now-copy">Right now, I’m building <em>useful things</em>, learning from the people around me, and following the questions that refuse to leave me alone.</p></section>
-        <section class="fragments section" id="story" aria-labelledby="story-title"><div class="section-topline"><div class="section-kicker mono"><span>03</span><span>A LIFE, IN FRAGMENTS</span></div><p class="section-aside">A few small things, eventually.</p></div><div class="section-title-row"><h2 id="story-title" class="section-heading condensed">Bits &amp; Pieces</h2><span class="review-tag mono">LAYOUT REVIEW · NOT BIOGRAPHICAL FACTS</span></div><div class="fragment-grid">{site.fragments.map((fragment) => <article class:list={['fragment', `fragment-${fragment.layout}`]} aria-expanded="false" role="button"><div class="fragment-art" aria-hidden="true"><span>IMAGE<br />PLACEHOLDER</span><i></i></div><p class="fragment-caption">{fragment.label}<small class="mono">REPLACE BEFORE LAUNCH</small></p></article>)}</div></section>
+        {portraitSrc && <aside class="portrait-rail"><div class="portrait-note">this is me<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 7 C68 0 87 26 62 56 M49 47 L62 58 L74 43" /></svg></div><img class="personal-cutout" src={portraitSrc} alt="Isaac Ndahura" width="260" height="340" /></aside>}
+        <section class="currently section" id="now" aria-label="About me"><p class="now-copy">Right now, I’m building <em>useful things</em>, learning from the people around me, and following the questions that refuse to leave me alone.</p><svg class="about-badge" aria-hidden="true" viewBox="0 0 120 120"><path d="M60 5 70 38 98 18 82 48 115 60 82 70 100 102 70 83 60 115 49 82 18 101 38 71 5 60 38 49 18 18 49 38Z" /></svg></section>
+        </div>
+        <section class="fragments section" id="story" aria-labelledby="story-title"><div class="section-topline"><div class="section-kicker mono"><span>03</span><span>A LIFE, IN FRAGMENTS</span></div><p class="section-aside">A few small things.</p></div><div class="section-title-row"><h2 id="story-title" class="section-heading condensed">Bits &amp; Pieces</h2></div><div class="fragment-grid">{site.fragments.map((fragment) => <article class:list={['fragment', `fragment-${fragment.layout}`]} aria-expanded="false" role="button"><div class="fragment-art" aria-hidden="true"><i></i></div><p class="fragment-caption">{fragment.label}</p></article>)}</div></section>
         <section class="library section" id="work" aria-labelledby="work-title">
           <div class="section-topline"><div class="section-kicker mono"><span>04</span><span>THINGS I’VE MADE</span></div><p class="section-aside">A physical shelf, not a reading list.</p></div>
-          <div class="section-title-row"><h2 id="work-title" class="section-heading condensed">The Bookshelf</h2><span class="review-tag mono">ALL ITEMS ARE NON-REAL PLACEHOLDERS · NO LINKS</span></div>
-          <p class="library-intro">Real work and its true destinations go here. For now, these spines let us tune the shelf, the movement, and how it feels to handle an object.</p>
+          <div class="section-title-row"><h2 id="work-title" class="section-heading condensed">The Bookshelf</h2></div>
+
           <div class="library-controls mono" aria-label="Library interaction controls"><span class="library-hint">ACTIVATE A BOOK TO INTERACT · DRAG OR USE ARROW KEYS</span></div>
           <div class="shelf-stage" data-shelf aria-label="Interactive bookshelf simulation. Seven placeholders, not actual projects." aria-describedby="shelf-instructions">
             <div class="shelf-platform" data-shelf-row="1" aria-label="Upper shelf"></div>
             <div class="shelf-platform shelf-platform-lower" data-shelf-row="2" aria-label="Lower shelf"></div>
-            <div class="shelf-books" role="list">{shelfMarkup.map((book) => <div class="book-body" role="listitem" data-book data-tone={book.tone} data-row={book.id <= '04' ? 'upper' : 'lower'} data-id={book.id} tabindex="0" aria-label={`${book.title}, review placeholder, activate or use arrow keys to adjust`}><span class="book-spine" aria-hidden="true"><span>{book.title}</span><small>VISUAL PLACEHOLDER</small></span></div>)}</div>
+            <div class="shelf-books" role="list">{shelfMarkup.map((book) => <div class="book-body" role="listitem" data-book data-tone={book.tone} data-row={book.id <= '04' ? 'upper' : 'lower'} data-id={book.id} tabindex="0" aria-label={`${book.title}, review placeholder, activate or use arrow keys to adjust`}><span class="book-spine" aria-hidden="true"><span>{book.title}</span></span></div>)}</div>
             <noscript><p class="noscript-note">The shelf remains a static, labelled visual without JavaScript.</p></noscript>
           </div>
           <p class="shelf-instructions mono" id="shelf-instructions">Drag a spine to move it. Keyboard: focus a book; arrows to nudge.</p>
-          <div class="shelf-caption mono"><span>INTERACTION EXPERIMENT · NOT REAL WORK</span><span class="shelf-desktop-note">Desktop shelf remains a single coherent surface.</span><span class="shelf-mobile-note">Mobile uses two supported rows. Tap a spine to nudge.</span></div>
+
         </section>
-        <section class="thoughts section" id="thoughts" aria-labelledby="thoughts-title"><div class="section-topline"><div class="section-kicker mono"><span>05</span><span>NOTES FROM THE INSIDE</span></div><p class="section-aside">Words, once there are real ones.</p></div><div class="section-title-row"><h2 id="thoughts-title" class="section-heading condensed">From My Head</h2><span class="review-tag mono">REVIEW ITEMS ONLY · NOTHING LINKED</span></div><div class="writing-row" tabindex="0" aria-label="Horizontally browsable writing placeholder cards">{site.notes.map((note, index) => <article class="writing-card" data-writing-card><div class:list={['writing-art', `writing-art-${index + 1}`]} aria-hidden="true"><span>IMAGE<br />PLACEHOLDER</span><i></i></div><div class="writing-meta mono">{note.date} <span>· {note.id}</span></div><h3>{note.title}</h3><p>Placeholder copy for evaluating the image-to-title relationship. No article exists here.</p></article>)}</div><div class="row-hint mono"><span>ON A SMALL SCREEN, SCROLL THE ROW</span><span aria-hidden="true">→</span></div></section>
-        <section class="closing section" id="hello" aria-labelledby="hello-title"><div class="section-kicker mono"><span>06</span><span>A SMALL INVITATION</span></div><h2 id="hello-title" class="closing-title">Something on your mind?</h2><p class="closing-copy">The right words—and a real way to reach me—will go here.</p><span class="review-tag mono">CONTACT PLACEHOLDER · NONFUNCTIONAL</span><div class="closing-mark" aria-hidden="true">IN<span>.</span></div></section>
+        <section class="thoughts section" id="thoughts" aria-labelledby="thoughts-title"><div class="section-topline"><div class="section-kicker mono"><span>05</span><span>NOTES FROM THE INSIDE</span></div><p class="section-aside">Notes, questions, and ideas.</p></div><div class="section-title-row"><h2 id="thoughts-title" class="section-heading condensed">From My Head</h2></div><div class="writing-row" tabindex="0" aria-label="Horizontally browsable writing placeholder cards">{site.notes.map((note, index) => <article class="writing-card" data-writing-card><div class:list={['writing-art', `writing-art-${index + 1}`]} aria-hidden="true"><i></i></div><div class="writing-meta mono">{note.id}</div><h3>{note.title}</h3></article>)}</div><div class="row-hint mono"><span>ON A SMALL SCREEN, SCROLL THE ROW</span><span aria-hidden="true">→</span></div></section>
+        <section class="closing section" id="hello" aria-labelledby="hello-title"><div class="section-kicker mono"><span>06</span><span>A SMALL INVITATION</span></div><h2 id="hello-title" class="closing-title">Something on your mind?</h2><div class="closing-mark" aria-hidden="true">IN<span>.</span></div></section>
       </main>
       <footer class="footer mono"><span>MADE SLOWLY, WITH CURIOSITY.</span><span>NAIROBI · © 2026</span></footer>
     </div>
