@@ -1,6 +1,24 @@
 import { gsap } from 'gsap';
 import Matter from 'matter-js';
 
+// Fragment disclosure toggle (keyboard + touch equivalent to hover reveal)
+const fragments = [...document.querySelectorAll('.fragment')];
+fragments.forEach((el) => {
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('aria-expanded', 'false');
+  el.addEventListener('click', () => {
+    const expanded = el.getAttribute('aria-expanded') === 'true';
+    el.setAttribute('aria-expanded', String(!expanded));
+  });
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const expanded = el.getAttribute('aria-expanded') === 'true';
+      el.setAttribute('aria-expanded', String(!expanded));
+    }
+  });
+});
+
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const prefersFinePointer = window.matchMedia('(pointer: fine)').matches;
 let animObserver;
@@ -27,15 +45,13 @@ if (!reduceMotion.matches) {
   entrance.from('[data-animate="enter"]', { y: 18, opacity: 0, duration: 0.75, stagger: 0.1 });
   entrance.from('[data-animate="hero-title"] span', { yPercent: 110, rotate: 2, duration: 1.05, stagger: 0.12 }, '-=0.55');
 
-  animNodes = [...document.querySelectorAll('.section-kicker, .section-title-row, .fragment, .writing-card, .closing-title, .closing-copy')];
+  animNodes = [...document.querySelectorAll('.fragment, .writing-card, .closing-title, .closing-copy')];
   applyMotionPreference(false);
 }
 
 const shelf = document.querySelector('[data-shelf]');
 const stage = shelf;
 const books = [...document.querySelectorAll('[data-book]')];
-const shakeButton = document.querySelector('.shelf-shake');
-const resetButton = document.querySelector('.shelf-reset');
 const status = document.querySelector('.physics-status');
 const finePointer = prefersFinePointer;
 let engine;
@@ -219,22 +235,13 @@ function wakeShelf() {
 }
 
 function shakeShelf() {
-  if (!engine) return;
-  wakeShelf();
-  bodies.forEach((body, index) => {
-    const direction = index % 2 ? 1 : -1;
-    Matter.Body.setStatic(body, false);
-    Matter.Sleeping.set(body, false);
-    Matter.Body.setVelocity(body, { x: direction * (0.8 + Math.random() * 0.8), y: -1.3 - Math.random() });
-    Matter.Body.setAngularVelocity(body, direction * 0.025);
-  });
-  setStatus('A LITTLE WOBBLE');
+  // Disabled per design refresh: direct interaction only, no shake control
+  return;
 }
 
 function resetShelf() {
-  if (!engine) return;
-  configureStage();
-  setStatus(finePointer ? 'RESTING' : 'PAUSED · ACTIVATE A SPINE TO WAKE');
+  // Disabled per design refresh: direct interaction only, no reset control
+  return;
 }
 
 function eventPosition(event) {
@@ -285,11 +292,7 @@ function handleKey(event, el) {
     setBooksPaused(!runner || stage.classList.contains('physics-paused'));
     return;
   }
-  if (event.key === 'Escape') {
-    event.preventDefault();
-    resetShelf();
-    return;
-  }
+  // Escape no longer triggers reset (direct interaction only)
   const delta = keyMap[event.key];
   if (!delta) return;
   event.preventDefault();
@@ -320,9 +323,7 @@ if (shelf && books.length) {
       el.addEventListener('keydown', (event) => handleKey(event, el));
     });
   }
-  shakeButton?.addEventListener('click', shakeShelf);
-  resetButton?.addEventListener('click', resetShelf);
-
+  // Direct interaction only; no shake/reset controls per refresh brief
   reduceMotion.addEventListener('change', (event) => {
     if (event.matches) {
       removeSimulation();
