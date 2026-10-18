@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 
 const page = readFileSync(new URL('../src/pages/index.astro', import.meta.url), 'utf8');
 test('home page starts with the named-person hero', () => {
-  assert.match(page, /<h1 id="hero-title" class="hero-title" data-animate="hero-title"><span>Isaac<\/span> <span>Ndahura<\/span><\/h1>/);
+  assert.match(page, /<h1 id="hero-title" class="hero-title" data-animate="hero-title" aria-label="Isaac Ndahura"><span>Isaac<\/span> <span>Ndahura<\/span><\/h1>/);
 });
 test('single page sections remain in the approved six-section narrative', () => {
   const expected = ['id="top"', 'id="now"', 'id="story"', 'id="work"', 'id="thoughts"', 'id="hello"'];

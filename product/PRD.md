@@ -1,7 +1,7 @@
 # Isaac Ndahura — Personal Website Product Specification
 
-**Version:** 0.1.0 — Design-approved direction; visual tokens provisional
-**Status:** Approved implementation baseline for an iterative working build; design refinements remain reviewable and production release is separately gated
+**Version:** 0.2.0 — Iterative build baseline; content and final visual tokens remain review items
+**Status:** the first review implementation is built; typography, composition, accessibility, content and interactions continue to be corrected live. Public production release remains gated.
 **Owner:** Isaac Ndahura
 **Normative companion:** [`DESIGN.md`](./DESIGN.md)
 **Supporting reference:** `/opt/data/cache/scratch/isaac-personal-site-wireframe-v3.html` (exploratory wireframe, not design authority)
@@ -70,6 +70,32 @@ One page, in this exact order:
 6. Leave a Note
 
 A compact top-level anchor navigation may be used if it improves orientation, but it must not compete with the hero or become a conventional corporate navbar. Its exact presence and behavior remain an implementation/design decision.
+
+## 7. Implementation baseline
+
+- **Rendering:** Astro `7.4.0`, static output. The published site is a static directory; no server runtime or CMS is required.
+- **Motion:** GSAP `3.15.0` for authored editorial entrances and restrained on-scroll reveals. Respect `prefers-reduced-motion`; semantic content remains visible if scripts fail.
+- **Shelf physics:** Matter.js `0.20.0`, confined to the bookshelf section. The shelf must also remain usable as a stable, labelled non-simulated composition, with pointer, keyboard, and touch-accessible affordances; the simulation is progressive enhancement, never the only way to understand or access content.
+- **Hosting:** Vercel preview project `isaac-personal-website` is for review. Production promotion, domains, DNS, and public launch remain separately approval-gated.
+- **Dependencies:** pin versions; no Three.js, WebGL, CMS, database, or server-side application in this scope.
+
+## 8. Content approval and release gates
+
+Review placeholders may appear in private/review builds only and must be visibly marked. Before public release, replace or remove unapproved bio copy, portrait, fragments, shelf items, writing items, and contact destination; verify every remaining factual claim and destination with Isaac. A review deployment is not production approval.
+
+## 9. Success criteria
+
+The first release is successful when:
+
+1. A first-time visitor can identify Isaac and the character of the site from the hero without mistaking it for a corporate profile.
+2. The six sections tell one coherent story from introduction through interests and ideas to a human closing invitation.
+3. Visitors can discover and open the things displayed on the bookshelf and writing cards; each link has a clear, truthful destination.
+4. The page works at desktop and mobile sizes, with intentional responsive compositions and no horizontal overflow except the deliberate writing-card scroller.
+5. Text remains readable, interaction works with keyboard and assistive technology, and reduced-motion preferences are respected.
+6. Isaac can update text, links, and media without rewriting layout code or inventing a new content model for each section.
+7. No unapproved font, fabricated personal claim, inactive link, or unfinished placeholder is presented as final content.
+
+No analytics/KPI framework is required for this personal site. If measurement is added later, privacy and purpose must be reviewed explicitly.
 
 Content is authored as structured data or well-separated page content, not scattered through repeated presentation logic. Each repeatable item should carry only fields needed by its section (for example, title, short description, image/cover, destination URL, alt text, and optional date/category). Empty values should omit the item or use a considered empty state; never display dummy links or placeholder copy in production.
 

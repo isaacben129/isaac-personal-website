@@ -20,9 +20,8 @@ components: {}
 - **Currently:** annotated review placeholder paragraph allowed for mockup; final first-person copy remains pending Isaac.
 - **Portfolio/content:** shelf and writing may use clearly labeled per-item placeholders for visual demonstration. No fake destination links. All placeholders must be replaced before launch.
 - **Portrait/contact:** no approved portrait or contact details yet. Prototype should use a neutral abstract/non-identifying visual or omit portrait; use a nonfunctional contact placeholder without invented address.
-- **Preview:** Vercel is the approved preview platform. Preview deployments for review are allowed; production release, DNS/domain changes and public launch require separate explicit approval.
-- **Workspace:** `/opt/data/workspace/isaac-personal-website` is the canonical site repo. Keep the framework decision open until a small static-first architecture plan is ready; production code is not yet authorized.
-- **Design-only prototype:** allowed in this repo with marked placeholders. It is a prototype, not production implementation.
+- **Workspace:** `/opt/data/workspace/isaac-personal-website` is the canonical site repo. The approved iterative implementation is isolated on `agent/production-build`; typography/content and interaction details remain reviewable live.
+- **Build status:** a working Astro review implementation exists in the active build worktree; this is no longer a design-only prototype. A shareable Vercel review preview has not yet been verified.
 
 **Confirmed direction:** a personal, curious, thoughtful, warm, occasionally playful corner of the internet. It should feel like an editorial magazine meeting a carefully curated personal archive, with restrained scrapbook touches and real physical-world details. Strong typography, generous whitespace, purposeful composition, and a consistent visual grammar carry personality; novelty never outweighs clarity.
 
