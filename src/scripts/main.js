@@ -58,7 +58,6 @@ let engine;
 let runner;
 let renderLoop;
 let bodies = [];
-let constraints = [];
 let dragState = null;
 let lastStatus = 0;
 let resizeObserver;
@@ -76,7 +75,7 @@ function updateBookViews() {
   for (const body of bodies) {
     const el = body.plugin.element;
     if (!el) continue;
-    el.style.transform = `translate3d(${body.position.x}px, ${body.position.y}px, 0) rotate(${body.angle}rad)`;
+    el.style.transform = `translate3d(${body.position.x - el.offsetWidth / 2}px, ${body.position.y - el.offsetHeight / 2}px, 0) rotate(${body.angle}rad)`;
     el.style.zIndex = String(Math.round(body.position.y));
   }
 }
@@ -89,11 +88,11 @@ function removeSimulation() {
     Matter.Engine.clear(engine);
   }
   resizeObserver?.disconnect();
+  dragState = null;
   runner = undefined;
   renderLoop = undefined;
   engine = undefined;
   bodies = [];
-  constraints = [];
   for (const el of books) {
     el.style.transform = '';
     el.style.zIndex = '';
@@ -120,8 +119,8 @@ function configureStage() {
   const mobileLayout = window.matchMedia('(max-width: 760px)').matches;
   const hasTwoRows = mobileLayout && books.length > 1;
   const upperCount = hasTwoRows ? Math.ceil(books.length / 2) : books.length;
-  const midShelf = hasTwoRows ? Math.round(height * 0.53) : height - 29;
-  const floorY = height - (mobileLayout ? 156 : 20);
+  const floorY = stage.querySelector('.shelf-platform').offsetTop;
+  const midShelf = hasTwoRows ? stage.querySelector('.shelf-platform-lower').offsetTop : floorY;
   const floor = Matter.Bodies.rectangle(width / 2, floorY + 17, width + wall * 2, 34, { isStatic: true, friction: 0.95, restitution: 0.02, label: 'shelf-floor' });
   const middleSupport = Matter.Bodies.rectangle(width / 2, midShelf + 12, width + wall * 2, 24, { isStatic: true, friction: 0.95, restitution: 0.02, label: 'shelf-middle' });
   const leftWall = Matter.Bodies.rectangle(-wall / 2, height / 2, wall, height * 2, { isStatic: true, label: 'shelf-left' });
@@ -148,7 +147,7 @@ function configureStage() {
     const bookHeight = el.offsetHeight;
     const x = xPositions[index];
     const y = supportY - bookHeight / 2;
-    el.style.touchAction = 'none';
+    el.style.touchAction = finePointer ? 'none' : 'pan-y';
     el.dataset.supportedRow = lower ? 'lower' : 'upper';
     const body = Matter.Bodies.rectangle(x, y, bookWidth, bookHeight, {
       chamfer: { radius: [4, 5, 2, 2] },
@@ -168,27 +167,8 @@ function configureStage() {
     return body;
   });
 
-  const jointPairs = hasTwoRows
-    ? [[0, 1], [1, 2], [2, 3], [4, 5], [5, 6]]
-    : books.slice(0, -1).map((_, index) => [index, index + 1]);
-  const joints = jointPairs.map(([leftIndex, rightIndex], index) => {
-    const a = bodies[leftIndex];
-    const b = bodies[rightIndex];
-    const joint = Matter.Constraint.create({
-      bodyA: a,
-      bodyB: b,
-      pointA: { x: a.bounds.max.x - a.position.x - 4, y: 0 },
-      pointB: { x: b.bounds.min.x - b.position.x + 4, y: 0 },
-      length: 0,
-      stiffness: 0.018,
-      damping: 0.22,
-      render: { visible: false },
-      label: `soft-support-${index + 1}`,
-    });
-    constraints.push(joint);
-    return joint;
-  });
-  Matter.Composite.add(engine.world, [...bodies, ...joints]);
+  // Independent rigid volumes: contact and friction, not invisible elastic links.
+  Matter.Composite.add(engine.world, bodies);
   runner = Matter.Runner.create({ delta: 1000 / 60, maxFrameTime: 1000 / 30, isFixed: true });
   renderLoop = () => {
     updateBookViews();
@@ -206,7 +186,8 @@ function configureStage() {
   setBooksPaused(true);
   setStatus('PAUSED · DRAG OR NUDGE A SPINE');
   resizeObserver = new ResizeObserver(() => {
-    if (finePointer) configureStage();
+    const next = shelfMetrics();
+    if (Math.abs(next.width - width) > 1 || Math.abs(next.height - height) > 1) configureStage();
   });
   resizeObserver.observe(stage);
 }
@@ -231,9 +212,10 @@ function nudgeBody(body, dx, dy, impulse = 0.035) {
 }
 
 function wakeShelf() {
-  if (!engine) return;
+  if (!engine || reduceMotion.matches) return;
   if (!runner) runner = Matter.Runner.create({ delta: 1000 / 60, maxFrameTime: 1000 / 30, isFixed: true });
   bodies.forEach((body) => Matter.Body.setStatic(body, false));
+  Matter.Runner.stop(runner);
   Matter.Runner.run(runner, engine);
   stage.classList.remove('physics-paused');
 }
@@ -244,15 +226,19 @@ function eventPosition(event) {
 }
 
 function beginDrag(event, el) {
-  if (!finePointer || event.button !== 0 || !engine) return;
+  if (!finePointer || reduceMotion.matches || event.button !== 0 || !engine) return;
   const point = eventPosition(event);
   const body = Matter.Query.point(bodies, point).find((item) => item.plugin.element === el);
   if (!body) return;
   event.preventDefault();
-  if (!runner) runner = Matter.Runner.create({ delta: 1000 / 60, maxFrameTime: 1000 / 30, isFixed: true });
-  Matter.Runner.run(runner, engine);
-  stage.classList.remove('physics-paused');
-  dragState = { pointerId: event.pointerId, body, offset: { x: body.position.x - point.x, y: body.position.y - point.y } };
+  wakeShelf();
+  const joint = Matter.Constraint.create({
+    pointA: point, bodyB: body,
+    pointB: { x: point.x - body.position.x, y: point.y - body.position.y },
+    length: 0, stiffness: 0.16, damping: 0.12,
+  });
+  Matter.Composite.add(engine.world, joint);
+  dragState = { pointerId: event.pointerId, body, joint };
   el.setPointerCapture(event.pointerId);
   Matter.Sleeping.set(body, false);
   setStatus('DRAGGING · RELEASE TO SETTLE');
@@ -261,14 +247,12 @@ function beginDrag(event, el) {
 function moveDrag(event) {
   if (!dragState || dragState.pointerId !== event.pointerId) return;
   const p = eventPosition(event);
-  Matter.Body.setPosition(dragState.body, { x: p.x + dragState.offset.x, y: p.y + dragState.offset.y }, true);
-  Matter.Body.setVelocity(dragState.body, { x: 0, y: 0 });
-  Matter.Body.setAngularVelocity(dragState.body, 0);
-  updateBookViews();
+  dragState.joint.pointA = { x: Math.max(20, Math.min(stage.clientWidth - 20, p.x)), y: Math.max(20, Math.min(stage.clientHeight - 40, p.y)) };
 }
 
 function endDrag(event) {
   if (!dragState || dragState.pointerId !== event.pointerId) return;
+  Matter.Composite.remove(engine.world, dragState.joint);
   dragState = null;
   setStatus('RESTING');
 }
@@ -283,7 +267,7 @@ function handleKey(event, el) {
   };
   if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault();
-    setBooksPaused(!runner || stage.classList.contains('physics-paused'));
+    if (!reduceMotion.matches) setBooksPaused(!stage.classList.contains('physics-paused'));
     return;
   }
   // Escape no longer triggers reset (direct interaction only)
@@ -292,7 +276,7 @@ function handleKey(event, el) {
   event.preventDefault();
   wakeShelf();
   Matter.Body.setPosition(body, { x: body.position.x + delta[0], y: body.position.y + delta[1] }, true);
-  nudgeBody(body, delta[0] / step, delta[1] / step, 0.018);
+  if (!reduceMotion.matches) nudgeBody(body, delta[0] / step, delta[1] / step, 0.018);
   updateBookViews();
   setStatus('MOVED · SETTLING');
 }
@@ -305,11 +289,13 @@ if (shelf && books.length) {
       el.addEventListener('pointermove', moveDrag);
       el.addEventListener('pointerup', endDrag);
       el.addEventListener('pointercancel', endDrag);
+      el.addEventListener('lostpointercapture', endDrag);
       el.addEventListener('keydown', (event) => handleKey(event, el));
     });
   } else {
     books.forEach((el, index) => {
       el.addEventListener('click', () => {
+        if (reduceMotion.matches) return;
         wakeShelf();
         const body = bodies[index];
         if (body) { Matter.Body.setStatic(body, false); nudgeBody(body, (index % 2 ? 1 : -1) * 0.6, -0.5, 0.055); }
@@ -320,7 +306,8 @@ if (shelf && books.length) {
   // Direct interaction only; no shake/reset controls per refresh brief
   reduceMotion.addEventListener('change', (event) => {
     if (event.matches) {
-      removeSimulation();
+      configureStage();
+      setBooksPaused(true);
       stage.classList.add('physics-disabled');
       setStatus('STATIC · REDUCED MOTION');
     } else {
