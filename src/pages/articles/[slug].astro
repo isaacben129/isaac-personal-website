@@ -1,0 +1,11 @@
+---
+import EditorialPage from '../../layouts/EditorialPage.astro';
+import { site } from '../../data/site';
+export function getStaticPaths() { return site.notes.map((note,index)=>({params:{slug:note.slug},props:{note,index:index+1}})); }
+const { note, index } = Astro.props;
+---
+<EditorialPage title={note.title} kind="Note" index={index} summary={note.excerpt}>
+  <div class="article-opening" aria-hidden="true"><span>{String(index).padStart(2,'0')}</span></div>
+  <div class="detail-body">{note.body.map((paragraph)=><p>{paragraph}</p>)}</div>
+  <a class="text-button" href="/#thoughts">Return to the notes</a>
+</EditorialPage>

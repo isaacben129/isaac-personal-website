@@ -49,6 +49,27 @@ if (!reduceMotion.matches) {
   applyMotionPreference(false);
 }
 
+
+const workPreview = document.querySelector('[data-work-preview]');
+const previewData = Object.fromEntries([...document.querySelectorAll('[data-book]')].map((book) => [book.dataset.previewSlug, {
+  id: book.dataset.id,
+  title: book.dataset.previewTitle,
+  summary: book.dataset.previewSummary,
+  href: `/projects/${book.dataset.previewSlug}/`,
+}]));
+function openWorkPreview(book) {
+  if (!workPreview || !book?.dataset.previewSlug) return;
+  const item = previewData[book.dataset.previewSlug];
+  workPreview.querySelector('[data-preview-index]').textContent = item.id;
+  workPreview.querySelector('[data-preview-title]').textContent = item.title;
+  workPreview.querySelector('[data-preview-summary]').textContent = item.summary;
+  workPreview.querySelector('[data-preview-link]').href = item.href;
+  workPreview.querySelector('[data-preview-cover]').dataset.tone = book.dataset.tone;
+  workPreview.showModal();
+}
+workPreview?.querySelector('[data-preview-close]')?.addEventListener('click', () => workPreview.close());
+workPreview?.addEventListener('click', (event) => { if (event.target === workPreview) workPreview.close(); });
+
 const shelf = document.querySelector('[data-shelf]');
 const stage = shelf;
 const books = [...document.querySelectorAll('[data-book]')];
@@ -238,7 +259,7 @@ function beginDrag(event, el) {
     length: 0, stiffness: 0.16, damping: 0.12,
   });
   Matter.Composite.add(engine.world, joint);
-  dragState = { pointerId: event.pointerId, body, joint };
+  dragState = { pointerId: event.pointerId, body, joint, start: point };
   el.setPointerCapture(event.pointerId);
   Matter.Sleeping.set(body, false);
   setStatus('DRAGGING · RELEASE TO SETTLE');
@@ -252,9 +273,13 @@ function moveDrag(event) {
 
 function endDrag(event) {
   if (!dragState || dragState.pointerId !== event.pointerId) return;
-  Matter.Composite.remove(engine.world, dragState.joint);
+  const { body, joint, start } = dragState;
+  const current = eventPosition(event);
+  const moved = Math.hypot(current.x - start.x, current.y - start.y);
+  Matter.Composite.remove(engine.world, joint);
   dragState = null;
   setStatus('RESTING');
+  if (moved < 16) openWorkPreview(body.plugin.element);
 }
 
 function handleKey(event, el) {
@@ -267,7 +292,7 @@ function handleKey(event, el) {
   };
   if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault();
-    if (!reduceMotion.matches) setBooksPaused(!stage.classList.contains('physics-paused'));
+    openWorkPreview(el);
     return;
   }
   // Escape no longer triggers reset (direct interaction only)
@@ -293,13 +318,8 @@ if (shelf && books.length) {
       el.addEventListener('keydown', (event) => handleKey(event, el));
     });
   } else {
-    books.forEach((el, index) => {
-      el.addEventListener('click', () => {
-        if (reduceMotion.matches) return;
-        wakeShelf();
-        const body = bodies[index];
-        if (body) { Matter.Body.setStatic(body, false); nudgeBody(body, (index % 2 ? 1 : -1) * 0.6, -0.5, 0.055); }
-      });
+    books.forEach((el) => {
+      el.addEventListener('click', () => openWorkPreview(el));
       el.addEventListener('keydown', (event) => handleKey(event, el));
     });
   }

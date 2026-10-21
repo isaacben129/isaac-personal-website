@@ -24,7 +24,7 @@ test('bookshelf title and shelf controls remain actionable, with seven visible l
   assert.match(page, /data-book/);
   assert.match(page, /placeholder, activate or use arrow keys to adjust/);
   const data = readFileSync(new URL('../src/data/site.ts', import.meta.url), 'utf8');
-  assert.equal((data.match(/title: 'Placeholder/g) ?? []).length, 7);
+  assert.equal((data.match(/slug: '[^']+-project'/g) ?? []).length, 7);
 });
 test('writing cards form a keyboard-focusable horizontal browsing region', () => {
   assert.match(page, /class="writing-row" tabindex="0" aria-label="Horizontally browsable writing placeholder cards"/);

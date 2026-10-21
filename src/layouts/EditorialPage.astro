@@ -1,0 +1,31 @@
+---
+import '../styles/global.css';
+const { title, kind, index, summary } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f3eee4" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content={summary} />
+  <title>{title} — Isaac Ndahura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <main class="detail-page" id="content">
+    <header class="detail-header"><a href="/">IN<span>.</span></a><a href={kind === 'Project' ? '/#work' : '/#thoughts'}>Back to home</a></header>
+    <article class="detail-article">
+      <div class="detail-meta"><span>{String(index).padStart(2,'0')}</span><span>{kind}</span></div>
+      <h1>{title}</h1>
+      <p class="detail-summary">{summary}</p>
+      <div class="detail-rule"></div>
+      <slot />
+    </article>
+  </main>
+</body>
+</html>

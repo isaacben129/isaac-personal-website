@@ -1,0 +1,11 @@
+---
+import EditorialPage from '../../layouts/EditorialPage.astro';
+import { site } from '../../data/site';
+export function getStaticPaths() { return site.works.map((work,index)=>({params:{slug:work.slug},props:{work,index:index+1}})); }
+const { work, index } = Astro.props;
+---
+<EditorialPage title={work.title} kind="Project" index={index} summary={work.summary}>
+  <div class:list={['detail-cover', `detail-cover-${work.tone}`]} data-tone={work.tone} aria-hidden="true"><span>{String(index).padStart(2,'0')}</span></div>
+  <div class="detail-body">{work.body.map((paragraph)=><p>{paragraph}</p>)}</div>
+  <a class="text-button" href="/#work">Return to the bookshelf</a>
+</EditorialPage>

@@ -1,3 +1,5 @@
+@import './content.css';
+
 :root {
   color-scheme: light;
   --color-neutral: #F4EFE6;

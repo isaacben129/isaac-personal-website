@@ -44,7 +44,7 @@ test('mobile shelf semantics, data and CSS define four upper books and three low
   assert.match(page, /data-shelf-row="1"/);
   assert.match(page, /data-shelf-row="2"/);
   assert.match(page, /data-row=\{book\.id <= '04' \? 'upper' : 'lower'\}/);
-  assert.equal((data.match(/title: 'Placeholder/g) ?? []).length, 7);
+  assert.equal((data.match(/slug: '[^']+-project'/g) ?? []).length, 7);
   assert.match(script, /const floorY = stage\.querySelector\('\.shelf-platform'\)\.offsetTop/);
   assert.match(css, /@media \(max-width: 760px\)[\s\S]*?\.shelf-platform-lower \{ top:/);
 });

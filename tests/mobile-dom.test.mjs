@@ -10,7 +10,7 @@ test('bookshelf has two supported tiers and four upper, three lower placeholders
   assert.match(page, /data-shelf-row="2"/);
   assert.match(page, /data-row=\{book\.id <= '04' \? 'upper' : 'lower'\}/);
   const data = readFileSync(new URL('../src/data/site.ts', import.meta.url), 'utf8');
-  assert.equal((data.match(/title: 'Placeholder/g) ?? []).length, 7);
+  assert.equal((data.match(/slug: '[^']+-project'/g) ?? []).length, 7);
 });
 
 test('shelf physics uses supported authored positions on desktop and two supported rows on mobile', () => {

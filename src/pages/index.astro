@@ -3,8 +3,8 @@ import { site } from '../data/site';
 import '../styles/global.css';
 
 const shelfMarkup = site.works;
-// Owner will supply the transparent portrait; never substitute another person.
-const portraitSrc = '';
+// Temporary faithful crop from the owner-supplied screenshot; replace with a true cutout later.
+const portraitSrc = '/images/isaac-portrait.jpg';
 ---
 
 <!doctype html>
@@ -36,7 +36,7 @@ const portraitSrc = '';
           <h1 id="hero-title" class="hero-title" data-animate="hero-title" aria-label="Isaac Ndahura"><span>Isaac</span> <span>Ndahura</span></h1>
           <p class="hero-intro">Curious about people, ideas, and making things that feel useful. This is where a few of those threads meet.</p>
         </section>
-        {portraitSrc && <aside class="portrait-rail"><div class="portrait-note">this is me<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 7 C68 0 87 26 62 56 M49 47 L62 58 L74 43" /></svg></div><img class="personal-cutout" src={portraitSrc} alt="Isaac Ndahura" width="260" height="340" /></aside>}
+        {portraitSrc && <aside class="portrait-rail"><div class="portrait-note">this is me<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 7 C68 0 87 26 62 56 M49 47 L62 58 L74 43" /></svg></div><img class="personal-cutout" src={portraitSrc} alt="Isaac Ndahura smiling" width="800" height="782" /></aside>}
         <section class="currently section" id="now" aria-label="About me"><p class="now-copy">Right now, I’m building <em>useful things</em>, learning from the people around me, and following the questions that refuse to leave me alone.</p><svg class="about-badge" aria-hidden="true" viewBox="0 0 120 120"><path d="M60 5 70 38 98 18 82 48 115 60 82 70 100 102 70 83 60 115 49 82 18 101 38 71 5 60 38 49 18 18 49 38Z" /></svg></section>
         </div>
         <section class="fragments section" id="story" aria-labelledby="story-title"><div class="section-topline"><div class="section-kicker mono"><span>03</span><span>A LIFE, IN FRAGMENTS</span></div><p class="section-aside">A few small things.</p></div><div class="section-title-row"><h2 id="story-title" class="section-heading condensed">Bits &amp; Pieces</h2></div><div class="fragment-grid">{site.fragments.map((fragment) => <article class:list={['fragment', `fragment-${fragment.layout}`]} aria-expanded="false" role="button"><div class="fragment-art" aria-hidden="true"><i></i></div><p class="fragment-caption">{fragment.label}</p></article>)}</div></section>
@@ -48,14 +48,15 @@ const portraitSrc = '';
           <div class="shelf-stage" data-shelf aria-label="Interactive bookshelf simulation. Seven placeholders, not actual projects." aria-describedby="shelf-instructions">
             <div class="shelf-platform" data-shelf-row="1" aria-label="Upper shelf"></div>
             <div class="shelf-platform shelf-platform-lower" data-shelf-row="2" aria-label="Lower shelf"></div>
-            <div class="shelf-books" role="list">{shelfMarkup.map((book) => <div class="book-body" role="listitem" data-book data-tone={book.tone} data-row={book.id <= '04' ? 'upper' : 'lower'} data-id={book.id} tabindex="0" aria-label={`${book.title}, review placeholder, activate or use arrow keys to adjust`}><span class="book-spine" aria-hidden="true"><span>{book.title}</span></span></div>)}</div>
+            <div class="shelf-books" role="list">{shelfMarkup.map((book) => <div class="book-body" role="listitem" data-book data-tone={book.tone} data-row={book.id <= '04' ? 'upper' : 'lower'} data-id={book.id} tabindex="0" aria-label={`${book.title}, review placeholder, activate or use arrow keys to adjust`} data-preview-slug={book.slug} data-preview-title={book.title} data-preview-summary={book.summary}><span class="book-spine" aria-hidden="true"><span>{book.title}</span></span></div>)}</div>
             <noscript><p class="noscript-note">The shelf remains a static, labelled visual without JavaScript.</p></noscript>
           </div>
           <p class="shelf-instructions mono" id="shelf-instructions">Drag a spine to move it. Keyboard: focus a book; arrows to nudge.</p>
 
+          <dialog class="work-preview" data-work-preview aria-labelledby="work-preview-title"><button class="preview-close" type="button" data-preview-close aria-label="Close project preview">×</button><div class="open-book"><div class="open-book-page preview-cover" data-preview-cover aria-hidden="true"></div><div class="open-book-page preview-copy"><span class="preview-index mono" data-preview-index></span><h3 id="work-preview-title" data-preview-title></h3><p data-preview-summary></p><a class="text-button" data-preview-link href="/projects/first-project/">Read more</a></div></div></dialog>
         </section>
-        <section class="thoughts section" id="thoughts" aria-labelledby="thoughts-title"><div class="section-topline"><div class="section-kicker mono"><span>05</span><span>NOTES FROM THE INSIDE</span></div><p class="section-aside">Notes, questions, and ideas.</p></div><div class="section-title-row"><h2 id="thoughts-title" class="section-heading condensed">From My Head</h2></div><div class="writing-row" tabindex="0" aria-label="Horizontally browsable writing placeholder cards">{site.notes.map((note, index) => <article class="writing-card" data-writing-card><div class:list={['writing-art', `writing-art-${index + 1}`]} aria-hidden="true"><i></i></div><div class="writing-meta mono">{note.id}</div><h3>{note.title}</h3></article>)}</div><div class="row-hint mono"><span>ON A SMALL SCREEN, SCROLL THE ROW</span><span aria-hidden="true">→</span></div></section>
-        <section class="closing section" id="hello" aria-labelledby="hello-title"><div class="section-kicker mono"><span>06</span><span>A SMALL INVITATION</span></div><h2 id="hello-title" class="closing-title">Something on your mind?</h2><div class="closing-mark" aria-hidden="true">IN<span>.</span></div></section>
+        <section class="thoughts section" id="thoughts" aria-labelledby="thoughts-title"><div class="section-topline"><div class="section-kicker mono"><span>05</span><span>NOTES FROM THE INSIDE</span></div><p class="section-aside">Notes, questions, and ideas.</p></div><div class="section-title-row"><h2 id="thoughts-title" class="section-heading condensed">From My Head</h2></div><div class="writing-row" tabindex="0" aria-label="Horizontally browsable writing placeholder cards">{site.notes.map((note, index) => <article class="writing-card" data-writing-card><a href={`/articles/${note.slug}/`}><div class:list={['writing-art', `writing-art-${index + 1}`]} aria-hidden="true"><i></i></div><div class="writing-meta mono">{note.id}</div><h3>{note.title}</h3><p>{note.excerpt}</p><span class="card-read">Read note →</span></a></article>)}</div><div class="row-hint mono"><span>ON A SMALL SCREEN, SCROLL THE ROW</span><span aria-hidden="true">→</span></div></section>
+        <section class="closing section" id="hello" aria-labelledby="hello-title"><div class="section-kicker mono"><span>06</span><span>A SMALL INVITATION</span></div><h2 id="hello-title" class="closing-title">Something on your mind?</h2><p class="closing-copy">A proper way to leave a note will live here once the destination is confirmed.</p><div class="closing-mark" aria-hidden="true">IN<span>.</span></div></section>
       </main>
       <footer class="footer mono"><span>MADE SLOWLY, WITH CURIOSITY.</span><span>NAIROBI · © 2026</span></footer>
     </div>
