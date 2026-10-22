@@ -24,6 +24,16 @@ export const site = {
     { id: '06', slug: 'sixth-project', tone: 'olive', title: 'Sixth project', summary: 'A reserved place for another piece of work.', body: ['The project details have not been written yet.'] },
     { id: '07', slug: 'seventh-project', tone: 'red', title: 'Seventh project', summary: 'A reserved place for another piece of work.', body: ['The project details have not been written yet.'] },
   ],
+  shelfObjects: [
+    { id: '01', kind: 'book', slug: 'first-project', tone: 'forest', title: 'First project', shortLabel: 'FIRST / PROJECT', summary: 'A reserved place for the first project and its story.', dimensions: { width: 86, height: 292 }, labelStyle: 'display', detail: 'bands', row: 'upper' },
+    { id: '02', kind: 'binder', slug: 'second-project', tone: 'clay', title: 'Second project', shortLabel: 'FIELD NOTES 02', summary: 'A reserved place for another piece of work.', dimensions: { width: 118, height: 254 }, labelStyle: 'archive', detail: 'label', row: 'upper' },
+    { id: '03', kind: 'book', slug: 'third-project', tone: 'ochre', title: 'Third project', shortLabel: 'THIRD PROJECT', summary: 'A reserved place for another piece of work.', dimensions: { width: 70, height: 322 }, labelStyle: 'serif', detail: 'rules', row: 'upper' },
+    { id: '04', kind: 'folder', slug: 'fourth-project', tone: 'slate', title: 'Ideas in progress', shortLabel: 'IDEAS / IN PROGRESS', summary: 'A folder reserved for unfinished concepts and working systems.', dimensions: { width: 154, height: 224 }, labelStyle: 'utility', detail: 'tab', row: 'upper' },
+    { id: '05', kind: 'photo', slug: 'fifth-project', tone: 'paper', title: 'Project image', shortLabel: 'IMAGE 05', summary: 'A framed placeholder awaiting an authentic project image.', dimensions: { width: 152, height: 192 }, labelStyle: 'caption', detail: 'frame', row: 'upper' },
+    { id: '06', kind: 'book', slug: 'sixth-project', tone: 'plum', title: 'Sixth project', shortLabel: 'SIX / 06', summary: 'A reserved place for another piece of work.', dimensions: { width: 76, height: 270 }, labelStyle: 'minimal', detail: 'cloth', row: 'upper' },
+    { id: '07', kind: 'tag', slug: 'seventh-project', tone: 'brick', title: 'Certificate tag', shortLabel: 'CERTIFICATE', summary: 'A small tag reserved for a real certificate link once supplied.', dimensions: { width: 84, height: 126 }, labelStyle: 'utility', detail: 'ring', row: 'upper' },
+    { id: '08', kind: 'notebooks', slug: 'seventh-project', tone: 'olive', title: 'Unfinished thoughts', shortLabel: 'NOTES / LATER', summary: 'A small stack for drafts and unfinished thoughts.', dimensions: { width: 164, height: 112 }, labelStyle: 'hand', detail: 'stack', row: 'upper' },
+  ],
   notes: [
     { id: '01', slug: 'first-note', title: 'A note in progress', excerpt: 'A place for an idea that is still taking shape.', body: ['This note has not been written yet.', 'The page is intentionally quiet until there is something real to say.'] },
     { id: '02', slug: 'question-worth-keeping', title: 'A question worth keeping', excerpt: 'A place for a question worth returning to.', body: ['This note has not been written yet.'] },

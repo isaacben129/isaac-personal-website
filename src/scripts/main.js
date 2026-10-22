@@ -209,7 +209,7 @@ workPreview?.addEventListener('click', (event) => { if (event.target === workPre
 
 const shelf = document.querySelector('[data-shelf]');
 const stage = shelf;
-const books = [...document.querySelectorAll('[data-book]')];
+const books = [...document.querySelectorAll('[data-shelf-object]')];
 const status = document.querySelector('.physics-status');
 const finePointer = prefersFinePointer;
 let engine;
@@ -288,11 +288,12 @@ function configureStage() {
   const xPositions = new Array(books.length);
   const arrangeLane = (from, count) => {
     const laneBooks = books.slice(from, from + count);
-    const laneWidth = laneBooks.reduce((sum, book) => sum + book.offsetWidth, 0) + Math.max(0, count - 1) * 6;
-    let cursor = (width - Math.min(width * 0.84, laneWidth)) / 2;
+    const objectGap = mobileLayout ? 12 : 9;
+    const laneWidth = laneBooks.reduce((sum, book) => sum + book.offsetWidth, 0) + Math.max(0, count - 1) * objectGap;
+    let cursor = Math.max(14, (width - laneWidth) / 2);
     laneBooks.forEach((book, lane) => {
       xPositions[from + lane] = cursor + book.offsetWidth / 2;
-      cursor += book.offsetWidth + 6;
+      cursor += book.offsetWidth + objectGap;
     });
   };
   arrangeLane(0, upperCount);
@@ -307,21 +308,23 @@ function configureStage() {
     const y = supportY - bookHeight / 2;
     el.style.touchAction = finePointer ? 'none' : 'pan-y';
     el.dataset.supportedRow = lower ? 'lower' : 'upper';
+    const initialAngle = Number.parseFloat(getComputedStyle(el).getPropertyValue('--object-tilt')) * Math.PI / 180 || 0;
     const body = Matter.Bodies.rectangle(x, y, bookWidth, bookHeight, {
       chamfer: { radius: [4, 5, 2, 2] },
+      angle: initialAngle,
       density: 0.001 + (index % 3) * 0.0003,
       friction: 0.72,
       frictionStatic: 0.92,
       frictionAir: 0.018,
       restitution: 0.035,
       sleepThreshold: 45,
-      label: `placeholder-book-${index + 1}`,
+      label: `shelf-object-${index + 1}`,
     });
     body.plugin.element = el;
     el.style.left = '0px';
     el.style.top = '0px';
     el.style.bottom = 'auto';
-    el.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${index % 2 ? 0.025 : -0.025}rad)`;
+    el.style.transform = `translate3d(${x - bookWidth / 2}px, ${y - bookHeight / 2}px, 0) rotate(${initialAngle}rad)`;
     return body;
   });
 

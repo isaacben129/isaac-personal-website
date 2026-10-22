@@ -20,7 +20,7 @@ test('project and article route templates exist with honest empty-content states
 test('book activation opens a semantic preview with a details page action',()=>{
  assert.match(home,/<dialog class="work-preview"/);assert.match(home,/Read more/);
  assert.match(script,/openWorkPreview/);assert.match(script,/showModal/);
- assert.match(home,/data-preview-slug=\{book\.slug\}/);
+ assert.match(home,/data-preview-slug=\{item\.slug\}/);
 });
 test('homepage articles link to local article pages',()=>{
  assert.match(home,/href=\{`\/articles\/\$\{note\.slug\}\/`\}/);

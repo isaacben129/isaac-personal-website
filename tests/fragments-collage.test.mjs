@@ -6,7 +6,7 @@ const data=readFileSync(new URL('../src/data/site.ts',import.meta.url),'utf8');
 const css=readFileSync(new URL('../src/styles/global.css',import.meta.url),'utf8');
 const script=readFileSync(new URL('../src/scripts/main.js',import.meta.url),'utf8');
 test('collage exposes six varied honest placeholder artifacts',()=>{
- assert.equal((data.match(/kind: '(photo|note|sketch|journal|screenshot)'/g)??[]).length,6);
+ const fragments=data.split('fragments: [')[1].split('],\n  works:')[0]; assert.equal((fragments.match(/kind: '(photo|note|sketch|journal|screenshot)'/g)??[]).length,6);
  for(const kind of ['photo','note','sketch','journal','screenshot']) assert.match(data,new RegExp(`kind: '${kind}'`));
  assert.match(page,/data-fragment-stage/); assert.match(page,/data-fragment-card/);
 });

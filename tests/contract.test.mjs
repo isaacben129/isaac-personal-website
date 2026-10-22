@@ -17,14 +17,15 @@ test('preview content is explicitly non-publishable and contains no fake contact
   assert.doesNotMatch(page, /CONTACT PLACEHOLDER · NONFUNCTIONAL/);
   assert.doesNotMatch(page, /mailto:|href="#"/);
 });
-test('bookshelf title and direct controls remain actionable, with seven visible labelled books', async () => {
+test('bookshelf title and direct controls remain actionable, with varied visible labelled objects', async () => {
   assert.equal((page.match(/data-book/g) ?? []).length, 1, 'items are data-driven in the Astro template');
   assert.doesNotMatch(page, /ACTIVATE A BOOK TO INTERACT/);
   assert.doesNotMatch(page, /shake|reset shelf/i);
   assert.match(page, /data-book/);
-  assert.match(page, /placeholder, activate or use arrow keys to adjust/);
+  assert.match(page, /provisional shelf object, activate or use arrow keys to adjust/);
   const data = readFileSync(new URL('../src/data/site.ts', import.meta.url), 'utf8');
-  assert.equal((data.match(/slug: '[^']+-project'/g) ?? []).length, 7);
+  const shelf = data.split('shelfObjects: [')[1].split('],\n  notes:')[0];
+  assert.equal((shelf.match(/kind: '(book|binder|folder|photo|tag|notebooks)'/g) ?? []).length, 8);
 });
 test('writing cards form a keyboard-focusable horizontal browsing region', () => {
   assert.match(page, /class="writing-row" tabindex="0" aria-label="Horizontally browsable writing placeholder cards"/);

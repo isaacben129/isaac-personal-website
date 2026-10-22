@@ -40,21 +40,22 @@ test('bookshelf physics settles seven adjacent supported books on one continuous
   assert.ok(books.slice(0, -1).every((book, index) => Math.abs((books[index + 1].position.x - book.position.x) - (widths[index] + widths[index + 1]) / 2 - gap) < 32), 'spines remain a close cluster, not a scattered row');
 });
 
-test('mobile shelf semantics, data and CSS define four upper books and three lower books', () => {
+test('mobile shelf semantics, data and CSS define four objects per shelf', () => {
   assert.match(page, /data-shelf-row="1"/);
   assert.match(page, /data-shelf-row="2"/);
-  assert.match(page, /data-row=\{book\.id <= '04' \? 'upper' : 'lower'\}/);
-  assert.equal((data.match(/slug: '[^']+-project'/g) ?? []).length, 7);
+  assert.match(page, /data-row=\{item\.id <= '04' \? 'upper' : 'lower'\}/);
+  const shelf = data.split('shelfObjects: [')[1].split('],\n  notes:')[0];
+  assert.equal((shelf.match(/kind: '(book|binder|folder|photo|tag|notebooks)'/g) ?? []).length, 8);
   assert.match(script, /const floorY = stage\.querySelector\('\.shelf-platform'\)\.offsetTop/);
   assert.match(css, /@media \(max-width: 760px\)[\s\S]*?\.shelf-platform-lower \{ top:/);
 });
 
-test('all spines are pointer and keyboard reachable and physics remains within the shelf stage', () => {
-  assert.match(page, /tabindex="0" aria-label=\{`\$\{book\.title\}, review placeholder, activate or use arrow keys to adjust`\}/);
+test('all shelf objects are pointer and keyboard reachable and physics remains within the shelf stage', () => {
+  assert.match(page, /tabindex="0" aria-label=\{`\$\{item\.title\}, provisional shelf object, activate or use arrow keys to adjust`\}/);
   assert.doesNotMatch(page, /aria-describedby="shelf-instructions"/);
   assert.match(script, /pointerdown/);
   assert.match(script, /ArrowLeft/);
   assert.match(script, /Matter\.Query\.point/);
-  assert.match(css, /background-color:\s*var\(--book-cover,\s*#315244\)/);
+  assert.match(css, /background:\s*var\(--object-color,\s*#315244\)/);
   assert.match(css, /touch-action:\s*none/);
 });
