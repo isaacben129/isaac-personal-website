@@ -8,10 +8,10 @@ const script = readFileSync(new URL('../src/scripts/main.js', import.meta.url), 
 test('bookshelf has two supported tiers and four objects on each row', () => {
   assert.match(page, /data-shelf-row="1"/);
   assert.match(page, /data-shelf-row="2"/);
-  assert.match(page, /data-row=\{item\.id <= '04' \? 'upper' : 'lower'\}/);
+  assert.match(page, /data-row=\{item\.row\}/);
   const data = readFileSync(new URL('../src/data/site.ts', import.meta.url), 'utf8');
   const shelf = data.split('shelfObjects: [')[1].split('],\n  notes:')[0];
-  assert.equal((shelf.match(/kind: '(book|binder|folder|photo|tag|notebooks)'/g) ?? []).length, 8);
+  assert.equal((shelf.match(/kind: '(book|binder|folder|photo|certificate|notebook_stack)'/g) ?? []).length, 8);
 });
 
 test('shelf physics uses supported authored positions on desktop and two supported rows on mobile', () => {

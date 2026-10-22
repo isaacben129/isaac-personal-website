@@ -189,39 +189,47 @@ if (!reduceMotion.matches) {
 
 const workPreview = document.querySelector('[data-work-preview]');
 const openArtifact = document.querySelector('[data-open-artifact]');
-const previewKind = workPreview?.querySelector('[data-preview-kind]');
-const previewVisual = workPreview?.querySelector('[data-preview-visual]');
+const previewCopyTemplate = workPreview?.querySelector('[data-preview-copy-template]');
 let previewOrigin = null;
-const previewData = Object.fromEntries([...document.querySelectorAll('[data-book]')].map((book) => [book.dataset.previewSlug, {
+const previewData = new Map([...document.querySelectorAll('[data-book]')].map((book) => [book, {
   id: book.dataset.id,
   title: book.dataset.previewTitle,
   summary: book.dataset.previewSummary,
   kind: book.dataset.previewKind,
+  presentation: book.dataset.openPresentation,
   href: `/projects/${book.dataset.previewSlug}/`,
 }]));
 function openWorkPreview(book) {
   if (!workPreview || !openArtifact || !book?.dataset.previewSlug) return;
-  const item = previewData[book.dataset.previewSlug];
+  const item = previewData.get(book);
+  const activeVariant = workPreview.querySelector(`[data-presentation="${item.presentation}"]`);
+  if (!activeVariant || !previewCopyTemplate) return;
   previewOrigin = book;
-  workPreview.querySelector('[data-preview-index]').textContent = item.id;
-  workPreview.querySelector('[data-preview-title]').textContent = item.title;
-  workPreview.querySelector('[data-preview-summary]').textContent = item.summary;
-  workPreview.querySelector('[data-preview-description]').textContent = `${item.summary} This provisional spread is ready for the real supporting imagery and full project story.`;
+  workPreview.querySelectorAll('.artifact-variant').forEach((variant) => { variant.hidden = variant !== activeVariant; });
+  const copySlot = activeVariant.querySelector('[data-copy-slot]');
+  copySlot.replaceChildren(previewCopyTemplate.content.cloneNode(true));
+  copySlot.querySelector('[data-preview-index]').textContent = item.id;
+  copySlot.querySelector('[data-preview-title]').textContent = item.title;
+  copySlot.querySelector('[data-preview-summary]').textContent = item.summary;
+  copySlot.querySelector('[data-preview-description]').textContent = 'This archive entry is ready for authentic imagery and a fuller project story when those materials are supplied.';
+  copySlot.querySelector('[data-preview-kind]').textContent = `${item.kind} · ${item.presentation.replaceAll('_', ' ')}`;
+  const visualCode = activeVariant.querySelector('[data-preview-visual-code]');
+  if (visualCode) visualCode.textContent = `${item.kind.toUpperCase()} / ${item.id}`;
   workPreview.querySelector('[data-preview-link]').href = item.href;
-  workPreview.querySelector('[data-preview-visual-code]').textContent = `${item.kind.toUpperCase()} / ${item.id}`;
-  if (previewKind) previewKind.textContent = `${item.kind} · opened artifact`;
   workPreview.dataset.kind = item.kind;
-  previewVisual.dataset.kind = item.kind;
+  workPreview.dataset.presentation = item.presentation;
+  document.body.classList.add('preview-open');
   workPreview.showModal();
   if (!reduceMotion.matches) {
-    gsap.fromTo(openArtifact, { y: 70, opacity: 0, scaleX: 0.18, scaleY: 0.88 }, { y: 0, opacity: 1, scaleX: 1, scaleY: 1, duration: 0.68, ease: 'power3.out' });
+    const origin = item.presentation === 'archival_folder' ? 'left center' : 'center bottom';
+    gsap.fromTo(openArtifact, { y: 44, opacity: 0, scale: 0.92, transformOrigin: origin }, { y: 0, opacity: 1, scale: 1, duration: 0.56, ease: 'power3.out' });
   }
 }
 function closeWorkPreview() {
   if (!workPreview?.open) return;
-  const complete = () => { workPreview.close(); previewOrigin?.focus(); };
+  const complete = () => { workPreview.close(); document.body.classList.remove('preview-open'); previewOrigin?.focus(); };
   if (reduceMotion.matches || !openArtifact) { complete(); return; }
-  gsap.to(openArtifact, { y: 55, opacity: 0, scaleX: 0.3, duration: 0.38, ease: 'power2.in', onComplete: complete });
+  gsap.to(openArtifact, { y: 38, opacity: 0, scale: 0.94, duration: 0.32, ease: 'power2.in', onComplete: complete });
 }
 workPreview?.querySelector('[data-preview-close]')?.addEventListener('click', closeWorkPreview);
 workPreview?.addEventListener('click', (event) => { if (event.target === workPreview) closeWorkPreview(); });

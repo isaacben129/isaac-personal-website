@@ -13,18 +13,18 @@ test('fragment hover preserves authored layer order',()=>{
 });
 
 test('shelf data supports a mixed system rather than books only',()=>{
- for(const kind of ['book','binder','folder','photo','tag','notebooks']) assert.match(data,new RegExp(`kind: '${kind}'`));
+ for(const kind of ['book','binder','folder','photo','certificate','notebook_stack']) assert.match(data,new RegExp(`kind: '${kind}'`));
  assert.match(data,/shelfObjects:/); assert.match(data,/dimensions:/); assert.match(data,/labelStyle:/); assert.match(data,/detail:/);
 });
 
 test('shelf renders polymorphic object markup from data',()=>{
  assert.match(page,/const shelfMarkup = site\.shelfObjects/); assert.match(page,/data-shelf-object/); assert.match(page,/data-object-kind=\{item\.kind\}/); assert.match(page,/shelf-object-/);
- assert.match(page,/item\.kind === 'photo'/); assert.match(page,/item\.kind === 'tag'/); assert.match(page,/item\.kind === 'folder'/);
+ assert.match(page,/framed_image_artifact/); assert.match(page,/certificate_keyring/); assert.match(page,/rust_archival_box_file/);
 });
 
 test('shelf objects use a full-width grounded editorial composition',()=>{
  assert.match(css,/\.shelf-object\s*\{[^}]*position:\s*absolute/s); assert.match(css,/\.shelf-object\s*\{[^}]*bottom:/s);
- assert.match(css,/\.shelf-object\[data-object-kind=['"]binder['"]\]/); assert.match(css,/\.shelf-object\[data-object-kind=['"]folder['"]\]/); assert.match(css,/\.shelf-object\[data-object-kind=['"]photo['"]\]/); assert.match(css,/\.shelf-object\[data-object-kind=['"]tag['"]\]/);
+ assert.match(css,/data-render-archetype='olive_ring_binder'/); assert.match(css,/data-render-archetype='rust_archival_box_file'/); assert.match(css,/data-render-archetype='framed_image_artifact'/); assert.match(css,/data-render-archetype='certificate_keyring'/);
  assert.match(css,/@media \(max-width: 760px\)[\s\S]*\.shelf-collection[^}]*overflow-x:\s*auto/);
 });
 

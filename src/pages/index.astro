@@ -94,36 +94,55 @@ const portraitSrc = '/images/isaac-portrait.jpg';
           <div class="shelf-stage" data-shelf aria-label="Interactive shelf of project books, folders, artifacts, and fragments.">
             <div class="shelf-platform" data-shelf-row="1" aria-label="Upper shelf"></div>
             <div class="shelf-platform shelf-platform-lower" data-shelf-row="2" aria-label="Lower shelf"></div>
-            <div class="shelf-collection" role="list">{shelfMarkup.map((item) => <div class:list={['shelf-object', `shelf-object-${item.kind}`]} role="listitem" data-book data-shelf-object data-object-kind={item.kind} data-tone={item.tone} data-row={item.id <= '04' ? 'upper' : 'lower'} data-label-style={item.labelStyle} data-detail={item.detail} data-id={item.id} tabindex="0" aria-label={`${item.title}, provisional shelf object, activate or use arrow keys to adjust`} data-preview-slug={item.slug} data-preview-title={item.title} data-preview-summary={item.summary} data-preview-kind={item.kind} style={`--object-width:${item.dimensions.width}px;--object-height:${item.dimensions.height}px`}>
-              <span class="shelf-object-face" aria-hidden="true">
-                {item.kind === 'book' && <><small>{item.id}</small><span>{item.shortLabel}</span><i></i></>}
-                {item.kind === 'binder' && <><i class="binder-hole"></i><span>{item.shortLabel}</span><small>ARCHIVE / WORKING COPY</small></>}
-                {item.kind === 'folder' && <><i class="folder-tab"></i><span>{item.shortLabel}</span><small>UNFINISHED · RETURN TO</small></>}
-                {item.kind === 'photo' && <><i class="photo-mat"></i><span>{item.shortLabel}</span></>}
-                {item.kind === 'tag' && <><i class="tag-ring"></i><span>{item.shortLabel}</span><small>ARCHIVE ITEM</small></>}
-                {item.kind === 'notebooks' && <><i></i><b></b><span>{item.shortLabel}</span></>}
+            <div class="shelf-collection" role="list">{shelfMarkup.map((item) => <div class:list={['shelf-object', `shelf-object-${item.kind}`]} role="listitem" data-book data-shelf-object data-object-kind={item.kind} data-render-archetype={item.renderArchetype} data-open-presentation={item.presentation} data-tone={item.tone} data-row={item.row} data-label-style={item.labelStyle} data-detail={item.detail} data-id={item.id} tabindex="0" aria-label={`${item.title}, provisional shelf object, activate or use arrow keys to adjust`} data-preview-slug={item.slug} data-preview-title={item.title} data-preview-summary={item.summary} data-preview-kind={item.kind} style={`--object-width:${item.dimensions.width}px;--object-height:${item.dimensions.height}px`}>
+              <span class="object-surface shelf-object-face" aria-hidden="true">
+                <i class="object-construction"></i><i class="object-highlight"></i><i class="object-contact"></i>
+                {item.renderArchetype === 'clothbound_tall_volume' && <><small class="object-identity">ARCHIVE · {item.id}</small><span class="object-type">F<br/>P</span><b class="cloth-rule"></b></>}
+                {item.renderArchetype === 'slim_swiss_paperback' && <><span class="object-type"><b>S</b><b>EC</b><b>OND</b></span><small class="object-identity">INDEX {item.id}</small></>}
+                {item.renderArchetype === 'wide_art_book' && <><span class="object-type">THIRD<br/>PROJECT</span><b class="art-band"></b><small class="object-identity">VISUAL ARCHIVE · {item.id}</small></>}
+                {item.renderArchetype === 'rust_archival_box_file' && <><i class="folder-tab"></i><span class="object-type">IDEA INDEX</span><small class="object-identity">WORKING FILE · {item.id}</small><b class="folder-eyelet"></b></>}
+                {item.renderArchetype === 'olive_ring_binder' && <><i class="binder-tab"></i><span class="object-type">NOTES / 05</span><small class="object-identity">COLLECTED MATERIAL</small><b class="binder-rivet"></b></>}
+                {item.renderArchetype === 'framed_image_artifact' && <><i class="photo-mat"><em>Image coming soon</em></i><span class="object-type">IMAGE 06</span></>}
+                {item.renderArchetype === 'certificate_keyring' && <><i class="tag-ring"></i><i class="tag-eyelet"></i><span class="object-type">CERTIFICATE</span><small class="object-identity">ASSET PENDING</small></>}
+                {item.renderArchetype === 'horizontal_notebook_stack' && <><i class="notebook-layer layer-one"></i><i class="notebook-layer layer-two"></i><i class="notebook-layer layer-three"></i><span class="object-type">NOTES / LATER</span></>}
               </span>
             </div>)}</div>
             <noscript><p class="noscript-note">The shelf remains a static, labelled visual without JavaScript.</p></noscript>
           </div>
           <dialog class="work-preview" data-work-preview aria-labelledby="work-preview-title">
             <div class="open-artifact" data-open-artifact>
-              <section class="open-artifact-page open-artifact-visual" data-preview-visual aria-label="Provisional visual material">
-                <div class="visual-sheet visual-sheet-main"><span class="mono" data-preview-visual-code>ARCHIVE / 01</span><i></i><b></b></div>
-                <div class="visual-sheet visual-sheet-note">Visual material<br/>to be replaced</div>
-                <p class="visual-caption mono">PROVISIONAL VISUAL STUDY</p>
-              </section>
-              <i class="open-artifact-gutter" aria-hidden="true"></i>
-              <section class="open-artifact-page open-artifact-reading">
-                <button class="preview-close" type="button" data-preview-close aria-label="Close project preview">×</button>
-                <span class="preview-index mono" data-preview-index></span>
-                <p class="preview-kind mono" data-preview-kind></p>
-                <h3 id="work-preview-title" data-preview-title></h3>
-                <p class="preview-summary" data-preview-summary></p>
-                <p class="preview-description" data-preview-description>This is a provisional archive entry. The structure is ready for authentic screenshots, photographs, notes, or certificate imagery.</p>
-                <div class="preview-meta mono"><span>PERSONAL ARCHIVE</span><span>WORK IN PROGRESS</span></div>
-                <a class="text-button" data-preview-link href="/projects/first-project/">Read more</a>
-              </section>
+              <div class="mobile-sheet-handle" aria-hidden="true"></div>
+              <button class="preview-close" type="button" data-preview-close aria-label="Close project preview">×</button>
+              <div class="artifact-scroll-region">
+                <section class="artifact-variant" data-presentation="tall_hardcover">
+                  <div class="artifact-page artifact-visual"><div class="media-placeholder"><span>Image coming soon</span><small data-preview-visual-code>ARCHIVE / 01</small></div></div><i class="artifact-cloth-hinge"></i><div class="artifact-page artifact-copy" data-copy-slot></div>
+                </section>
+                <section class="artifact-variant" data-presentation="tall_paperback">
+                  <div class="artifact-page artifact-visual"><div class="media-placeholder portrait"><span>Image coming soon</span></div></div><i class="artifact-paper-fold"></i><div class="artifact-page artifact-copy" data-copy-slot></div>
+                </section>
+                <section class="artifact-variant" data-presentation="landscape_art_book">
+                  <div class="artifact-page artifact-visual"><div class="media-placeholder landscape"><span>Image coming soon</span></div></div><i class="artifact-board-hinge"></i><div class="artifact-page artifact-copy" data-copy-slot></div>
+                </section>
+                <section class="artifact-variant artifact-folder" data-presentation="archival_folder">
+                  <div class="artifact-folder-pocket"><div class="index-card"><span>Supporting material</span><small>Image coming soon</small></div></div><div class="artifact-dossier-sheet artifact-copy" data-copy-slot></div>
+                </section>
+                <section class="artifact-variant artifact-binder" data-presentation="binder_dossier">
+                  <div class="artifact-page artifact-visual"><div class="media-placeholder document"><span>Document coming soon</span></div></div><div class="artifact-binder-rings" aria-hidden="true"><i></i><i></i><i></i></div><div class="artifact-page artifact-copy" data-copy-slot></div>
+                </section>
+                <section class="artifact-variant artifact-photo-mount" data-presentation="photo_object">
+                  <div class="photo-plane"><span>Image coming soon</span></div><div class="artifact-copy photo-caption" data-copy-slot></div>
+                </section>
+                <section class="artifact-variant artifact-certificate-document" data-presentation="certificate_document">
+                  <div class="certificate-sheet"><span>Verified certificate preview coming soon</span></div><div class="artifact-copy certificate-note" data-copy-slot></div>
+                </section>
+                <section class="artifact-variant artifact-notes-stack" data-presentation="notes_stack">
+                  <div class="notes-card note-a"><span>Notes coming soon</span></div><div class="notes-card note-b"></div><div class="notes-card note-c artifact-copy" data-copy-slot></div>
+                </section>
+                <template data-preview-copy-template>
+                  <span class="preview-index mono" data-preview-index></span><p class="preview-kind mono" data-preview-kind></p><h3 id="work-preview-title" data-preview-title></h3><p class="preview-summary" data-preview-summary></p><p class="preview-description" data-preview-description></p><div class="preview-meta mono"><span>PERSONAL ARCHIVE</span><span>CONTENT PENDING</span></div>
+                </template>
+              </div>
+              <footer class="artifact-action-area"><a class="text-button" data-preview-link href="/projects/first-project/">Read more</a></footer>
             </div>
           </dialog>
         </section>

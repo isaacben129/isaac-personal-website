@@ -25,7 +25,7 @@ test('bookshelf title and direct controls remain actionable, with varied visible
   assert.match(page, /provisional shelf object, activate or use arrow keys to adjust/);
   const data = readFileSync(new URL('../src/data/site.ts', import.meta.url), 'utf8');
   const shelf = data.split('shelfObjects: [')[1].split('],\n  notes:')[0];
-  assert.equal((shelf.match(/kind: '(book|binder|folder|photo|tag|notebooks)'/g) ?? []).length, 8);
+  assert.equal((shelf.match(/kind: '(book|binder|folder|photo|certificate|notebook_stack)'/g) ?? []).length, 8);
 });
 test('writing cards form a keyboard-focusable horizontal browsing region', () => {
   assert.match(page, /class="writing-row" tabindex="0" aria-label="Horizontally browsable writing placeholder cards"/);
