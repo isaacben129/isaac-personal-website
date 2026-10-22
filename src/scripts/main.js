@@ -1,26 +1,100 @@
 import { gsap } from 'gsap';
 import Matter from 'matter-js';
 
-// Fragment disclosure toggle (keyboard + touch equivalent to hover reveal)
-const fragments = [...document.querySelectorAll('.fragment')];
-fragments.forEach((el) => {
-  el.setAttribute('tabindex', '0');
-  el.setAttribute('aria-expanded', 'false');
-  el.addEventListener('click', () => {
-    const expanded = el.getAttribute('aria-expanded') === 'true';
-    el.setAttribute('aria-expanded', String(!expanded));
-  });
-  el.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      const expanded = el.getAttribute('aria-expanded') === 'true';
-      el.setAttribute('aria-expanded', String(!expanded));
-    }
-  });
-});
-
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const prefersFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+// Bits & Pieces: one explicit state machine owns selection and choreography.
+const FragmentState = Object.freeze({ RESTING: 'resting', SELECTED: 'selected', TRANSITIONING: 'transitioning' });
+const fragmentExperience = document.querySelector('[data-fragment-experience]');
+const fragmentStage = document.querySelector('[data-fragment-stage]');
+const fragmentCards = [...document.querySelectorAll('[data-fragment-card]')];
+const fragmentPanel = document.querySelector('[data-fragment-panel]');
+const fragmentClose = document.querySelector('[data-fragment-close]');
+let fragmentState = FragmentState.RESTING;
+let selectedFragment = null;
+let fragmentTimeline = null;
+
+function setFragmentPanel(card) {
+  if (!fragmentPanel || !card) return;
+  fragmentPanel.querySelector('[data-fragment-title]').textContent = card.dataset.fragmentTitle;
+  fragmentPanel.querySelector('[data-fragment-description]').textContent = card.dataset.fragmentDescription;
+  fragmentPanel.querySelector('[data-fragment-story]').textContent = card.dataset.fragmentStory;
+  fragmentPanel.querySelector('[data-fragment-meta]').textContent = card.dataset.fragmentMeta;
+}
+
+function finishFragmentState(state) {
+  fragmentState = state;
+  if (fragmentExperience) fragmentExperience.dataset.state = state;
+}
+
+function selectFragment(card) {
+  if (!fragmentExperience || !fragmentPanel || fragmentState === FragmentState.TRANSITIONING) return;
+  if (selectedFragment === card) { closeFragment(); return; }
+  setFragmentPanel(card);
+  selectedFragment = card;
+  fragmentCards.forEach((item) => {
+    item.setAttribute('aria-expanded', String(item === card));
+    item.classList.toggle('is-selected', item === card);
+  });
+  fragmentStage?.classList.add('is-selected');
+  fragmentPanel.setAttribute('aria-hidden', 'false');
+  finishFragmentState(FragmentState.TRANSITIONING);
+  fragmentTimeline?.kill();
+  if (reduceMotion.matches) {
+    gsap.set(fragmentCards, { clearProps: 'transform,opacity' });
+    gsap.set(fragmentPanel, { clearProps: 'all' });
+    finishFragmentState(FragmentState.SELECTED);
+    return;
+  }
+  const others = fragmentCards.filter((item) => item !== card);
+  fragmentTimeline = gsap.timeline({ defaults: { ease: 'power3.inOut' }, onComplete: () => finishFragmentState(FragmentState.SELECTED) });
+  fragmentTimeline
+    .to(others, { scale: 0.88, opacity: 0.35, duration: 0.55, stagger: 0.025 }, 0)
+    .to(card, { scale: 1.12, rotate: 0, duration: 0.62 }, 0)
+    .fromTo(fragmentPanel, { x: 36, opacity: 0 }, { x: 0, opacity: 1, duration: 0.48 }, 0.18);
+}
+
+function closeFragment({ restoreFocus = false } = {}) {
+  if (!fragmentExperience || !fragmentPanel || !selectedFragment || fragmentState === FragmentState.TRANSITIONING) return;
+  const prior = selectedFragment;
+  finishFragmentState(FragmentState.TRANSITIONING);
+  fragmentTimeline?.kill();
+  const complete = () => {
+    fragmentCards.forEach((item) => { item.setAttribute('aria-expanded', 'false'); item.classList.remove('is-selected'); });
+    fragmentStage?.classList.remove('is-selected');
+    fragmentPanel.setAttribute('aria-hidden', 'true');
+    selectedFragment = null;
+    gsap.set(fragmentCards, { clearProps: 'transform,opacity' });
+    gsap.set(fragmentPanel, { clearProps: 'transform,opacity' });
+    finishFragmentState(FragmentState.RESTING);
+    if (restoreFocus) prior.focus();
+  };
+  if (reduceMotion.matches) { complete(); return; }
+  fragmentTimeline = gsap.timeline({ defaults: { ease: 'power3.inOut' }, onComplete: complete });
+  fragmentTimeline
+    .to(fragmentPanel, { x: 24, opacity: 0, duration: 0.3 }, 0)
+    .to(fragmentCards, { scale: 1, opacity: 1, rotate: (index) => Number(fragmentCards[index].style.getPropertyValue('--fragment-rotate').replace('deg', '')) || 0, duration: 0.52, stagger: 0.02 }, 0.05);
+}
+
+fragmentCards.forEach((card) => {
+  card.addEventListener('click', () => selectFragment(card));
+  card.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectFragment(card); }
+  });
+});
+fragmentClose?.addEventListener('click', () => closeFragment({ restoreFocus: true }));
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && selectedFragment) closeFragment({ restoreFocus: true }); });
+
+if (fragmentCards.length && !reduceMotion.matches) {
+  const collageObserver = new IntersectionObserver((entries, observer) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    gsap.from(fragmentCards, { y: 55, rotate: 0, opacity: 0, duration: 0.8, stagger: 0.08, ease: 'power3.out' });
+    observer.disconnect();
+  }, { threshold: 0.2 });
+  collageObserver.observe(fragmentStage);
+}
+
 let animObserver;
 let animNodes = [];
 function applyMotionPreference(reduced) {
@@ -45,7 +119,7 @@ if (!reduceMotion.matches) {
   entrance.from('[data-animate="enter"]', { y: 18, opacity: 0, duration: 0.75, stagger: 0.1 });
   entrance.from('#hero-title', { y: 16, opacity: 0, duration: 0.8 }, '-=0.45');
 
-  animNodes = [...document.querySelectorAll('.fragment, .writing-card, .closing-title, .closing-copy')];
+  animNodes = [...document.querySelectorAll('.writing-card, .closing-title, .closing-copy')];
   applyMotionPreference(false);
 }
 

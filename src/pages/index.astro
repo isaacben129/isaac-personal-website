@@ -39,7 +39,46 @@ const portraitSrc = '/images/isaac-portrait.jpg';
         {portraitSrc && <aside class="portrait-rail"><div class="portrait-note">this is me<svg viewBox="0 0 100 70" aria-hidden="true"><path d="M8 7 C68 0 87 26 62 56 M49 47 L62 58 L74 43" /></svg></div><img class="personal-cutout" src={portraitSrc} alt="Isaac Ndahura smiling" width="800" height="782" /></aside>}
         <section class="currently section" id="now" aria-label="About me"><p class="now-copy">Right now, I’m building <em>useful things</em>, learning from the people around me, and following the questions that refuse to leave me alone.</p><svg class="about-badge" aria-hidden="true" viewBox="0 0 120 120"><path d="M60 5 70 38 98 18 82 48 115 60 82 70 100 102 70 83 60 115 49 82 18 101 38 71 5 60 38 49 18 18 49 38Z" /></svg></section>
         </div>
-        <section class="fragments section" id="story" aria-labelledby="story-title"><div class="section-topline"><div class="section-kicker mono"><span>03</span><span>A LIFE, IN FRAGMENTS</span></div><p class="section-aside">A few small things.</p></div><div class="section-title-row"><h2 id="story-title" class="section-heading condensed">Bits &amp; Pieces</h2></div><div class="fragment-grid">{site.fragments.map((fragment) => <article class:list={['fragment', `fragment-${fragment.layout}`]} aria-expanded="false" role="button"><div class="fragment-art" aria-hidden="true"><i></i></div><p class="fragment-caption">{fragment.label}</p></article>)}</div></section>
+        <section class="fragments section" id="story" aria-labelledby="story-title">
+          <div class="section-topline"><div class="section-kicker mono"><span>03</span><span>A LIFE, IN FRAGMENTS</span></div><p class="section-aside">Choose a piece to bring it forward.</p></div>
+          <div class="section-title-row"><h2 id="story-title" class="section-heading condensed">Bits &amp; Pieces</h2></div>
+          <div class="fragment-experience" data-fragment-experience data-state="resting">
+            <div class="fragment-stage" data-fragment-stage aria-label="Interactive collage of six replaceable archive artifacts">
+              {site.fragments.map((fragment) => (
+                <button
+                  class:list={['fragment-card', `fragment-${fragment.layout}`]}
+                  type="button"
+                  data-fragment-card
+                  data-fragment-id={fragment.id}
+                  data-fragment-title={fragment.title}
+                  data-fragment-description={fragment.description}
+                  data-fragment-story={fragment.story}
+                  data-fragment-meta={`${fragment.category} · ${fragment.date}`}
+                  aria-expanded="false"
+                  aria-controls="fragment-story-panel"
+                  style={`--fragment-x:${fragment.position.x}%;--fragment-y:${fragment.position.y}%;--fragment-width:${fragment.position.width}%;--fragment-rotate:${fragment.position.rotate}deg`}
+                >
+                  <span class="fragment-art" data-kind={fragment.kind} aria-hidden="true">
+                    {fragment.kind === 'photo' && <span class="artifact-photo"><i></i><b></b></span>}
+                    {fragment.kind === 'note' && <span class="artifact-note">Keep the line<br/>that still feels<br/>true.</span>}
+                    {fragment.kind === 'sketch' && <span class="artifact-sketch"><i></i><b></b><em></em></span>}
+                    {fragment.kind === 'journal' && <span class="artifact-journal"><i></i><b></b></span>}
+                    {fragment.kind === 'screenshot' && <span class="artifact-screen"><i></i><b></b><em></em></span>}
+                  </span>
+                  <span class="fragment-caption"><span>{fragment.label}</span><small>{fragment.id} · {fragment.category}</small></span>
+                </button>
+              ))}
+            </div>
+            <aside class="fragment-story-panel" id="fragment-story-panel" data-fragment-panel aria-live="polite" aria-hidden="true">
+              <button class="fragment-close" type="button" data-fragment-close aria-label="Close artifact story">×</button>
+              <p class="fragment-panel-meta mono" data-fragment-meta>Select a piece</p>
+              <h3 data-fragment-title>Bits from the archive</h3>
+              <p data-fragment-description>Six provisional objects hold the shape of this section until the real artifacts arrive.</p>
+              <p class="fragment-panel-story" data-fragment-story>The formats and interactions are real; the personal content is intentionally replaceable.</p>
+            </aside>
+          </div>
+          <p class="fragment-help mono">Tap or press Enter to focus a piece · Escape to close</p>
+        </section>
         <section class="library section" id="work" aria-labelledby="work-title">
           <div class="section-topline"><div class="section-kicker mono"><span>04</span><span>THINGS I’VE MADE</span></div><p class="section-aside">A physical shelf, not a reading list.</p></div>
           <div class="section-title-row"><h2 id="work-title" class="section-heading condensed">The Bookshelf</h2></div>
