@@ -4,6 +4,69 @@ import Matter from 'matter-js';
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const prefersFinePointer = window.matchMedia('(pointer: fine)').matches;
 
+// Mobile navigation: a single GSAP timeline owns open/closed motion and focus.
+const menuToggle = document.querySelector('[data-menu-toggle]');
+const mobileMenu = document.querySelector('[data-mobile-menu]');
+const menuClose = document.querySelector('[data-menu-close]');
+const mobileMenuLinks = [...document.querySelectorAll('.mobile-nav a')];
+let mobileMenuTimeline = null;
+let mobileMenuOpen = false;
+
+function setMobileMenu(open, { restoreFocus = false } = {}) {
+  if (!menuToggle || !mobileMenu) return;
+  mobileMenuTimeline?.kill();
+  mobileMenuOpen = open;
+  menuToggle.setAttribute('aria-expanded', String(open));
+  menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  mobileMenu.setAttribute('aria-hidden', String(!open));
+  document.body.classList.toggle('menu-open', open);
+  const complete = () => {
+    if (open) menuClose?.focus();
+    else if (restoreFocus) menuToggle.focus();
+  };
+  if (reduceMotion.matches) {
+    gsap.set(mobileMenu, { clipPath: open ? 'inset(0 0 0% 0)' : 'inset(0 0 100% 0)' });
+    gsap.set(mobileMenuLinks, { clearProps: 'all' });
+    complete();
+    return;
+  }
+  mobileMenuTimeline = gsap.timeline({ defaults: { ease: 'power4.inOut' }, onComplete: complete });
+  if (open) {
+    mobileMenuTimeline
+      .fromTo(mobileMenu, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.72 })
+      .fromTo(mobileMenuLinks, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.055, ease: 'power3.out' }, '-=0.28');
+  } else {
+    mobileMenuTimeline
+      .to(mobileMenuLinks, { y: -24, opacity: 0, duration: 0.26, stagger: 0.025, ease: 'power2.in' })
+      .to(mobileMenu, { clipPath: 'inset(0 0 100% 0)', duration: 0.56 }, '-=0.08');
+  }
+}
+
+menuToggle?.addEventListener('click', () => setMobileMenu(!mobileMenuOpen, { restoreFocus: mobileMenuOpen }));
+menuClose?.addEventListener('click', () => setMobileMenu(false, { restoreFocus: true }));
+mobileMenuLinks.forEach((link) => link.addEventListener('click', () => setMobileMenu(false)));
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && mobileMenuOpen) setMobileMenu(false, { restoreFocus: true }); });
+
+// Leave a Note intentionally hands off to the visitor's email app; nothing is stored.
+const noteForm = document.querySelector('[data-note-form]');
+const noteStatus = document.querySelector('[data-note-status]');
+function buildNoteMailto(form) {
+  const data = new FormData(form);
+  const name = String(data.get('name') || '').trim();
+  const email = String(data.get('email') || '').trim();
+  const message = String(data.get('message') || '').trim();
+  const signature = [name && `From: ${name}`, email && `Reply to: ${email}`].filter(Boolean).join('\n');
+  const body = [message, signature].filter(Boolean).join('\n\n');
+  return `mailto:isaacben129@gmail.com?subject=${encodeURIComponent('A note from isaacndahura.com')}&body=${encodeURIComponent(body)}`;
+}
+noteForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!noteForm.reportValidity()) return;
+  const mailto = buildNoteMailto(noteForm);
+  if (noteStatus) noteStatus.textContent = 'Opening your email app — your note stays on this device until you send it.';
+  window.location.href = mailto;
+});
+
 // Bits & Pieces: one explicit state machine owns selection and choreography.
 const FragmentState = Object.freeze({ RESTING: 'resting', SELECTED: 'selected', TRANSITIONING: 'transitioning' });
 const fragmentExperience = document.querySelector('[data-fragment-experience]');

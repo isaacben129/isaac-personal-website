@@ -29,7 +29,13 @@ const portraitSrc = '/images/isaac-portrait.jpg';
           {site.navigation.map((item) => <a href={item.href}>{item.label}</a>)}
         </nav>
         <span class="header-note">PERSONAL ARCHIVE</span>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span></button>
       </header>
+      <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+        <div class="mobile-menu-head"><span class="wordmark" aria-hidden="true">IN<span>.</span></span><button class="menu-close" type="button" data-menu-close aria-label="Close menu">×</button></div>
+        <nav class="mobile-nav" aria-label="Mobile navigation">{site.navigation.map((item, index) => <a href={item.href}><small>{String(index + 1).padStart(2, '0')}</small><span>{item.label}</span></a>)}</nav>
+        <p class="mobile-menu-signoff mono">PERSONAL ARCHIVE · NAIROBI</p>
+      </div>
       <main id="main">
         <div class:list={['intro-sequence', { 'has-portrait': Boolean(portraitSrc) }]}>
         <section class="hero" id="top" aria-labelledby="hero-title">
@@ -77,25 +83,21 @@ const portraitSrc = '/images/isaac-portrait.jpg';
               <p class="fragment-panel-story" data-fragment-story>The formats and interactions are real; the personal content is intentionally replaceable.</p>
             </aside>
           </div>
-          <p class="fragment-help mono">Tap or press Enter to focus a piece · Escape to close</p>
         </section>
         <section class="library section" id="work" aria-labelledby="work-title">
           <div class="section-topline"><div class="section-kicker mono"><span>04</span><span>THINGS I’VE MADE</span></div><p class="section-aside">A physical shelf, not a reading list.</p></div>
           <div class="section-title-row"><h2 id="work-title" class="section-heading condensed">The Bookshelf</h2></div>
 
-          <div class="library-controls mono" aria-label="Library interaction controls"><span class="library-hint">ACTIVATE A BOOK TO INTERACT · DRAG OR USE ARROW KEYS</span></div>
-          <div class="shelf-stage" data-shelf aria-label="Interactive bookshelf simulation. Seven placeholders, not actual projects." aria-describedby="shelf-instructions">
+          <div class="shelf-stage" data-shelf aria-label="Interactive bookshelf simulation. Seven placeholders, not actual projects.">
             <div class="shelf-platform" data-shelf-row="1" aria-label="Upper shelf"></div>
             <div class="shelf-platform shelf-platform-lower" data-shelf-row="2" aria-label="Lower shelf"></div>
             <div class="shelf-books" role="list">{shelfMarkup.map((book) => <div class="book-body" role="listitem" data-book data-tone={book.tone} data-row={book.id <= '04' ? 'upper' : 'lower'} data-id={book.id} tabindex="0" aria-label={`${book.title}, review placeholder, activate or use arrow keys to adjust`} data-preview-slug={book.slug} data-preview-title={book.title} data-preview-summary={book.summary}><span class="book-spine" aria-hidden="true"><span>{book.title}</span></span></div>)}</div>
             <noscript><p class="noscript-note">The shelf remains a static, labelled visual without JavaScript.</p></noscript>
           </div>
-          <p class="shelf-instructions mono" id="shelf-instructions">Drag a spine to move it. Keyboard: focus a book; arrows to nudge.</p>
-
           <dialog class="work-preview" data-work-preview aria-labelledby="work-preview-title"><button class="preview-close" type="button" data-preview-close aria-label="Close project preview">×</button><div class="open-book"><div class="open-book-page preview-cover" data-preview-cover aria-hidden="true"></div><div class="open-book-page preview-copy"><span class="preview-index mono" data-preview-index></span><h3 id="work-preview-title" data-preview-title></h3><p data-preview-summary></p><a class="text-button" data-preview-link href="/projects/first-project/">Read more</a></div></div></dialog>
         </section>
-        <section class="thoughts section" id="thoughts" aria-labelledby="thoughts-title"><div class="section-topline"><div class="section-kicker mono"><span>05</span><span>NOTES FROM THE INSIDE</span></div><p class="section-aside">Notes, questions, and ideas.</p></div><div class="section-title-row"><h2 id="thoughts-title" class="section-heading condensed">From My Head</h2></div><div class="writing-row" tabindex="0" aria-label="Horizontally browsable writing placeholder cards">{site.notes.map((note, index) => <article class="writing-card" data-writing-card><a href={`/articles/${note.slug}/`}><div class:list={['writing-art', `writing-art-${index + 1}`]} aria-hidden="true"><i></i></div><div class="writing-meta mono">{note.id}</div><h3>{note.title}</h3><p>{note.excerpt}</p><span class="card-read">Read note →</span></a></article>)}</div><div class="row-hint mono"><span>ON A SMALL SCREEN, SCROLL THE ROW</span><span aria-hidden="true">→</span></div></section>
-        <section class="closing section" id="hello" aria-labelledby="hello-title"><div class="section-kicker mono"><span>06</span><span>A SMALL INVITATION</span></div><h2 id="hello-title" class="closing-title">Something on your mind?</h2><p class="closing-copy">A proper way to leave a note will live here once the destination is confirmed.</p><div class="closing-mark" aria-hidden="true">IN<span>.</span></div></section>
+        <section class="thoughts section" id="thoughts" aria-labelledby="thoughts-title"><div class="section-topline"><div class="section-kicker mono"><span>05</span><span>NOTES FROM THE INSIDE</span></div><p class="section-aside">Notes, questions, and ideas.</p></div><div class="section-title-row"><h2 id="thoughts-title" class="section-heading condensed">From My Head</h2></div><div class="writing-row" tabindex="0" aria-label="Horizontally browsable writing placeholder cards">{site.notes.map((note, index) => <article class="writing-card" data-writing-card><a href={`/articles/${note.slug}/`}><div class:list={['writing-art', `writing-art-${index + 1}`]} aria-hidden="true"><i></i></div><div class="writing-meta mono">{note.id}</div><h3>{note.title}</h3><p>{note.excerpt}</p><span class="card-read">Read note →</span></a></article>)}</div></section>
+        <section class="closing section" id="hello" aria-labelledby="hello-title"><div class="section-kicker mono"><span>06</span><span>A SMALL INVITATION</span></div><h2 id="hello-title" class="closing-title">Something on your mind?</h2><p class="closing-copy">Leave the thought here. Sending opens your email app with the note already composed.</p><form class="note-form" data-note-form><div class="note-field"><label for="note-name">Name <span>optional</span></label><input id="note-name" name="name" autocomplete="name" /></div><div class="note-field"><label for="note-email">Email <span>optional</span></label><input id="note-email" name="email" type="email" autocomplete="email" /></div><div class="note-field note-message"><label for="note-message">Your note</label><textarea id="note-message" name="message" rows="5" required></textarea></div><button class="note-submit" type="submit">Open in my email app <span aria-hidden="true">↗</span></button><p class="note-status" data-note-status aria-live="polite"></p></form><div class="closing-mark" aria-hidden="true">IN<span>.</span></div></section>
       </main>
       <footer class="footer mono"><span>MADE SLOWLY, WITH CURIOSITY.</span><span>NAIROBI · © 2026</span></footer>
     </div>

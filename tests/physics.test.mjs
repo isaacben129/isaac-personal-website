@@ -51,7 +51,7 @@ test('mobile shelf semantics, data and CSS define four upper books and three low
 
 test('all spines are pointer and keyboard reachable and physics remains within the shelf stage', () => {
   assert.match(page, /tabindex="0" aria-label=\{`\$\{book\.title\}, review placeholder, activate or use arrow keys to adjust`\}/);
-  assert.match(page, /aria-describedby="shelf-instructions"/);
+  assert.doesNotMatch(page, /aria-describedby="shelf-instructions"/);
   assert.match(script, /pointerdown/);
   assert.match(script, /ArrowLeft/);
   assert.match(script, /Matter\.Query\.point/);
