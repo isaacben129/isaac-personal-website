@@ -188,24 +188,44 @@ if (!reduceMotion.matches) {
 
 
 const workPreview = document.querySelector('[data-work-preview]');
+const openArtifact = document.querySelector('[data-open-artifact]');
+const previewKind = workPreview?.querySelector('[data-preview-kind]');
+const previewVisual = workPreview?.querySelector('[data-preview-visual]');
+let previewOrigin = null;
 const previewData = Object.fromEntries([...document.querySelectorAll('[data-book]')].map((book) => [book.dataset.previewSlug, {
   id: book.dataset.id,
   title: book.dataset.previewTitle,
   summary: book.dataset.previewSummary,
+  kind: book.dataset.previewKind,
   href: `/projects/${book.dataset.previewSlug}/`,
 }]));
 function openWorkPreview(book) {
-  if (!workPreview || !book?.dataset.previewSlug) return;
+  if (!workPreview || !openArtifact || !book?.dataset.previewSlug) return;
   const item = previewData[book.dataset.previewSlug];
+  previewOrigin = book;
   workPreview.querySelector('[data-preview-index]').textContent = item.id;
   workPreview.querySelector('[data-preview-title]').textContent = item.title;
   workPreview.querySelector('[data-preview-summary]').textContent = item.summary;
+  workPreview.querySelector('[data-preview-description]').textContent = `${item.summary} This provisional spread is ready for the real supporting imagery and full project story.`;
   workPreview.querySelector('[data-preview-link]').href = item.href;
-  workPreview.querySelector('[data-preview-cover]').dataset.tone = book.dataset.tone;
+  workPreview.querySelector('[data-preview-visual-code]').textContent = `${item.kind.toUpperCase()} / ${item.id}`;
+  if (previewKind) previewKind.textContent = `${item.kind} · opened artifact`;
+  workPreview.dataset.kind = item.kind;
+  previewVisual.dataset.kind = item.kind;
   workPreview.showModal();
+  if (!reduceMotion.matches) {
+    gsap.fromTo(openArtifact, { y: 70, opacity: 0, scaleX: 0.18, scaleY: 0.88 }, { y: 0, opacity: 1, scaleX: 1, scaleY: 1, duration: 0.68, ease: 'power3.out' });
+  }
 }
-workPreview?.querySelector('[data-preview-close]')?.addEventListener('click', () => workPreview.close());
-workPreview?.addEventListener('click', (event) => { if (event.target === workPreview) workPreview.close(); });
+function closeWorkPreview() {
+  if (!workPreview?.open) return;
+  const complete = () => { workPreview.close(); previewOrigin?.focus(); };
+  if (reduceMotion.matches || !openArtifact) { complete(); return; }
+  gsap.to(openArtifact, { y: 55, opacity: 0, scaleX: 0.3, duration: 0.38, ease: 'power2.in', onComplete: complete });
+}
+workPreview?.querySelector('[data-preview-close]')?.addEventListener('click', closeWorkPreview);
+workPreview?.addEventListener('click', (event) => { if (event.target === workPreview) closeWorkPreview(); });
+workPreview?.addEventListener('cancel', (event) => { event.preventDefault(); closeWorkPreview(); });
 
 const shelf = document.querySelector('[data-shelf]');
 const stage = shelf;

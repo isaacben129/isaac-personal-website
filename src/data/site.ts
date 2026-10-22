@@ -1,4 +1,9 @@
 export const site = {
+  socials: [
+    { label: 'GitHub', short: 'GH', href: null },
+    { label: 'LinkedIn', short: 'IN', href: null },
+    { label: 'X', short: 'X', href: null },
+  ],
   name: 'Isaac Ndahura',
   navigation: [
     { label: 'Now', href: '/#now' },

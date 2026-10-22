@@ -26,6 +26,10 @@ button { font: inherit; }
 ::selection { color: var(--color-neutral); background: var(--color-tertiary); }
 .skip-link { position: fixed; top: 12px; left: 12px; z-index: 1000; padding: 10px 14px; transform: translateY(-150%); background: var(--color-primary); color: var(--color-neutral); font: 12px var(--font-utility); }
 .skip-link:focus { transform: translateY(0); }
+.social-rail { position: fixed; right: 18px; top: 50%; z-index: 2147483647; display: grid; gap: 8px; transform: translateY(-50%); }
+.social-rail a,.social-rail span { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #8b8172; background: #f4efe6eb; color: var(--color-primary); font: 8px var(--font-utility); letter-spacing: .04em; text-decoration: none; }
+.social-rail span { color: #777066; cursor: help; }
+.social-rail a:hover { background: var(--color-primary); color: var(--color-neutral); }
 .site-shell { max-width: var(--measure); margin-inline: auto; padding-inline: var(--page-x); overflow: clip; }
 .mono, .eyebrow, .micro-label, .section-kicker, .review-tag, .review-note, .header-note, .scroll-cue, .hero-index, .footer, .library-controls, .shelf-caption, .writing-meta, .row-hint { font-family: var(--font-utility); text-transform: uppercase; letter-spacing: .08em; }
 .topbar { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; height: 74px; }
@@ -280,6 +284,8 @@ button { font: inherit; }
   .note-message, .note-submit, .note-status { grid-column: 1; }
   .closing-mark { margin-top: 42px; }
   .footer { font-size: 6px; }
+  .social-rail { right: 10px; top: auto; bottom: 12px; grid-auto-flow: column; transform: none; }
+  .social-rail a,.social-rail span { width: 44px; height: 44px; }
 }
 @media (max-width: 420px) {
   .section-topline { align-items: start; }
