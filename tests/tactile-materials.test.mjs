@@ -4,7 +4,7 @@ import { readFileSync, existsSync } from 'node:fs';
 
 const root = new URL('../', import.meta.url);
 test('production material tiles are real compressed images shipped with the site', () => {
-  for (const material of ['bookcloth', 'paper', 'bookboard', 'walnut']) {
+  for (const material of ['printed-jacket', 'paper', 'bookboard', 'walnut']) {
     const image = readFileSync(new URL(`public/images/materials/${material}.webp`, root));
     assert.equal(image.toString('ascii', 0, 4), 'RIFF');
     assert.equal(image.toString('ascii', 8, 12), 'WEBP');

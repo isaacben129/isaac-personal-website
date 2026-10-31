@@ -195,6 +195,7 @@ const previewData = new Map([...document.querySelectorAll('[data-book]')].map((b
   id: book.dataset.id,
   title: book.dataset.previewTitle,
   summary: book.dataset.previewSummary,
+  description: book.dataset.previewDescription,
   kind: book.dataset.previewKind,
   presentation: book.dataset.openPresentation,
   href: `/projects/${book.dataset.previewSlug}/`,
@@ -206,18 +207,36 @@ function openWorkPreview(book) {
   if (!activeVariant || !previewCopyTemplate) return;
   previewOrigin = book;
   workPreview.querySelectorAll('.artifact-variant').forEach((variant) => { variant.hidden = variant !== activeVariant; });
+  workPreview.querySelectorAll('[data-copy-slot]').forEach((slot) => slot.replaceChildren());
   const copySlot = activeVariant.querySelector('[data-copy-slot]');
   copySlot.replaceChildren(previewCopyTemplate.content.cloneNode(true));
   copySlot.querySelector('[data-preview-index]').textContent = item.id;
   copySlot.querySelector('[data-preview-title]').textContent = item.title;
   copySlot.querySelector('[data-preview-summary]').textContent = item.summary;
-  copySlot.querySelector('[data-preview-description]').textContent = 'This archive entry is ready for authentic imagery and a fuller project story when those materials are supplied.';
+  copySlot.querySelector('[data-preview-description]').textContent = item.description || 'This archive entry is ready for authentic imagery and a fuller project story when those materials are supplied.';
   copySlot.querySelector('[data-preview-kind]').textContent = `${item.kind} · ${item.presentation.replaceAll('_', ' ')}`;
   const visualCode = activeVariant.querySelector('[data-preview-visual-code]');
   if (visualCode) visualCode.textContent = `${item.kind.toUpperCase()} / ${item.id}`;
+  const spineDesign = book.dataset.spineDesign;
+  if (spineDesign) {
+    const frontispiece = document.createElement('div');
+    frontispiece.className = 'project-frontispiece';
+    frontispiece.setAttribute('aria-hidden', 'true');
+    const kicker = document.createElement('span');
+    kicker.className = 'frontispiece-kicker';
+    kicker.textContent = `PROJECT / ${item.id}`;
+    const mark = book.querySelector('.spine-symbol').cloneNode(true);
+    const title = document.createElement('strong');
+    title.textContent = item.title;
+    frontispiece.append(kicker, mark, title);
+    activeVariant.querySelector('.media-placeholder').replaceChildren(frontispiece);
+    copySlot.querySelector('.preview-meta span:last-child').textContent = 'PROJECT NOTES';
+    copySlot.querySelector('[data-preview-kind]').textContent = book.querySelector('.book-edition').textContent.replaceAll('/', '·');
+  }
   workPreview.querySelector('[data-preview-link]').href = item.href;
   workPreview.dataset.kind = item.kind;
   workPreview.dataset.presentation = item.presentation;
+  workPreview.dataset.spineDesign = spineDesign || '';
   document.body.classList.add('preview-open');
   workPreview.showModal();
   if (!reduceMotion.matches) {

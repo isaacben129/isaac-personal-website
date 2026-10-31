@@ -1,7 +1,7 @@
 /* Four optimized tiles from the generated atlas.
    Text and hardware remain live HTML; the images supply material only. */
 :root {
-  --material-cloth: url('/images/materials/bookcloth.webp');
+  --material-jacket: url('/images/materials/printed-jacket.webp');
   --material-paper: url('/images/materials/paper.webp');
   --material-board: url('/images/materials/bookboard.webp');
   --material-wood: url('/images/materials/walnut.webp');
@@ -10,14 +10,14 @@
 .shelf-object[data-shelf-object] {
   width: calc(var(--object-width) * var(--shelf-fit, 1));
   height: calc(var(--object-height) * var(--shelf-fit, 1));
-  border-radius: 3px 5px 2px 2px;
+  border-radius: 0;
   box-shadow: 2px 0 1px #1f1b1766, 5px 5px 6px #221b1930;
 }
 .shelf-object[data-shelf-object] .object-surface::before,
 .about-badge .object-surface::before {
   content: ''; position: absolute; z-index: 0; inset: 0;
-  background: var(--material-cloth) left top / 160px 160px;
-  mix-blend-mode: multiply; opacity: .7; pointer-events: none;
+  background: var(--material-jacket) left top / 240px 240px;
+  mix-blend-mode: multiply; opacity: .3; pointer-events: none;
 }
 .shelf-object[data-shelf-object] .object-surface { padding: 18px 12px; }
 .shelf-object[data-shelf-object] .object-highlight {
@@ -26,14 +26,20 @@
   box-shadow: inset 1px 1px 1px #fff4, inset -1px -1px 2px #0006;
 }
 .shelf-object[data-object-kind='book']::after {
-  content: ''; position: absolute; left: 6px; right: 4px; top: -3px; height: 4px;
-  background: repeating-linear-gradient(0deg,#a79c83 0 1px,#e7ddc5 1px 2px);
-  border: 1px solid #322c2440; border-radius: 50% 40% 0 0;
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px;
+  background: #ffffff35; border-bottom: 1px solid #0003;
+}
+.shelf-object[data-object-kind='book'] {
+  border-radius: 0; border-width: 0 1px;
+  box-shadow: inset 2px 0 1px #ffffff25,inset -3px 0 2px #0003,2px 0 0 #253126,4px 3px 4px #211a1738;
+}
+.shelf-object[data-object-kind='book'] .object-highlight {
+  background: linear-gradient(90deg,#0002 0,transparent 3px,transparent calc(100% - 5px),#0002 calc(100% - 4px),#fff3 calc(100% - 2px),transparent);
+  box-shadow: inset 0 -2px 0 #0003;
 }
 .shelf-object[data-object-kind='book'] .object-construction {
-  inset: 5px 5px 6px !important; border: 0 !important;
-  box-shadow: inset 2px 0 3px #0003, inset -1px 0 1px #ffffff25;
-  border-radius: 40% 35% 3px 3px / 8px 8px 3px 3px;
+  inset: 0 5px 0 3px !important; border: 0 !important;
+  box-shadow: inset -1px 0 0 #ffffff16; border-radius: 0;
 }
 .shelf-object[data-object-kind='book'] .spine-title {
   display: block; flex: 0 1 auto; width: auto; height: auto; max-height: 76%;
@@ -41,12 +47,12 @@
   writing-mode: vertical-rl; text-orientation: mixed;
   font: 500 clamp(18px,2.1vw,29px)/1.05 var(--font-body) !important;
   letter-spacing: .025em !important; text-align: left !important;
-  color: inherit !important; text-shadow: 0 1px 1px #0005;
+  color: inherit !important; text-shadow: none;
 }
 .spine-imprint { position: relative; z-index: 4; align-self: center; font: 7px var(--font-utility); letter-spacing: .12em; }
 .shelf-object[data-render-archetype='clothbound_tall_volume'] {
   color: #e7d9ad; background: #29483c;
-  border-color: #23372c; border-radius: 6px 8px 2px 2px;
+  border-color: #23372c; border-radius: 0;
 }
 .shelf-object[data-render-archetype='clothbound_tall_volume'] .spine-title {
   border-top: 1px solid #ceb67c99; border-bottom: 1px solid #ceb67c99;
@@ -54,7 +60,7 @@
 }
 .shelf-object[data-render-archetype='slim_swiss_paperback'] { background: #f0e3cd; color: #332f27; }
 .shelf-object[data-render-archetype='slim_swiss_paperback'] .object-surface::before {
-  background-image: var(--material-paper); background-size: 320px 320px; opacity: .85;
+  background-image: var(--material-jacket); background-size: 240px 240px; opacity: .3;
 }
 .shelf-object[data-render-archetype='slim_swiss_paperback'] .spine-title {
   font-family: var(--font-display) !important; font-weight: 600 !important;
@@ -132,7 +138,7 @@
 .shelf-object[data-render-archetype='certificate_keyring'] .object-identity,
 .shelf-object[data-render-archetype='certificate_keyring'] .object-highlight { display: none; }
 
-.notebook-layer { background-image: var(--material-cloth); background-size: 160px 160px; background-blend-mode: multiply; border-radius: 2px 3px 1px 1px; box-shadow: inset 0 -2px 0 #473b2b,0 2px 1px #27231955; }
+.notebook-layer { background-image: var(--material-jacket); background-size: 240px 240px; background-blend-mode: multiply; border-radius: 0; box-shadow: inset 0 -2px 0 #473b2b,0 2px 1px #27231955; }
 .notebook-layer::after { content: ''; position: absolute; left: 4px; right: 3px; bottom: 2px; height: 7px; background: repeating-linear-gradient(180deg,#e3d8be 0 1px,#ad9f83 1px 2px); box-shadow: inset 4px 0 3px #6a594a66; }
 .shelf-object[data-render-archetype='horizontal_notebook_stack'] .object-type { background: #eee1c8; box-shadow: 1px 1px 2px #2e261c40; }
 .shelf-platform { border-color: #77583c; background: var(--material-wood) center / 420px 200px; box-shadow: inset 0 2px 1px #d7b890,0 5px 0 #493320,0 9px 10px #21170f33; }
@@ -140,25 +146,25 @@
 
 /* Open spreads: paper with curved gutters, a visible casing, and layered fore-edges. */
 .artifact-page,.artifact-dossier-sheet,.certificate-sheet,.notes-card,.index-card,.photo-caption,.certificate-note {
-  background: linear-gradient(#ffffff26,#ffffff26), var(--material-paper) center / 480px 480px;
+  background: linear-gradient(#fffdf3aa,#fffdf3aa), var(--material-paper) center / 480px 480px;
 }
 .work-preview[data-kind='book'] .artifact-variant {
   grid-template-columns: minmax(0,1fr) 8px minmax(0,1fr);
   padding: 7px 8px 11px; border: 1px solid #24382e;
-  background: #29483c var(--material-cloth) left top / 160px 160px;
-  background-blend-mode: multiply; border-radius: 4px 5px 7px 5px;
+  background: #29483c var(--material-jacket) left top / 240px 240px;
+  background-blend-mode: multiply; border-radius: 0;
   box-shadow: 1px 2px 0 #183127,3px 7px 0 #183127,6px 13px 17px #0005;
 }
 .work-preview[data-presentation='tall_hardcover'] .artifact-variant { width: min(82vw,106dvh,980px); height: min(78dvh,750px); }
 .work-preview[data-presentation='tall_paperback'] .artifact-variant { width: min(76vw,98dvh,850px); height: min(76dvh,710px); padding: 3px 3px 7px; background-color: #b7aa90; border-color: #928368; }
 .work-preview[data-presentation='landscape_art_book'] .artifact-variant { background-color: #46606b; border-color: #2b424d; }
-.work-preview[data-kind='book'] .artifact-page { border: 0; overflow: visible; border-radius: 2px 6px 9px 2px / 2px 18px 18px 2px; }
-.work-preview[data-kind='book'] .artifact-visual { box-shadow: inset -12px 0 17px #60503955,inset 4px 0 4px #fff7; border-radius: 5px 1px 2px 5px / 16px 2px 2px 16px; }
-.work-preview[data-kind='book'] .artifact-copy { overflow-y: auto; box-shadow: inset 14px 0 17px #60503955,inset -3px 0 6px #fff8; padding: clamp(30px,4vw,62px); }
+.work-preview[data-kind='book'] .artifact-page { border: 0; overflow: visible; border-radius: 0; }
+.work-preview[data-kind='book'] .artifact-visual { box-shadow: inset -14px 0 18px -10px #59472d80,inset 1px 0 0 #fff; border-radius: 0; }
+.work-preview[data-kind='book'] .artifact-copy { overflow-y: auto; box-shadow: inset 14px 0 18px -10px #59472d80,inset -1px 0 0 #fff; padding: clamp(30px,4vw,62px); }
 .work-preview[data-kind='book'] .artifact-page::after {
   z-index: -1; inset: auto 1px -5px; height: 7px;
   background: repeating-linear-gradient(180deg,#dcd0b8 0 1px,#f8edda 1px 2px,#b4a68e 2px 3px);
-  border-radius: 0 0 50% 10%; box-shadow: 0 2px 2px #3e30284d;
+  border-radius: 0; box-shadow: 0 2px 2px #3e30284d;
 }
 .work-preview[data-kind='book'] .artifact-copy::after { display: none; }
 .work-preview[data-kind='book'] .artifact-variant::after { content: ''; position: absolute; left: 9px; right: 9px; bottom: 3px; height: 5px; background: repeating-linear-gradient(180deg,#dcd0b8 0 1px,#f8edda 1px 2px,#b4a68e 2px 3px); pointer-events: none; }
@@ -166,7 +172,7 @@
 .artifact-cloth-hinge,.artifact-paper-fold,.artifact-board-hinge { background: linear-gradient(90deg,#8c7c61,#4b3f2f 46%,#b8a78a); box-shadow: none; }
 .media-placeholder { background: #e0d4bd var(--material-paper) center / 480px 480px; background-blend-mode: multiply; border: 1px solid #b8aa92; box-shadow: 1px 3px 4px #5f4d3030; }
 .artifact-folder,.artifact-folder-pocket { background-image: var(--material-board); background-size: 380px 380px; background-blend-mode: multiply; }
-.artifact-binder { background-image: var(--material-cloth); background-size: 160px 160px; background-blend-mode: multiply; }
+.artifact-binder { background-image: var(--material-board); background-size: 300px 300px; background-blend-mode: multiply; }
 .artifact-binder-rings i { border-color: #bdb8a6; box-shadow: inset 0 2px 1px #fff7,0 3px 2px #29281a80; }
 .work-preview[data-presentation='photo_object'] .artifact-photo-mount { border: 14px solid #69472d; background: var(--material-wood) center / 280px 280px; box-shadow: inset 3px 3px 2px #ead2a578,inset -4px -4px 2px #2d1c10; }
 .photo-plane { background: #c4b9a4; border-color: #f1e7d5; box-shadow: inset 2px 3px 5px #2b211755,0 0 0 1px #9e8c6d; }
