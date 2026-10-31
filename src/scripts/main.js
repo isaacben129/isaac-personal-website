@@ -225,13 +225,12 @@ function openWorkPreview(book) {
     const kicker = document.createElement('span');
     kicker.className = 'frontispiece-kicker';
     kicker.textContent = `PROJECT / ${item.id}`;
-    const mark = book.querySelector('.spine-symbol').cloneNode(true);
     const title = document.createElement('strong');
     title.textContent = item.title;
-    frontispiece.append(kicker, mark, title);
+    frontispiece.append(kicker, title);
     activeVariant.querySelector('.media-placeholder').replaceChildren(frontispiece);
     copySlot.querySelector('.preview-meta span:last-child').textContent = 'PROJECT NOTES';
-    copySlot.querySelector('[data-preview-kind]').textContent = book.querySelector('.book-edition').textContent.replaceAll('/', '·');
+    copySlot.querySelector('[data-preview-kind]').textContent = 'PROJECT NOTES';
   }
   workPreview.querySelector('[data-preview-link]').href = item.href;
   workPreview.dataset.kind = item.kind;

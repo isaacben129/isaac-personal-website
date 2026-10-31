@@ -9,7 +9,7 @@ const shelfCss = readFileSync(new URL('../src/styles/global.css', import.meta.ur
 const js = readFileSync(new URL('../src/scripts/main.js', import.meta.url), 'utf8');
 
 const archetypes = [
-  'cherry_printed_hardcover','held_prayer_paperback','fapcount_tracking_volume','careledger_record_book',
+  'cherry_paperback','held_leather_hardcover','fapcount_paperback','careledger_paperboard_hardback',
   'olive_ring_binder','framed_image_artifact','certificate_keyring','horizontal_notebook_stack',
 ];
 const presentations = [
@@ -29,7 +29,8 @@ test('shelf renderer has explicit physical layers and at least five distinguisha
   for (const value of archetypes.slice(4)) assert.match(shelfCss, new RegExp(`data-render-archetype=['"]${value}['"]`));
   for (const design of ['cherry','held','fapcount','careledger']) {
     assert.match(data, new RegExp(`spineDesign: '${design}'`));
-    assert.match(shelfCss, new RegExp(`data-spine-design='${design}'`));
+    assert.match(page, /generated-spine-image/);
+    assert.match(shelfCss, /\.generated-spine-image/);
   }
 });
 

@@ -1,78 +1,37 @@
-/* Four project-specific printed jackets. Texture supplies paper tooth, not cloth. */
-.shelf-object[data-spine-design] { --book-scale: var(--shelf-fit,1); border-radius: 0; }
-.shelf-object[data-spine-design] .object-surface { padding: 0; }
-.shelf-object[data-spine-design] .book-edition { position: absolute; top: 16px; left: 8px; right: 8px; font: 7px/1.4 var(--font-utility); letter-spacing: .04em; }
-.shelf-object[data-spine-design] .spine-title { position: absolute; left: 50%; top: 18%; max-height: none; height: 58%; padding: 0; margin: 0 !important; border: 0; transform: translateX(-50%); }
-.spine-symbol { position: absolute; z-index: 4; left: 12%; right: 12%; bottom: 12%; display: grid; place-items: center; }
-.spine-symbol svg,.spine-symbol img { display: block; width: 100%; height: auto; max-height: 100%; object-fit: contain; }
-.spine-caption { position: absolute; z-index: 4; left: 8px; right: 8px; bottom: 8%; font: 6px/1.4 var(--font-utility); text-align: center; letter-spacing: .03em; }
-.shelf-object[data-spine-design] .spine-imprint { position: absolute; bottom: 12px; right: 8px; font-size: 7px; }
-
-/* Cherry: a red letterpress-like title on cream and its authentic pixel mascot. */
-.shelf-object[data-spine-design='cherry'] { background: #f0e8d4; color: #ba2d31; }
-.shelf-object[data-spine-design='cherry'] .book-edition { color: #37352e; }
-.shelf-object[data-spine-design='cherry'] .spine-title { top: 19%; height: 50%; font: 700 calc(47px * var(--book-scale))/.95 var(--font-display) !important; letter-spacing: -.015em !important; }
-.shelf-object[data-spine-design='cherry'] .spine-symbol { bottom: 12%; left: 0; right: 0; height: 21%; }
-.shelf-object[data-spine-design='cherry'] .spine-symbol img { image-rendering: pixelated; }
-.shelf-object[data-spine-design='cherry'] .spine-caption { color: #37352e; bottom: 7%; }
-.shelf-object[data-spine-design='cherry']::before { content: ''; position: absolute; top: 11%; left: 0; right: 0; height: 4px; background: #b92d31; }
-
-/* Held: restrained violet, a large literary title and a prayer-hands drawing. */
-.shelf-object[data-spine-design='held'] { background: #e9ddf1; color: #36243f; }
-.shelf-object[data-spine-design='held'] .book-edition { top: 0; left: 0; right: 0; height: 13%; padding: 12px 6px; background: #513262; color: #faf2e6; text-align: center; }
-.shelf-object[data-spine-design='held'] .spine-title { top: 19%; height: 49%; font: 500 calc(57px * var(--book-scale))/.9 Georgia,serif !important; letter-spacing: -.035em !important; }
-.shelf-object[data-spine-design='held'] .spine-symbol { bottom: 14%; height: 16%; }
-.shelf-object[data-spine-design='held'] .spine-caption { bottom: 8%; }
-
-/* Fap Count: an orange/navy tracking manual with tally marks as the printed mark. */
-.shelf-object[data-spine-design='fapcount'] { background: #1d2f46; color: #f4ecda; }
-.shelf-object[data-spine-design='fapcount'] .book-edition { top: 0; left: 0; right: 0; height: 18%; padding: 15px 9px; background: #e99c52; color: #192b40; font-weight: 500; }
-.shelf-object[data-spine-design='fapcount'] .spine-title { top: 23%; left: 53%; height: 51%; text-transform: uppercase; font: 600 calc(35px * var(--book-scale))/1 var(--font-utility) !important; letter-spacing: -.08em !important; }
-.shelf-object[data-spine-design='fapcount'] .spine-symbol { height: 13%; bottom: 11%; left: 20%; right: 20%; color: #e99c52; }
-.shelf-object[data-spine-design='fapcount'] .spine-caption { bottom: 6%; }
-
-/* CareLedger: a ruled record book, with a checked-entry motif and a dark green foot. */
-.shelf-object[data-spine-design='careledger'] { background: #e4e6d8; color: #243b35; }
-.shelf-object[data-spine-design='careledger'] .book-edition { top: 14px; left: 10px; right: 10px; border-bottom: 1px solid #52655b66; padding-bottom: 10px; }
-.shelf-object[data-spine-design='careledger'] .spine-title { top: 19%; left: 60%; height: 54%; font: 600 calc(32px * var(--book-scale))/1 Arial,sans-serif !important; letter-spacing: -.035em !important; }
-.shelf-object[data-spine-design='careledger'] .spine-symbol { bottom: 10%; height: 17%; left: 27%; right: 27%; color: #e7eadb; }
-.shelf-object[data-spine-design='careledger'] .spine-caption { bottom: 5%; color: #e7eadb; font-size: 5px; }
-.shelf-object[data-spine-design='careledger'] .spine-imprint { color: #e7eadb; bottom: 7px; }
-.shelf-object[data-spine-design='careledger'] .object-surface { background: linear-gradient(0deg,#29493e 0 29%,transparent 29%); }
-.shelf-object[data-spine-design='careledger'] .object-construction { left: 12px !important; right: auto !important; width: 7px; box-shadow: none; border-left: 1px solid #927f6b77 !important; }
-
-/* Project frontispieces carry the same identity into the opened object. */
-.work-preview[data-kind='book'] .media-placeholder { inset: 8%; border: 0; background: transparent; box-shadow: none; }
-.project-frontispiece { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 24px; border: 1px solid #bcb3a1; background: #f2e9d6; color: #ba2d31; }
-.frontispiece-kicker { font: 8px var(--font-utility); letter-spacing: .12em; }
-.project-frontispiece strong { font: 700 clamp(44px,5vw,80px)/1 var(--font-display); letter-spacing: -.025em; text-transform: none; }
-.project-frontispiece .spine-symbol { position: static; width: 46%; height: 38%; }
-.work-preview[data-spine-design='held'] .project-frontispiece { background: #e9ddf1; color: #513262; }
-.work-preview[data-spine-design='held'] .project-frontispiece strong { font-family: Georgia,serif; font-weight: 400; }
-.work-preview[data-spine-design='fapcount'] .project-frontispiece { background: #1d2f46; color: #f3bd7c; }
-.work-preview[data-spine-design='fapcount'] .project-frontispiece strong { font-family: var(--font-utility); font-size: clamp(28px,3.3vw,52px); }
-.work-preview[data-spine-design='careledger'] .project-frontispiece { background: #29493e; color: #e7eadb; }
-.work-preview[data-spine-design='careledger'] .project-frontispiece strong { font-family: Arial,sans-serif; font-size: clamp(32px,4vw,58px); }
-.work-preview[data-spine-design='cherry'] { --case-edge: #8d292e; }
-.work-preview[data-spine-design='held'] { --case-edge: #382444; }
-.work-preview[data-spine-design='fapcount'] { --case-edge: #142237; }
-.work-preview[data-spine-design='careledger'] { --case-edge: #203a31; }
-.work-preview[data-spine-design] .artifact-variant { box-shadow: 1px 2px 0 var(--case-edge),3px 7px 0 var(--case-edge),6px 13px 17px #0005; }
-.work-preview[data-spine-design='cherry'] .artifact-variant { background-color: #b22b30; border-color: #97242a; }
-.work-preview[data-spine-design='held'] .artifact-variant { background-color: #513262; border-color: #513262; }
-.work-preview[data-spine-design='fapcount'] .artifact-variant { background-color: #1d2f46; border-color: #1d2f46; }
-.work-preview[data-spine-design='careledger'] .artifact-variant { background-color: #29493e; border-color: #29493e; }
-
-@media(max-width:760px) {
-  .shelf-object[data-spine-design] { --book-scale: calc(.62 * var(--shelf-fit,1)); }
-  .shelf-object[data-spine-design] .book-edition { top: 10px; left: 5px; right: 5px; font-size: 4px; }
-  .shelf-object[data-spine-design='held'] .book-edition,.shelf-object[data-spine-design='fapcount'] .book-edition { top: 0; left: 0; right: 0; padding: 8px 5px; }
-  .shelf-object[data-spine-design='careledger'] .book-edition { padding-bottom: 5px; }
-  .shelf-object[data-spine-design] .spine-caption { left: 4px; right: 4px; font-size: 4px; }
-  .shelf-object[data-spine-design] .spine-imprint { bottom: 6px; right: 5px; font-size: 5px; }
-}
+/* The cutout contains the physical book and its printed typography. */
+.shelf-object[data-spine-design] { border:0; border-radius:0; background:transparent; box-shadow:none; }
+.shelf-object[data-spine-design]::before,.shelf-object[data-spine-design]::after,
+.shelf-object[data-spine-design] .object-surface::before,.shelf-object[data-spine-design] .object-surface::after,
+.shelf-object[data-spine-design] .object-construction,.shelf-object[data-spine-design] .object-highlight,
+.shelf-object[data-spine-design] .object-contact { display:none; }
+.shelf-object[data-spine-design] .object-surface { display:block; padding:0; overflow:visible; background:transparent; box-shadow:none; }
+.generated-spine-image { display:block; width:100%; height:100%; object-fit:contain; pointer-events:none; user-select:none; filter:drop-shadow(2px 2px 1px #211a1726); }
+.shelf-object:has(.generated-object-image) { border:0; padding:0; border-radius:0; background:transparent; box-shadow:none; }
+.shelf-object:has(.generated-object-image)::before,.shelf-object:has(.generated-object-image)::after,
+.shelf-object:has(.generated-object-image) .object-surface::before,.shelf-object:has(.generated-object-image) .object-surface::after,
+.shelf-object:has(.generated-object-image) .object-construction,.shelf-object:has(.generated-object-image) .object-highlight,
+.shelf-object:has(.generated-object-image) .object-contact { display:none; }
+.shelf-object:has(.generated-object-image) .object-surface { display:block; padding:0; overflow:visible; background:transparent; box-shadow:none; }
+.generated-object-image { display:block; width:100%; height:100%; object-fit:contain; pointer-events:none; user-select:none; filter:drop-shadow(2px 2px 1px #211a1726); }
+.work-preview[data-presentation='photo_object'] .artifact-photo-mount { border:0; padding:0; background:transparent; box-shadow:none; }
+.work-preview .photo-plane { border:0; background:url('/images/objects/frame.webp') center/contain no-repeat; box-shadow:none; }
+.work-preview .photo-plane>span { visibility:hidden; }
+/* The complete generated spread supplies the casing, binding and paper. */
+.work-preview[data-presentation] .artifact-variant[hidden] { display:none; }
+.work-preview[data-kind='book'] .artifact-variant { width:min(88vw,108dvh,1080px); height:min(80dvh,800px); padding:4% 4% 5%; grid-template-columns:minmax(0,1fr) 4% minmax(0,1fr); border:0; border-radius:0; box-shadow:none; background:url('/images/books/open-book.webp') center/100% 100% no-repeat; filter:drop-shadow(3px 10px 12px #0004); }
+.work-preview[data-kind='book'] .artifact-variant::after,.work-preview[data-kind='book'] .artifact-page::after,
+.work-preview[data-kind='book'] .artifact-cloth-hinge,.work-preview[data-kind='book'] .artifact-paper-fold,
+.work-preview[data-kind='book'] .artifact-board-hinge { visibility:hidden; }
+.work-preview[data-kind='book'] .artifact-page { border:0; border-radius:0; background:transparent; box-shadow:none; }
+.work-preview[data-kind='book'] .artifact-copy { padding:24px; }
+.work-preview[data-kind='book'] .media-placeholder { inset:10%; border:0; background:transparent; box-shadow:none; }
+.project-frontispiece { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; color:#302b25; }
+.frontispiece-kicker { font:8px var(--font-utility); letter-spacing:.12em; }
+.project-frontispiece strong { font:500 clamp(30px,3vw,48px)/1.1 var(--font-body); text-align:center; }
 @media(max-width:767px) {
-  .project-frontispiece { gap: 14px; padding: 18px; }
-  .project-frontispiece strong { font-size: 44px; }
-  .work-preview[data-spine-design='fapcount'] .project-frontispiece strong { font-size: 30px; }
+ .work-preview[data-kind='book'] .artifact-variant { width:100%; height:auto; min-height:0; min-width:0; padding:0; grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto; background:transparent; filter:none; }
+ .work-preview[data-kind='book'] .artifact-visual { width:100%; min-width:0; min-height:0; aspect-ratio:1.462; align-self:start; background:url('/images/books/open-book.webp') center/contain no-repeat; }
+ .work-preview[data-kind='book'] .media-placeholder { left:8%; right:54%; top:8%; bottom:10%; }
+ .project-frontispiece { gap:8px; } .project-frontispiece strong { font-size:20px; } .frontispiece-kicker { font-size:5px; }
+ .work-preview[data-kind='book'] .artifact-copy { padding:34px 14px 50px; }
 }
