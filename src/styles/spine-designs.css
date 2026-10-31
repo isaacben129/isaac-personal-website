@@ -1,0 +1,37 @@
+/* The cutout contains the physical book and its printed typography. */
+.shelf-object[data-spine-design] { border:0; border-radius:0; background:transparent; box-shadow:none; }
+.shelf-object[data-spine-design]::before,.shelf-object[data-spine-design]::after,
+.shelf-object[data-spine-design] .object-surface::before,.shelf-object[data-spine-design] .object-surface::after,
+.shelf-object[data-spine-design] .object-construction,.shelf-object[data-spine-design] .object-highlight,
+.shelf-object[data-spine-design] .object-contact { display:none; }
+.shelf-object[data-spine-design] .object-surface { display:block; padding:0; overflow:visible; background:transparent; box-shadow:none; }
+.generated-spine-image { display:block; width:100%; height:100%; object-fit:contain; pointer-events:none; user-select:none; filter:drop-shadow(2px 2px 1px #211a1726); }
+.shelf-object:has(.generated-object-image) { border:0; padding:0; border-radius:0; background:transparent; box-shadow:none; }
+.shelf-object:has(.generated-object-image)::before,.shelf-object:has(.generated-object-image)::after,
+.shelf-object:has(.generated-object-image) .object-surface::before,.shelf-object:has(.generated-object-image) .object-surface::after,
+.shelf-object:has(.generated-object-image) .object-construction,.shelf-object:has(.generated-object-image) .object-highlight,
+.shelf-object:has(.generated-object-image) .object-contact { display:none; }
+.shelf-object:has(.generated-object-image) .object-surface { display:block; padding:0; overflow:visible; background:transparent; box-shadow:none; }
+.generated-object-image { display:block; width:100%; height:100%; object-fit:contain; pointer-events:none; user-select:none; filter:drop-shadow(2px 2px 1px #211a1726); }
+.work-preview[data-presentation='photo_object'] .artifact-photo-mount { border:0; padding:0; background:transparent; box-shadow:none; }
+.work-preview .photo-plane { border:0; background:url('/images/objects/frame.webp') center/contain no-repeat; box-shadow:none; }
+.work-preview .photo-plane>span { visibility:hidden; }
+/* The complete generated spread supplies the casing, binding and paper. */
+.work-preview[data-presentation] .artifact-variant[hidden] { display:none; }
+.work-preview[data-kind='book'] .artifact-variant { width:min(88vw,108dvh,1080px); height:min(80dvh,800px); padding:4% 4% 5%; grid-template-columns:minmax(0,1fr) 4% minmax(0,1fr); border:0; border-radius:0; box-shadow:none; background:url('/images/books/open-book.webp') center/100% 100% no-repeat; filter:drop-shadow(3px 10px 12px #0004); }
+.work-preview[data-kind='book'] .artifact-variant::after,.work-preview[data-kind='book'] .artifact-page::after,
+.work-preview[data-kind='book'] .artifact-cloth-hinge,.work-preview[data-kind='book'] .artifact-paper-fold,
+.work-preview[data-kind='book'] .artifact-board-hinge { visibility:hidden; }
+.work-preview[data-kind='book'] .artifact-page { border:0; border-radius:0; background:transparent; box-shadow:none; }
+.work-preview[data-kind='book'] .artifact-copy { padding:24px; }
+.work-preview[data-kind='book'] .media-placeholder { inset:10%; border:0; background:transparent; box-shadow:none; }
+.project-frontispiece { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; color:#302b25; }
+.frontispiece-kicker { font:8px var(--font-utility); letter-spacing:.12em; }
+.project-frontispiece strong { font:500 clamp(30px,3vw,48px)/1.1 var(--font-body); text-align:center; }
+@media(max-width:767px) {
+ .work-preview[data-kind='book'] .artifact-variant { width:100%; height:auto; min-height:0; min-width:0; padding:0; grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto; background:transparent; filter:none; }
+ .work-preview[data-kind='book'] .artifact-visual { width:100%; min-width:0; min-height:0; aspect-ratio:1.462; align-self:start; background:url('/images/books/open-book.webp') center/contain no-repeat; }
+ .work-preview[data-kind='book'] .media-placeholder { left:8%; right:54%; top:8%; bottom:10%; }
+ .project-frontispiece { gap:8px; } .project-frontispiece strong { font-size:20px; } .frontispiece-kicker { font-size:5px; }
+ .work-preview[data-kind='book'] .artifact-copy { padding:34px 14px 50px; }
+}

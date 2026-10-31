@@ -1,6 +1,8 @@
 ---
 import { site } from '../data/site';
 import '../styles/global.css';
+import '../styles/materials.css';
+import '../styles/spine-designs.css';
 
 const shelfMarkup = site.shelfObjects;
 // Temporary faithful crop from the owner-supplied screenshot; replace with a true cutout later.
@@ -94,17 +96,14 @@ const portraitSrc = '/images/isaac-portrait.jpg';
           <div class="shelf-stage" data-shelf aria-label="Interactive shelf of project books, folders, artifacts, and fragments.">
             <div class="shelf-platform" data-shelf-row="1" aria-label="Upper shelf"></div>
             <div class="shelf-platform shelf-platform-lower" data-shelf-row="2" aria-label="Lower shelf"></div>
-            <div class="shelf-collection" role="list">{shelfMarkup.map((item) => <div class:list={['shelf-object', `shelf-object-${item.kind}`]} role="listitem" data-book data-shelf-object data-object-kind={item.kind} data-render-archetype={item.renderArchetype} data-open-presentation={item.presentation} data-tone={item.tone} data-row={item.row} data-label-style={item.labelStyle} data-detail={item.detail} data-id={item.id} tabindex="0" aria-label={`${item.title}, provisional shelf object, activate or use arrow keys to adjust`} data-preview-slug={item.slug} data-preview-title={item.title} data-preview-summary={item.summary} data-preview-kind={item.kind} style={`--object-width:${item.dimensions.width}px;--object-height:${item.dimensions.height}px`}>
+            <div class="shelf-collection" role="list">{shelfMarkup.map((item) => <div class:list={['shelf-object', `shelf-object-${item.kind}`]} role="listitem" data-book data-shelf-object data-object-kind={item.kind} data-render-archetype={item.renderArchetype} data-spine-design={'spineDesign' in item ? item.spineDesign : undefined} data-open-presentation={item.presentation} data-tone={item.tone} data-row={item.row} data-label-style={item.labelStyle} data-detail={item.detail} data-id={item.id} tabindex="0" aria-label={`${item.title}, provisional shelf object, activate or use arrow keys to adjust`} data-preview-slug={item.slug} data-preview-title={item.title} data-preview-summary={item.summary} data-preview-description={site.works.find(work => work.slug === item.slug)?.body[0]} data-preview-kind={item.kind} style={`--object-width:${item.dimensions.width}px;--object-height:${item.dimensions.height}px`}>
               <span class="object-surface shelf-object-face" aria-hidden="true">
                 <i class="object-construction"></i><i class="object-highlight"></i><i class="object-contact"></i>
-                {item.renderArchetype === 'clothbound_tall_volume' && <><small class="object-identity">ARCHIVE · {item.id}</small><span class="object-type">F<br/>P</span><b class="cloth-rule"></b></>}
-                {item.renderArchetype === 'slim_swiss_paperback' && <><span class="object-type"><b>S</b><b>EC</b><b>OND</b></span><small class="object-identity">INDEX {item.id}</small></>}
-                {item.renderArchetype === 'wide_art_book' && <><span class="object-type">THIRD<br/>PROJECT</span><b class="art-band"></b><small class="object-identity">VISUAL ARCHIVE · {item.id}</small></>}
-                {item.renderArchetype === 'rust_archival_box_file' && <><i class="folder-tab"></i><span class="object-type">IDEA INDEX</span><small class="object-identity">WORKING FILE · {item.id}</small><b class="folder-eyelet"></b></>}
-                {item.renderArchetype === 'olive_ring_binder' && <><i class="binder-tab"></i><span class="object-type">NOTES / 05</span><small class="object-identity">COLLECTED MATERIAL</small><b class="binder-rivet"></b></>}
-                {item.renderArchetype === 'framed_image_artifact' && <><i class="photo-mat"><em>Image coming soon</em></i><span class="object-type">IMAGE 06</span></>}
-                {item.renderArchetype === 'certificate_keyring' && <><i class="tag-ring"></i><i class="tag-eyelet"></i><span class="object-type">CERTIFICATE</span><small class="object-identity">ASSET PENDING</small></>}
-                {item.renderArchetype === 'horizontal_notebook_stack' && <><i class="notebook-layer layer-one"></i><i class="notebook-layer layer-two"></i><i class="notebook-layer layer-three"></i><span class="object-type">NOTES / LATER</span></>}
+                {item.kind === 'book' && 'spineDesign' in item && <img class="generated-spine-image" src={`/images/books/${item.spineDesign}-spine.webp`} alt="" draggable="false" />}
+                {item.renderArchetype === 'olive_ring_binder' && <img class="generated-object-image" src="/images/objects/binder.webp" alt="" draggable="false" />}
+                {item.renderArchetype === 'framed_image_artifact' && <img class="generated-object-image" src="/images/objects/frame.webp" alt="" draggable="false" />}
+                {item.renderArchetype === 'certificate_keyring' && <img class="generated-object-image" src="/images/objects/keychain.webp" alt="" draggable="false" />}
+                {item.renderArchetype === 'horizontal_notebook_stack' && <img class="generated-object-image" src="/images/objects/notebooks.webp" alt="" draggable="false" />}
               </span>
             </div>)}</div>
             <noscript><p class="noscript-note">The shelf remains a static, labelled visual without JavaScript.</p></noscript>

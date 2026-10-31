@@ -195,6 +195,7 @@ const previewData = new Map([...document.querySelectorAll('[data-book]')].map((b
   id: book.dataset.id,
   title: book.dataset.previewTitle,
   summary: book.dataset.previewSummary,
+  description: book.dataset.previewDescription,
   kind: book.dataset.previewKind,
   presentation: book.dataset.openPresentation,
   href: `/projects/${book.dataset.previewSlug}/`,
@@ -206,18 +207,35 @@ function openWorkPreview(book) {
   if (!activeVariant || !previewCopyTemplate) return;
   previewOrigin = book;
   workPreview.querySelectorAll('.artifact-variant').forEach((variant) => { variant.hidden = variant !== activeVariant; });
+  workPreview.querySelectorAll('[data-copy-slot]').forEach((slot) => slot.replaceChildren());
   const copySlot = activeVariant.querySelector('[data-copy-slot]');
   copySlot.replaceChildren(previewCopyTemplate.content.cloneNode(true));
   copySlot.querySelector('[data-preview-index]').textContent = item.id;
   copySlot.querySelector('[data-preview-title]').textContent = item.title;
   copySlot.querySelector('[data-preview-summary]').textContent = item.summary;
-  copySlot.querySelector('[data-preview-description]').textContent = 'This archive entry is ready for authentic imagery and a fuller project story when those materials are supplied.';
+  copySlot.querySelector('[data-preview-description]').textContent = item.description || 'This archive entry is ready for authentic imagery and a fuller project story when those materials are supplied.';
   copySlot.querySelector('[data-preview-kind]').textContent = `${item.kind} · ${item.presentation.replaceAll('_', ' ')}`;
   const visualCode = activeVariant.querySelector('[data-preview-visual-code]');
   if (visualCode) visualCode.textContent = `${item.kind.toUpperCase()} / ${item.id}`;
+  const spineDesign = book.dataset.spineDesign;
+  if (spineDesign) {
+    const frontispiece = document.createElement('div');
+    frontispiece.className = 'project-frontispiece';
+    frontispiece.setAttribute('aria-hidden', 'true');
+    const kicker = document.createElement('span');
+    kicker.className = 'frontispiece-kicker';
+    kicker.textContent = `PROJECT / ${item.id}`;
+    const title = document.createElement('strong');
+    title.textContent = item.title;
+    frontispiece.append(kicker, title);
+    activeVariant.querySelector('.media-placeholder').replaceChildren(frontispiece);
+    copySlot.querySelector('.preview-meta span:last-child').textContent = 'PROJECT NOTES';
+    copySlot.querySelector('[data-preview-kind]').textContent = 'PROJECT NOTES';
+  }
   workPreview.querySelector('[data-preview-link]').href = item.href;
   workPreview.dataset.kind = item.kind;
   workPreview.dataset.presentation = item.presentation;
+  workPreview.dataset.spineDesign = spineDesign || '';
   document.body.classList.add('preview-open');
   workPreview.showModal();
   if (!reduceMotion.matches) {
@@ -305,6 +323,16 @@ function configureStage() {
   const mobileLayout = window.matchMedia('(max-width: 760px)').matches;
   const hasTwoRows = mobileLayout && books.length > 1;
   const upperCount = hasTwoRows ? Math.ceil(books.length / 2) : books.length;
+  // Fit both supported tiers before creating bodies; the key fob shares the stack's footprint.
+  stage.style.setProperty('--shelf-fit', '1');
+  const isAccessory = (book) => book.dataset.renderArchetype === 'certificate_keyring';
+  const objectGap = mobileLayout ? 8 : 4;
+  const laneWidth = (lane) => {
+    const standing = lane.filter((book) => !isAccessory(book));
+    return standing.reduce((sum, book) => sum + book.offsetWidth, 0) + Math.max(0, standing.length - 1) * objectGap;
+  };
+  const widestLane = Math.max(laneWidth(books.slice(0, upperCount)), hasTwoRows ? laneWidth(books.slice(upperCount)) : 0);
+  if (widestLane > width - 40) stage.style.setProperty('--shelf-fit', String((width - 48) / widestLane));
   const floorY = stage.querySelector('.shelf-platform').offsetTop;
   const midShelf = hasTwoRows ? stage.querySelector('.shelf-platform-lower').offsetTop : floorY;
   const floor = Matter.Bodies.rectangle(width / 2, floorY + 17, width + wall * 2, 34, { isStatic: true, friction: 0.95, restitution: 0.02, label: 'shelf-floor' });
@@ -316,16 +344,20 @@ function configureStage() {
   const xPositions = new Array(books.length);
   const arrangeLane = (from, count) => {
     const laneBooks = books.slice(from, from + count);
-    const objectGap = mobileLayout ? 12 : 9;
-    const laneWidth = laneBooks.reduce((sum, book) => sum + book.offsetWidth, 0) + Math.max(0, count - 1) * objectGap;
-    let cursor = Math.max(14, (width - laneWidth) / 2);
+    const occupiedWidth = laneWidth(laneBooks);
+    let cursor = Math.max(14, (width - occupiedWidth) / 2);
     laneBooks.forEach((book, lane) => {
+      if (isAccessory(book)) return;
       xPositions[from + lane] = cursor + book.offsetWidth / 2;
       cursor += book.offsetWidth + objectGap;
     });
   };
   arrangeLane(0, upperCount);
   if (hasTwoRows) arrangeLane(upperCount, books.length - upperCount);
+  const stackIndex = books.findIndex((book) => book.dataset.renderArchetype === 'horizontal_notebook_stack');
+  books.forEach((book, index) => {
+    if (isAccessory(book)) xPositions[index] = stackIndex >= 0 ? xPositions[stackIndex] - 12 : width - 75;
+  });
 
   bodies = books.map((el, index) => {
     const lower = hasTwoRows && index >= upperCount;
@@ -333,10 +365,12 @@ function configureStage() {
     const bookWidth = el.offsetWidth;
     const bookHeight = el.offsetHeight;
     const x = xPositions[index];
-    const y = supportY - bookHeight / 2;
     el.style.touchAction = finePointer ? 'none' : 'pan-y';
     el.dataset.supportedRow = lower ? 'lower' : 'upper';
     const initialAngle = Number.parseFloat(getComputedStyle(el).getPropertyValue('--object-tilt')) * Math.PI / 180 || 0;
+    const restingPlane = isAccessory(el) && stackIndex >= 0 ? supportY - books[stackIndex].offsetHeight : supportY;
+    const projectedHeight = Math.abs(Math.cos(initialAngle)) * bookHeight + Math.abs(Math.sin(initialAngle)) * bookWidth;
+    const y = restingPlane - projectedHeight / 2;
     const body = Matter.Bodies.rectangle(x, y, bookWidth, bookHeight, {
       chamfer: { radius: [4, 5, 2, 2] },
       angle: initialAngle,

@@ -5,15 +5,15 @@ import { readFileSync } from 'node:fs';
 const data = readFileSync(new URL('../src/data/site.ts', import.meta.url), 'utf8');
 const page = readFileSync(new URL('../src/pages/index.astro', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../src/styles/content.css', import.meta.url), 'utf8');
-const shelfCss = readFileSync(new URL('../src/styles/global.css', import.meta.url), 'utf8');
+const shelfCss = readFileSync(new URL('../src/styles/global.css', import.meta.url), 'utf8') + readFileSync(new URL('../src/styles/spine-designs.css', import.meta.url), 'utf8');
 const js = readFileSync(new URL('../src/scripts/main.js', import.meta.url), 'utf8');
 
 const archetypes = [
-  'clothbound_tall_volume','slim_swiss_paperback','wide_art_book','rust_archival_box_file',
+  'cherry_paperback','held_leather_hardcover','fapcount_paperback','careledger_paperboard_hardback',
   'olive_ring_binder','framed_image_artifact','certificate_keyring','horizontal_notebook_stack',
 ];
 const presentations = [
-  'tall_hardcover','tall_paperback','landscape_art_book','archival_folder',
+  'tall_hardcover','tall_paperback','landscape_art_book',
   'binder_dossier','photo_object','certificate_document','notes_stack',
 ];
 
@@ -26,7 +26,12 @@ test('every shelf record declares a distinct archetype and opened presentation',
 
 test('shelf renderer has explicit physical layers and at least five distinguishable recipes', () => {
   for (const layer of ['object-surface','object-construction','object-type','object-identity','object-highlight','object-contact']) assert.match(page, new RegExp(layer));
-  for (const value of archetypes) assert.match(shelfCss, new RegExp(`data-render-archetype=['"]${value}['"]`));
+  for (const value of archetypes.slice(4)) assert.match(shelfCss, new RegExp(`data-render-archetype=['"]${value}['"]`));
+  for (const design of ['cherry','held','fapcount','careledger']) {
+    assert.match(data, new RegExp(`spineDesign: '${design}'`));
+    assert.match(page, /generated-spine-image/);
+    assert.match(shelfCss, /\.generated-spine-image/);
+  }
 });
 
 test('opened artifact uses type-specific structures rather than a universal two-page visual', () => {
